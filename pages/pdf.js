@@ -1,3 +1,5 @@
+import { motion } from "framer-motion"
+
 const PDFPage = () => {
   return (
     <>
@@ -9,12 +11,29 @@ const PDFPage = () => {
       </div>
 
       {/* pdf file */}
-      <embed
-        className="w-full"
-        style={{ height: "80vh" }}
-        src="/pdf/9주차 3번문제.pdf#page=1&view=FitV,top&toolbar=0&scrollbar=0&statusbar=0&navpanes=0&messages=0"
-        type="application/pdf"
-      />
+
+      <motion.div
+        initial="pageInitial"
+        animate="pageAnimate"
+        variants={{
+          pageInitial: {
+            opacity: 0,
+          },
+          pageAnimate: {
+            opacity: 1,
+            transition: {
+              delay: 0.5,
+            },
+          },
+        }}
+      >
+        <embed
+          className="w-full"
+          style={{ height: "80vh" }}
+          src="/pdf/9주차 3번문제.pdf#page=1&view=FitV,top&toolbar=0&scrollbar=0&statusbar=0&navpanes=0&messages=0"
+          type="application/pdf"
+        />
+      </motion.div>
 
       <div className="grid grid-cols-4 gap-3 mt-4">
         <div className="col-span-1 flex justify-start">

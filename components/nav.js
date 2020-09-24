@@ -38,9 +38,11 @@ const Nav = () => {
         </div>
       </div>
       <div id="hidden-header" className="hidden md:hidden px-6 bg-indigo-500">
-        <a href="#news" className="block header-kind no-underline px-2 py-1 hover:bg-indigo-200 rounded">
-          문제풀이
-        </a>
+        <Link href="/pdf">
+          <a href="#news" className="block header-kind no-underline px-2 py-1 hover:bg-indigo-200 rounded">
+            문제풀이
+          </a>
+        </Link>
         <a href="#contact" className="mt-1 block header-kind no-underline px-2 py-1 hover:bg-indigo-200 rounded">
           오답노트
         </a>

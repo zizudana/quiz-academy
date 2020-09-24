@@ -1,8 +1,9 @@
 import Head from "next/head"
+import { motion } from "framer-motion"
 import Nav from "../components/nav"
 import "../styles/index.css"
 
-const MyApp = ({ Component, pageProps }) => {
+const MyApp = ({ Component, pageProps, router }) => {
   return (
     <>
       <Head>
@@ -16,7 +17,21 @@ const MyApp = ({ Component, pageProps }) => {
         {/* Navigation Bar */}
         <Nav />
 
-        <Component {...pageProps} />
+        <motion.div
+          key={router.route}
+          initial="pageInitial"
+          animate="pageAnimate"
+          variants={{
+            pageInitial: {
+              opacity: 0,
+            },
+            pageAnimate: {
+              opacity: 1,
+            },
+          }}
+        >
+          <Component {...pageProps} />
+        </motion.div>
 
         {/* END : container */}
       </div>

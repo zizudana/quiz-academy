@@ -1,4 +1,4 @@
-const IndexPage = () => {
+const SeyeonPage = () => {
   return (
     <>
       <div className="py-20">
@@ -9,4 +9,4 @@ const IndexPage = () => {
   )
 }
 
-export default IndexPage
+export default SeyeonPage

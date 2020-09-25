@@ -1,6 +1,9 @@
 import { motion } from "framer-motion"
+import { useState } from "react"
 
 const PDFPage = () => {
+  const [index, setIndex] = useState(1)
+  const answer_button_array = [1, 2, 3, 4, 5]
   return (
     <>
       {/* 문제 제목 */}
@@ -11,7 +14,6 @@ const PDFPage = () => {
       </div>
 
       {/* pdf file */}
-
       <motion.div
         initial="pageInitial"
         animate="pageAnimate"
@@ -49,16 +51,31 @@ const PDFPage = () => {
               </svg>
             </button>
           </div>
-          <div className="col-span-2">
+
+          <div className="col-span-2 relative">
+            <motion.div
+              animate={{
+                x: 48 * index - 168,
+                transition: {
+                  duration: 0.5,
+                },
+              }}
+              className="hidden sm:block absolute bg-yellow-600 w-12 h-12 rounded"
+              style={{ left: "50%" }}
+            ></motion.div>
             {/* button : 답 선택 */}
             <div id="number-button-group" className="flex w-full h-12 mx-auto items-center justify-center">
-              <button className="bg-yellow-400 hover:bg-yellow-600 w-10 h-10 rounded-lg focus:outline-none mx-1 text-center">1</button>
-              <button className="bg-yellow-400 hover:bg-yellow-600 w-10 h-10 rounded-lg focus:outline-none mx-1 text-center">2</button>
-              <button className="bg-yellow-400 hover:bg-yellow-600 w-10 h-10 rounded-lg focus:outline-none mx-1 text-center">3</button>
-              <button className="bg-yellow-400 hover:bg-yellow-600 w-10 h-10 rounded-lg focus:outline-none mx-1 text-center">4</button>
-              <button className="bg-yellow-400 hover:bg-yellow-600 w-10 h-10 rounded-lg focus:outline-none mx-1 text-center">5</button>
+              {answer_button_array.map((button_index) => (
+                <button
+                  className="z-10 bg-yellow-400 hover:bg-yellow-500 w-10 h-10 rounded-lg focus:outline-none mx-1 text-center"
+                  onClick={() => setIndex(button_index)}
+                >
+                  {button_index}
+                </button>
+              ))}
             </div>
           </div>
+
           <div className="col-span-1 flex justify-end">
             {/* button : 다음 문제 */}
             <button className="bg-gray-300 hover:bg-gray-400 h-full text-gray-800 px-4 rounded flex items-center">

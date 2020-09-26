@@ -1,13 +1,8 @@
-import Head from "next/head"
 import Link from "next/link"
 
 const Nav = () => {
   return (
     <>
-      <Head>
-        <link rel="stylesheet" href="/css/nav.css" />
-      </Head>
-
       <div className="color-2 overflow-hidden text-large text-white h-40px px-6 py-2">
         <div className="float-left leading-8">
           <Link href="/">

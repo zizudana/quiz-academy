@@ -51,7 +51,7 @@ const get_pdf_data = () => {
 
 const PDFPage = () => {
   const [index, setIndex] = useState(1)
-  const answer_button_array = [1, 2, 3, 4, 5]
+  const answer_button_array = Array.from(Array(5), (e, i) => i + 1)
   const pdf_url = "/pdf/9주차 3번문제.pdf"
   const window_height = get_window_height()
   const pdf_data = get_pdf_data()
@@ -83,7 +83,7 @@ const PDFPage = () => {
       >
         <div className="flex justify-center">
           <Document file={pdf_url} loading={loading} renderMode="canvas" options={{ data: pdf_data }}>
-            <Page pageNumber={1} className="w-full mx-auto" height={window_height * 0.8} />
+            <Page pageNumber={1} height={window_height * 0.8} />
           </Document>
         </div>
       </motion.div>
@@ -108,7 +108,7 @@ const PDFPage = () => {
               animate={{
                 x: 48 * index - 168,
                 transition: {
-                  duration: 0.3,
+                  duration: 0.2,
                 },
               }}
               className="hidden sm:block absolute bg-yellow-600 w-12 h-12 rounded"
@@ -116,8 +116,9 @@ const PDFPage = () => {
             ></motion.div>
             {/* button : 답 선택 */}
             <div id="number-button-group" className="flex w-full h-12 mx-auto items-center justify-center">
-              {answer_button_array.map((button_index) => (
+              {answer_button_array.map((button_index, index) => (
                 <button
+                  key={index}
                   className="z-10 bg-yellow-400 hover:bg-yellow-500 w-10 h-10 rounded-lg focus:outline-none mx-1 text-center"
                   onClick={() => setIndex(button_index)}
                 >

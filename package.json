@@ -10,7 +10,8 @@
     "framer-motion": "^2.7.1",
     "next": "latest",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "react-pdf": "^5.0.0"
   },
   "devDependencies": {
     "postcss-flexbugs-fixes": "4.2.1",

@@ -1,3 +1,4 @@
+import App from "next/app"
 import Head from "next/head"
 import { motion } from "framer-motion"
 import Nav from "../components/nav"
@@ -37,6 +38,13 @@ const MyApp = ({ Component, pageProps, router }) => {
       </div>
     </>
   )
+}
+
+MyApp.getInitialProps = async (appContext) => {
+  // calls page's `getInitialProps` and fills `appProps.pageProps`
+  const appProps = await App.getInitialProps(appContext)
+
+  return { ...appProps }
 }
 
 export default MyApp

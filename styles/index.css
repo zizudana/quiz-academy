@@ -56,3 +56,22 @@ body::-webkit-scrollbar {
 .keep-all {
   word-break: keep-all;
 }
+
+.color-1 {
+  background-color: #339ad5;
+}
+.color-2 {
+  background-color: #1e1651;
+}
+
+.color-3 {
+  background-color: #8093cb;
+}
+
+.color-4 {
+  background-color: #302e2f;
+}
+
+.color-5 {
+  background-color: #58585a;
+}

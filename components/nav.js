@@ -8,7 +8,7 @@ const Nav = () => {
         <link rel="stylesheet" href="/css/nav.css" />
       </Head>
 
-      <div className="color-2 overflow-hidden text-large h-40px px-6 py-2">
+      <div className="color-2 overflow-hidden text-large text-white h-40px px-6 py-2">
         <div className="float-left leading-8">
           <Link href="/">
             <a className="header-kind no-underline px-2 py-0">대치동 온라인</a>
@@ -29,7 +29,7 @@ const Nav = () => {
           <a href="#about" className="hidden md:inline-block header-kind no-underline px-2 py-0">
             질의응답
           </a>
-          <button onClick={() => ShowHiddenHeader()} className="md:hidden color-3 hover:color-3 text-white font-bold rounded align-middle w-6 h-6">
+          <button onClick={() => ShowHiddenHeader()} className="md:hidden color-3 text-white font-bold rounded align-middle w-6 h-6">
             =
           </button>
         </div>

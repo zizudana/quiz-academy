@@ -5,8 +5,8 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 
 const loading = () => {
   return (
-    <svg className="animate-spin ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="#000000" stroke-width="4"></circle>
+    <svg className="animate-spin ml-1 mr-3 h-12 w-12" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="#000000" strokeWidth="4"></circle>
       <path
         className="opacity-75"
         fill="#000000"
@@ -17,17 +17,17 @@ const loading = () => {
 }
 
 const get_window_height = () => {
+  const [windowWidth, setwindowWidth] = useState(undefined)
   const [windowHeight, setwindowHeight] = useState(undefined)
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const handleResize = () => {
+        setwindowWidth(window.innerWidth)
         setwindowHeight(window.innerHeight)
       }
 
-      window.addEventListener("resize", () => {
-        setwindowHeight(window.innerHeight)
-      })
+      window.addEventListener("resize", () => handleResize)
 
       handleResize()
 
@@ -41,15 +41,17 @@ const get_window_height = () => {
 const PDFDocument = (props) => {
   const pdf_url = "/pdf/9주차 3번문제.pdf"
   const window_height = get_window_height()
+  const [binaryPDF, setBinaryPDF] = useState(undefined)
 
-  let pdf_data = props.pdf_binary
-  if (typeof window !== "undefined") {
-    pdf_data = window.atob(pdf_data)
-  }
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setBinaryPDF(window.atob(props.pdf_binary))
+    }
+  }, [])
 
   return (
-    <Document file={pdf_url} loading={loading} renderMode="canvas" options={{ data: pdf_data }}>
-      <Page pageNumber={1} height={window_height * 0.8} />
+    <Document file={pdf_url} loading={loading} renderMode="svg" options={{ data: binaryPDF }}>
+      <Page pageNumber={1} height={window_height * 0.7} />
     </Document>
   )
 }

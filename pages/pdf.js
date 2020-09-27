@@ -37,11 +37,11 @@ const PDFPage = ({ pdf_binary }) => {
         </div>
       </motion.div>
 
-      <div className="container pr-10 mb-5 fixed h-12 bottom-0 bg-white">
-        <div className="grid grid-cols-4 gap-3 px-5">
-          <div className="col-span-1 flex justify-start">
+      <div className="container h-16 mb-5 fixed bottom-0">
+        <div className="grid grid-cols-4 gap-3 px-5 h-full">
+          <div className="col-span-1 flex justify-start items-center">
             {/* button : 이전 문제 */}
-            <button className="bg-gray-300 hover:bg-gray-400 h-full text-gray-800 px-4 rounded flex items-center">
+            <button className="bg-gray-300 hover:bg-gray-400 h-12 text-gray-800 px-4 rounded flex items-center">
               <span className="hidden sm:block keep-all">이전 문제</span>
               {/* previous icon svg */}
               <svg className="fill-current w-6 h-6 ml-1" enableBackground="new 0 0 64 64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
@@ -52,34 +52,17 @@ const PDFPage = ({ pdf_binary }) => {
             </button>
           </div>
 
-          <div className="col-span-2 relative">
-            <motion.div
-              animate={{
-                x: 48 * index - 168,
-                transition: {
-                  duration: 0.2,
-                },
-              }}
-              className="hidden sm:block absolute bg-yellow-600 w-12 h-12 rounded"
-              style={{ left: "50%" }}
-            ></motion.div>
-            {/* button : 답 선택 */}
-            <div id="number-button-group" className="flex w-full h-12 mx-auto items-center justify-center">
-              {answer_button_array.map((button_index, index) => (
-                <button
-                  key={index}
-                  className="z-10 bg-yellow-400 hover:bg-yellow-500 w-10 h-10 rounded-lg focus:outline-none mx-1 text-center"
-                  onClick={() => setIndex(button_index)}
-                >
-                  {button_index}
-                </button>
-              ))}
-            </div>
+          <div class="col-span-2 flex justify-center items-center">
+            {answer_button_array.map((button_index, index) => (
+              <button key={index} className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
+                {button_index}
+              </button>
+            ))}
           </div>
 
-          <div className="col-span-1 flex justify-end">
+          <div className="col-span-1 flex justify-end items-center">
             {/* button : 다음 문제 */}
-            <button className="bg-gray-300 hover:bg-gray-400 h-full text-gray-800 px-4 rounded flex items-center">
+            <button className="bg-gray-300 hover:bg-gray-400 h-12 text-gray-800 px-4 rounded flex items-center">
               {/* next icon svg */}
               <svg className="fill-current w-6 h-6 mr-1" enableBackground="new 0 0 64 64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
                 <path d="m28.604 41.43c.389.379.892.567 1.396.567.521 0 1.041-.202 1.433-.604l6.396-6.567c1.56-1.56 1.56-4.097.019-5.638l-6.414-6.586c-.77-.791-2.037-.808-2.828-.037s-.808 2.037-.037 2.828l6.414 6.624-6.414 6.585c-.773.792-.756 2.058.035 2.828z" />

@@ -6,43 +6,16 @@
 @tailwind components;
 /* Stop purging. */
 
-/* Write you own custom component styles here */
-.btn-blue {
-  @apply bg-blue-500 text-white font-bold py-2 px-4 rounded;
-}
-
 /* Start purging... */
 @tailwind utilities;
 /* Stop purging. */
 
 /* Your own custom utilities */
 
-@font-face {
-  font-family: "LotteMartDream";
-  font-style: normal;
-  font-weight: 300;
-  src: url("//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamLight.woff2") format("woff2"),
-    url("//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamLight.woff") format("woff");
-}
-
-@font-face {
-  font-family: "LotteMartDream";
-  font-style: normal;
-  font-weight: 400;
-  src: url("//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamMedium.woff2") format("woff2"),
-    url("//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamMedium.woff") format("woff");
-}
-
-@font-face {
-  font-family: "LotteMartDream";
-  font-style: normal;
-  font-weight: 700;
-  src: url("//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamBold.woff2") format("woff2"),
-    url("//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamBold.woff") format("woff");
-}
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap");
 
 body {
-  font-family: "LotteMartDream", sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
   @apply text-lg;
 
   -ms-overflow-style: none; /* IE and Edge */

@@ -28,7 +28,7 @@ const Nav = () => {
           <Link href="/login">
             <a className="inline-block bg-indigo-100 hover:bg-indigo-300 text-gray-800 font-bold py-1 px-4 ml-3 rounded-full">로그인</a>
           </Link>
-          <button onClick={() => ShowHiddenHeader()} className="sm:hidden color-3 text-white font-bold leading-4 rounded align-middle w-6 h-6">
+          <button onClick={() => ShowHiddenHeader()} className="sm:hidden color-3 text-white font-bold leading-4 rounded w-6 h-6 ml-3">
             =
           </button>
         </div>

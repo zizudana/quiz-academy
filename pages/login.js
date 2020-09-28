@@ -1,9 +1,16 @@
+import { motion } from "framer-motion"
 import Link from "next/link"
 
 const IndexPage = () => {
   return (
-    <>
-      <div className="w-full mx-auto mt-24 max-w-xs rounded border border-opacity-50 border-indigo-700">
+    <motion.div
+      animate={{
+        y: [300, -50, 0],
+        opacity: [0, 1],
+        transition: { duration: 1 },
+      }}
+    >
+      <div className="w-full mx-auto mt-24 max-w-sm rounded border border-opacity-50 border-indigo-700">
         <form className="bg-white shadow-xl rounded px-8 pt-6 pb-8">
           <div className="mb-4">
             <label className="block text-gray-700 font-bold mb-2" htmlFor="user-email">
@@ -27,7 +34,7 @@ const IndexPage = () => {
               placeholder="•••••••••••••••"
             />
           </div>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mt-20">
             <button
               className="color-2 hover:bg-indigo-700 hover:shadow-md text-white font-bold text-sm py-2 px-4 rounded focus:outline-none"
               type="button"
@@ -42,7 +49,7 @@ const IndexPage = () => {
           </div>
         </form>
       </div>
-    </>
+    </motion.div>
   )
 }
 

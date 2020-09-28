@@ -1,41 +1,19 @@
 import App from "next/app"
-import Head from "next/head"
-import { motion } from "framer-motion"
-import Nav from "../components/nav"
+import { Provider } from "next-auth/client"
 import "../styles/index.css"
 
-const MyApp = ({ Component, pageProps, router }) => {
+const MyApp = ({ Component, pageProps }) => {
   return (
     <>
-      <Head>
-        <title>대치동 온라인</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Nav />
-      <div className="container mx-auto mb-5">
-        {/* START : container */}
-
-        {/* Navigation Bar */}
-
-        <motion.div
-          key={router.route}
-          initial="pageInitial"
-          animate="pageAnimate"
-          variants={{
-            pageInitial: {
-              opacity: 0,
-            },
-            pageAnimate: {
-              opacity: 1,
-            },
-          }}
-        >
-          <Component {...pageProps} />
-        </motion.div>
-
-        {/* END : container */}
-      </div>
+      <Provider
+        session={pageProps.session}
+        options={{
+          clientMaxAge: 60, // Re-fetch session if cache is older than 60 seconds
+          keepAlive: 5 * 60, // Send keepAlive message every 5 minutes
+        }}
+      >
+        <Component {...pageProps} />
+      </Provider>
     </>
   )
 }

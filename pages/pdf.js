@@ -1,3 +1,4 @@
+import Layout from "../components/layout"
 import PDFDocument from "../components/pdf_document"
 
 import { motion } from "framer-motion"
@@ -8,7 +9,7 @@ const PDFPage = ({ pdf_binary }) => {
   const answer_button_array = Array.from(Array(5), (_, i) => i + 1)
 
   return (
-    <>
+    <Layout>
       {/* 문제 제목 */}
       <div className="w-1/2 mx-auto text-center pt-5 rounded">
         <div className="color-2 text-indigo-100 px-4 py-3 leading-none rounded-full" role="alert">
@@ -74,7 +75,7 @@ const PDFPage = ({ pdf_binary }) => {
           </div>
         </div>
       </div>
-    </>
+    </Layout>
   )
 }
 

@@ -35,13 +35,19 @@ const Nav = () => {
       </div>
       <div id="hidden-header" className="hidden sm:hidden px-6 color-3">
         <Link href="/pdf">
-          <a className="block px-2 py-2 font-bold text-white hover:bg-indigo-200 rounded">문제풀이</a>
+          <a onClick={() => ShowHiddenHeader()} className="block px-2 py-2 font-bold text-white hover:bg-indigo-200 rounded">
+            문제풀이
+          </a>
         </Link>
         <Link href="/">
-          <a className=" block px-2 py-2 font-bold text-white hover:bg-indigo-200 rounded">오답노트</a>
+          <a onClick={() => ShowHiddenHeader()} className=" block px-2 py-2 font-bold text-white hover:bg-indigo-200 rounded">
+            오답노트
+          </a>
         </Link>
         <Link href="/">
-          <a className=" block px-2 py-2 font-bold text-white hover:bg-indigo-200 rounded">질의응답</a>
+          <a onClick={() => ShowHiddenHeader()} className=" block px-2 py-2 font-bold text-white hover:bg-indigo-200 rounded">
+            질의응답
+          </a>
         </Link>
       </div>
 

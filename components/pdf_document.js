@@ -23,11 +23,15 @@ const get_window_height = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const handleResize = () => {
-        setwindowWidth(window.innerWidth)
+        if (window.innerWidth < 640) {
+          setwindowWidth(window.innerWidth - 30)
+        } else {
+          setwindowWidth(undefined)
+        }
         setwindowHeight(window.innerHeight)
       }
 
-      window.addEventListener("resize", () => handleResize)
+      window.addEventListener("resize", handleResize)
 
       handleResize()
 
@@ -35,12 +39,12 @@ const get_window_height = () => {
       return () => window.removeEventListener("resize", handleResize)
     }
   }, []) // Empty array ensures that effect is only run on mount
-  return windowHeight
+  return [windowWidth, windowHeight]
 }
 
 const PDFDocument = (props) => {
   const pdf_url = "/pdf/9주차 3번문제.pdf"
-  const window_height = get_window_height()
+  const [windowWidth, window_height] = get_window_height()
   const [binaryPDF, setBinaryPDF] = useState(undefined)
 
   useEffect(() => {
@@ -51,7 +55,7 @@ const PDFDocument = (props) => {
 
   return (
     <Document file={pdf_url} loading={loading} renderMode="svg" options={{ data: binaryPDF }}>
-      <Page pageNumber={1} height={window_height * 0.7} />
+      <Page pageNumber={1} width={windowWidth} height={window_height * 0.7} />
     </Document>
   )
 }

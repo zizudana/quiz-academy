@@ -80,9 +80,9 @@ const PDFPage = ({ pdf_binary }) => {
 }
 
 const getServerSideProps = async () => {
-  const res = await fetch("http://localhost:51682/users/pdf_test")
+  const res = await fetch("http://localhost:51682/pdfs/9_3")
   const json = await res.json()
-  const pdf_binary = json.name
+  const pdf_binary = json.binarypdf
 
   return { props: { pdf_binary } }
 }

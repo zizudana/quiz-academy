@@ -28,6 +28,11 @@ export default function SignIn({ csrfToken }) {
             Sign in
           </button>
         </div>
+        <style jsx>{`
+          input:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0 1000px #ebf4ff inset;
+          }
+        `}</style>
       </form>
     </div>
   )

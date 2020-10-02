@@ -53,7 +53,7 @@ const PDFPage = ({ pdf_binary }) => {
             </button>
           </div>
 
-          <div class="col-span-2 flex justify-center items-center">
+          <div className="col-span-2 flex justify-center items-center">
             {answer_button_array.map((button_index, index) => (
               <button key={index} className="z-10 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
                 {button_index}

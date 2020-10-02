@@ -28,17 +28,18 @@ const options = {
         const res = await fetch("http://localhost:51682/users/" + user_id + "?password=" + user_password)
         const user_profile = await res.json()
 
-        const user = { id: user_profile.id, name: user_profile.name }
-
-        if (user) {
+        if (user_profile.name) {
+          const user = { name: user_profile.name }
           // Any object returned will be saved in `user` property of the JWT
           return Promise.resolve(user)
         } else {
+          console.error(user_profile.message)
+
           // If you return null or false then the credentials will be rejected
-          // return Promise.resolve(null)
+          return Promise.resolve(null)
           // You can also Reject this callback with an Error or with a URL:
           // return Promise.reject(new Error('error message')) // Redirect to error page
-          return Promise.reject("/error/invalid_user") // Redirect to a URL
+          // return Promise.reject("/error/invalid_user") // Redirect to a URL
         }
       },
       callbacks: {

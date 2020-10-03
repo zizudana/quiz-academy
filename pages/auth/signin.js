@@ -3,7 +3,7 @@ import { csrfToken } from "next-auth/client"
 
 export default function SignIn({ csrfToken }) {
   return (
-    <div className="w-full max-w-xs mt-8 m-auto bg-indigo-100 rounded p-5">
+    <div className="w-full max-w-xs mt-12 m-auto bg-indigo-100 rounded p-5">
       <img src="/img/DCD_logo.png" alt="logo" className="w-32 mx-auto" />
       <form method="post" action="/api/auth/callback/credentials">
         <div>

@@ -25,7 +25,7 @@ const options = {
         const user_id = credentials.username
         const user_password = credentials.password
 
-        const res = await fetch("http://localhost:51682/users/" + user_id + "?password=" + user_password)
+        const res = await fetch(process.env.REST_API_URL + "/users/" + user_id + "?password=" + user_password)
         const user_profile = await res.json()
 
         if (user_profile.name) {

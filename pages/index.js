@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { signIn, useSession, getSession } from "next-auth/client"
 import { useRouter } from "next/router"
 
@@ -21,12 +22,11 @@ const IndexPage = () => {
               <img src="/img/DCD_logo.png" alt="logo" className="w-32 mx-auto" />
               <span className="text-5xl mb-20 font-bold text-center">DCD On</span>
 
-              <button
-                onClick={signIn}
-                className="mx-auto mb-20 bg-indigo-100 hover:bg-indigo-300 text-gray-800 font-bold text-2xl py-1 px-4 text-center rounded-full"
-              >
-                접속하기
-              </button>
+              <Link href="/auth/signin">
+                <a className="mx-auto mb-20 bg-indigo-100 hover:bg-indigo-300 text-gray-800 font-bold text-2xl py-1 px-4 text-center rounded-full">
+                  접속하기
+                </a>
+              </Link>
             </div>
           </div>
         </body>

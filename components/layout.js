@@ -7,14 +7,16 @@ import { useRouter } from "next/router"
 const Layout = ({ children }) => {
   const [session, loading] = useSession()
 
-  if (typeof window !== "undefined" && loading) return null
+  if (typeof window !== "undefined" && loading) {
+    return null
+  }
 
   if (!session) {
     const router = useRouter()
     if (typeof window !== "undefined") {
       router.push("/")
     }
-    return <></>
+    return null
   } else {
     return (
       <>

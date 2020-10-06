@@ -24,9 +24,12 @@ export default function SignIn({ csrfToken }) {
           />
         </div>
         <div>
-          <button className="w-full bg-indigo-700 hover:bg-yellow-500 text-white font-bold py-2 px-4 mb-6 rounded focus:outline-none" type="submit">
+          <button className="w-full bg-indigo-700 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded focus:outline-none" type="submit">
             Sign in
           </button>
+          <a href="/auth/signup" className="text-center text-gray-500 text-xs">
+            Sign up
+          </a>
         </div>
         <style jsx>{`
           input:-webkit-autofill {

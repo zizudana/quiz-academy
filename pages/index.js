@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { signIn, useSession, getSession } from "next-auth/client"
+import { useSession, getSession } from "next-auth/client"
 import { useRouter } from "next/router"
 
 const IndexPage = () => {
@@ -16,7 +16,7 @@ const IndexPage = () => {
   } else {
     return (
       <>
-        <body className="color-2 h-screen">
+        <div className="color-2 h-screen">
           <div className="container mx-auto mb-5">
             <div className="text-white h-auto px-6 pt-10 flex flex-col">
               <img src="/img/DCD_logo.png" alt="logo" className="w-32 mx-auto" />
@@ -29,7 +29,7 @@ const IndexPage = () => {
               </Link>
             </div>
           </div>
-        </body>
+        </div>
       </>
     )
   }

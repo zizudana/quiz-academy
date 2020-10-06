@@ -6,7 +6,7 @@ const options = {
   pages: {
     signIn: "/auth/signin",
     signOut: "/auth/signout",
-    error: "/error/invalid_user", // Error code passed in query string as ?error=
+    error: "/auth/signin", // Error code passed in query string as ?error=
     verifyRequest: "/auth/verify-request", // (used for check email message)
     newUser: "/auth/new_user", // If set, new users will be directed here on first sign in
   },
@@ -22,8 +22,8 @@ const options = {
         password: { label: "Password", type: "password", placeholder: "•••••••••••••••" },
       },
       authorize: async (credentials) => {
-        const user_id = credentials.username
-        const user_password = credentials.password
+        const user_id = encodeURI(credentials.username)
+        const user_password = encodeURI(credentials.password)
 
         const res = await fetch(process.env.REST_API_URL + "/users/" + user_id + "?password=" + user_password)
         const user_profile = await res.json()

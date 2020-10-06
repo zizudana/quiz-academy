@@ -24,7 +24,7 @@ const SignInPage = ({ csrfToken, props }) => {
           />
         </div>
         <div>
-          <p className="mb-3 text-red-600 text-base text-center">{props["error_message"]}</p>
+          <p className="mb-1 text-red-600 text-base text-center">{props["error_message"]}</p>
           <button className="w-full bg-indigo-700 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded focus:outline-none" type="submit">
             Sign in
           </button>

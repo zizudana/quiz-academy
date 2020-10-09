@@ -2,21 +2,16 @@ import NextAuth from "next-auth"
 import Providers from "next-auth/providers"
 
 const options = {
-  // Configure one or more authentication providers
   pages: {
     signIn: "/auth/signin",
-    signOut: "/auth/signout",
+    // signOut: "/auth/signout",
     error: "/auth/signin", // Error code passed in query string as ?error=
-    verifyRequest: "/auth/verify-request", // (used for check email message)
-    newUser: "/auth/new_user", // If set, new users will be directed here on first sign in
+    // verifyRequest: "/auth/verify-request", // (used for check email message)
+    // newUser: "/auth/new_user", // If set, new users will be directed here on first sign in
   },
   providers: [
     Providers.Credentials({
-      // The name to display on the sign in form (e.g. 'Sign in with...')
       name: "Credentials",
-      // The credentials is used to generate a suitable form on the sign in page.
-      // You can specify whatever fields you are expecting to be submitted.
-      // e.g. domain, username, password, 2FA token, etc.
       credentials: {
         username: { label: "Username", type: "text", placeholder: "ID" },
         password: { label: "Password", type: "password", placeholder: "•••••••••••••••" },
@@ -25,11 +20,11 @@ const options = {
         const user_id = encodeURI(credentials.username)
         const user_password = encodeURI(credentials.password)
 
-        const res = await fetch(process.env.REST_API_URL + "/users/" + user_id + "?password=" + user_password)
+        const res = await fetch(process.env.REST_API_URL + "/logins/" + user_id + "?password=" + user_password)
         const user_profile = await res.json()
 
-        if (user_profile.name) {
-          const user = { name: user_profile.name }
+        if (user_profile.user_name) {
+          const user = { name: user_profile.user_name }
           // Any object returned will be saved in `user` property of the JWT
           return Promise.resolve(user)
         } else {

@@ -1,5 +1,5 @@
 import Head from "next/head"
-import Nav from "../components/nav"
+import Nav from "./nav"
 import { motion } from "framer-motion"
 import { useSession, getSession } from "next-auth/client"
 import { useRouter } from "next/router"

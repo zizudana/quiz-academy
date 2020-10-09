@@ -1,11 +1,12 @@
-import Layout from "../components/layout"
+import Layout from "../components/layout_user"
 import PDFDocument from "../components/pdf_document"
 
 import { motion } from "framer-motion"
-import { useState } from "react"
+import Link from "next/link"
+import { getSession } from "next-auth/client"
+const axios = require("axios")
 
 const PDFPage = ({ pdf_binary }) => {
-  const [index, setIndex] = useState(1)
   const answer_button_array = Array.from(Array(5), (_, i) => i + 1)
 
   return (
@@ -63,15 +64,17 @@ const PDFPage = ({ pdf_binary }) => {
 
           <div className="col-span-1 flex justify-end items-center">
             {/* button : 다음 문제 */}
-            <button className="bg-gray-300 hover:bg-gray-400 h-12 text-gray-800 px-4 rounded flex items-center">
-              {/* next icon svg */}
-              <svg className="fill-current w-6 h-6 mr-1" enableBackground="new 0 0 64 64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                <path d="m28.604 41.43c.389.379.892.567 1.396.567.521 0 1.041-.202 1.433-.604l6.396-6.567c1.56-1.56 1.56-4.097.019-5.638l-6.414-6.586c-.77-.791-2.037-.808-2.828-.037s-.808 2.037-.037 2.828l6.414 6.624-6.414 6.585c-.773.792-.756 2.058.035 2.828z" />
-                <path d="m9.229 28.716c-.152 1.068-.23 2.172-.23 3.283s.078 2.215.23 3.283c.143.998.999 1.718 1.978 1.718.094 0 .189-.007.286-.021 1.093-.156 1.853-1.169 1.697-2.263-.126-.881-.19-1.795-.19-2.717s.064-1.836.19-2.717c.156-1.094-.604-2.107-1.697-2.263-1.1-.16-2.108.603-2.264 1.697z" />
-                <path d="m11.618 21.088c-.503.984-.113 2.188.87 2.691.983.5 2.188.113 2.691-.87 3.44-6.73 10.269-10.911 17.819-10.911 11.028 0 20 8.972 20 20s-8.972 20-20 20c-7.551 0-14.379-4.181-17.819-10.911-.503-.984-1.709-1.374-2.691-.87-.983.503-1.373 1.708-.87 2.691 4.128 8.074 12.32 13.089 21.381 13.089 13.233 0 24-10.766 24-24s-10.767-24-24-24c-9.061.002-17.253 5.018-21.381 13.091z" />
-              </svg>
-              <span className="hidden sm:block keep-all">다음 문제</span>
-            </button>
+            <Link href="/pdf2">
+              <a className="bg-gray-300 hover:bg-gray-400 h-12 text-gray-800 px-4 rounded flex items-center">
+                {/* next icon svg */}
+                <svg className="fill-current w-6 h-6 mr-1" enableBackground="new 0 0 64 64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                  <path d="m28.604 41.43c.389.379.892.567 1.396.567.521 0 1.041-.202 1.433-.604l6.396-6.567c1.56-1.56 1.56-4.097.019-5.638l-6.414-6.586c-.77-.791-2.037-.808-2.828-.037s-.808 2.037-.037 2.828l6.414 6.624-6.414 6.585c-.773.792-.756 2.058.035 2.828z" />
+                  <path d="m9.229 28.716c-.152 1.068-.23 2.172-.23 3.283s.078 2.215.23 3.283c.143.998.999 1.718 1.978 1.718.094 0 .189-.007.286-.021 1.093-.156 1.853-1.169 1.697-2.263-.126-.881-.19-1.795-.19-2.717s.064-1.836.19-2.717c.156-1.094-.604-2.107-1.697-2.263-1.1-.16-2.108.603-2.264 1.697z" />
+                  <path d="m11.618 21.088c-.503.984-.113 2.188.87 2.691.983.5 2.188.113 2.691-.87 3.44-6.73 10.269-10.911 17.819-10.911 11.028 0 20 8.972 20 20s-8.972 20-20 20c-7.551 0-14.379-4.181-17.819-10.911-.503-.984-1.709-1.374-2.691-.87-.983.503-1.373 1.708-.87 2.691 4.128 8.074 12.32 13.089 21.381 13.089 13.233 0 24-10.766 24-24s-10.767-24-24-24c-9.061.002-17.253 5.018-21.381 13.091z" />
+                </svg>
+                <span className="hidden sm:block keep-all">다음 문제</span>
+              </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -79,12 +82,36 @@ const PDFPage = ({ pdf_binary }) => {
   )
 }
 
-const getServerSideProps = async () => {
-  const res = await fetch(process.env.REST_API_URL + "/pdfs/9_3")
-  const json = await res.json()
-  const pdf_binary = json.binarypdf
+const getServerSideProps = async (context) => {
+  const session = await getSession(context)
+  if (session) {
+    const user_name = session.user.name
+    console.log("user name :", user_name)
 
-  return { props: { pdf_binary } }
+    const res = await fetch(process.env.REST_API_URL + "/pdfs/9_3")
+    const json = await res.json()
+    const pdf_binary = json.binarypdf
+
+    if (pdf_binary) {
+      axios
+        .post(process.env.REST_API_URL + "/user-log", {
+          user_name: user_name,
+          log_type: "pdf",
+          log_content: "9_3",
+        })
+        .then((res) => {
+          console.log(`statusCode: ${res.status}`)
+          console.log(`data: ${JSON.stringify(res.data)}`)
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    }
+
+    return { props: { pdf_binary } }
+  }
+
+  return { props: {} }
 }
 
 export { getServerSideProps }

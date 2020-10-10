@@ -1,9 +1,10 @@
+import Log from "../../components/chunjae/log"
+
 import { useState } from "react"
 import { motion } from "framer-motion"
 import Head from "next/head"
 
 const timestamp_to_date = (timestamp) => {
-  timestamp = 1575529680
   let d = new Date(timestamp * 1000)
   let year = d.getFullYear()
   let month = "" + (d.getMonth() + 1)
@@ -48,9 +49,10 @@ const Layout = ({ children }) => (
   </>
 )
 
-const ManagePage = ({ rest_api_url }) => {
+const ManagePage = ({ rest_api_url, log_arr }) => {
   const [isChecked, setIsChecked] = useState(false)
   const [errorMessage, setErrorMessage] = useState(undefined)
+  const [detailComponent, setDetailComponent] = useState("main")
 
   const check_manager = async () => {
     const manager_password = document.getElementById("manager-password").value
@@ -96,11 +98,14 @@ const ManagePage = ({ rest_api_url }) => {
         </div>
       </Layout>
     )
-  } else {
+  } else if (detailComponent == "main") {
     return (
       <Layout>
         <div className="mb-4"></div>
         <div className="p-4 border-solid border-2 border-indigo-400">
+          <div>
+            <button onClick={() => setDetailComponent("log")}>자세히보기</button>
+          </div>
           <table className="w-full table-fixed keep-all">
             <thead>
               <tr className="text-xl">
@@ -110,23 +115,39 @@ const ManagePage = ({ rest_api_url }) => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td className="border border-indigo-200 px-2 py-2 text-center text-sm">{timestamp_to_date(1575529680)}</td>
-                <td className="border border-indigo-200 px-2 py-2 text-center text-base">Adam</td>
-                <td className="border border-indigo-200 px-5 py-2 text-base">천재교육 1번 교과서 문제집 9주차 3번 문제</td>
-              </tr>
+              {log_arr.map((user_log, index) => {
+                return (
+                  <tr key={index}>
+                    <td className="border border-indigo-200 px-2 py-2 text-center text-sm">{timestamp_to_date(user_log.timestamp)}</td>
+                    <td className="border border-indigo-200 px-2 py-2 text-center text-base">{user_log.user_name}</td>
+                    <td className="border border-indigo-200 px-5 py-2 text-base">{user_log.log_content}</td>
+                  </tr>
+                )
+              })}
             </tbody>
           </table>
         </div>
       </Layout>
     )
+  } else if (detailComponent == "chart") {
+  } else if (detailComponent == "log") {
+    return <Log rest_api_url={rest_api_url} setDetail={(detail) => setDetailComponent(detail)} />
+  } else {
+    return <></>
   }
 }
 
 const getServerSideProps = async () => {
   const rest_api_url = process.env.REST_API_URL
+  const res = await fetch(rest_api_url + "/user-logs/10")
+  const json = await res.json()
+  const log_arr = json.log_arr
 
-  return { props: { rest_api_url } }
+  log_arr.sort(function (a, b) {
+    return a.timestamp < b.timestamp ? 1 : a.timestamp > b.timestamp ? -1 : 0
+  })
+
+  return { props: { rest_api_url, log_arr } }
 }
 
 export { getServerSideProps, Layout }

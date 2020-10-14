@@ -1,8 +1,11 @@
+import Chart from "../../components/chunjae/chart"
 import Log from "../../components/chunjae/log"
+import get_money_log from "../../utils/money_log"
 
+import Head from "next/head"
 import { useState } from "react"
 import { motion } from "framer-motion"
-import Head from "next/head"
+import { Line } from "react-chartjs-2"
 
 const timestamp_to_date = (timestamp) => {
   let d = new Date(timestamp * 1000)
@@ -49,7 +52,7 @@ const Layout = ({ children }) => (
   </>
 )
 
-const ManagePage = ({ rest_api_url, log_arr }) => {
+const ManagePage = ({ rest_api_url, user_log_arr, money_log_data, money_chart_options }) => {
   const [isChecked, setIsChecked] = useState(false)
   const [errorMessage, setErrorMessage] = useState(undefined)
   const [detailComponent, setDetailComponent] = useState("main")
@@ -101,10 +104,26 @@ const ManagePage = ({ rest_api_url, log_arr }) => {
   } else if (detailComponent == "main") {
     return (
       <Layout>
-        <div className="mb-4"></div>
+        <div className="mt-3 mb-5 text-center font-semibold text-2xl text-gray-800">천재교육 관리자</div>
+        <div className="mb-4 p-4 border-solid border-2 border-indigo-400">
+          <div className="mb-4">
+            <button
+              onClick={() => setDetailComponent("chart")}
+              className="text-indigo-900 text-base font-semibold hover:text-white hover:bg-indigo-500 py-1 px-2 border border-blue-500 hover:border-transparent rounded"
+            >
+              수수료 자세히보기
+            </button>
+          </div>
+          <Line data={money_log_data} options={money_chart_options} />
+        </div>
         <div className="p-4 border-solid border-2 border-indigo-400">
           <div>
-            <button onClick={() => setDetailComponent("log")}>자세히보기</button>
+            <button
+              onClick={() => setDetailComponent("log")}
+              className="text-indigo-900 text-base font-semibold hover:text-white hover:bg-indigo-500 py-1 px-2 border border-blue-500 hover:border-transparent rounded"
+            >
+              문제 기록 자세히보기
+            </button>
           </div>
           <table className="w-full table-fixed keep-all">
             <thead>
@@ -115,7 +134,7 @@ const ManagePage = ({ rest_api_url, log_arr }) => {
               </tr>
             </thead>
             <tbody>
-              {log_arr.map((user_log, index) => {
+              {user_log_arr.map((user_log, index) => {
                 return (
                   <tr key={index}>
                     <td className="border border-indigo-200 px-2 py-2 text-center text-sm">{timestamp_to_date(user_log.timestamp)}</td>
@@ -130,6 +149,7 @@ const ManagePage = ({ rest_api_url, log_arr }) => {
       </Layout>
     )
   } else if (detailComponent == "chart") {
+    return <Chart rest_api_url={rest_api_url} setDetail={(detail) => setDetailComponent(detail)} />
   } else if (detailComponent == "log") {
     return <Log rest_api_url={rest_api_url} setDetail={(detail) => setDetailComponent(detail)} />
   } else {
@@ -139,15 +159,17 @@ const ManagePage = ({ rest_api_url, log_arr }) => {
 
 const getServerSideProps = async () => {
   const rest_api_url = process.env.REST_API_URL
-  const res = await fetch(rest_api_url + "/user-logs/10")
-  const json = await res.json()
-  const log_arr = json.log_arr
+  const user_log_res = await fetch(rest_api_url + "/user-logs/10")
+  const user_log_json = await user_log_res.json()
+  const user_log_arr = user_log_json.user_log_arr
 
-  log_arr.sort(function (a, b) {
+  user_log_arr.sort(function (a, b) {
     return a.timestamp < b.timestamp ? 1 : a.timestamp > b.timestamp ? -1 : 0
   })
 
-  return { props: { rest_api_url, log_arr } }
+  const { money_log_data, money_chart_options } = await get_money_log()
+
+  return { props: { rest_api_url, user_log_arr, money_log_data, money_chart_options } }
 }
 
 export { getServerSideProps, Layout }

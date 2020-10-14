@@ -48,18 +48,18 @@ const Layout = ({ children }) => (
 )
 
 const Log = ({ rest_api_url, setDetail }) => {
-  const [logArr, setLogArr] = useState([])
+  const [UserlogArr, setUserLogArr] = useState([])
 
   const get_log_arr = async () => {
     const res = await fetch(rest_api_url + "/user-logs/500")
     const json = await res.json()
-    const log_arr = json.log_arr
+    const user_log_arr = json.user_log_arr
 
-    log_arr.sort(function (a, b) {
+    user_log_arr.sort(function (a, b) {
       return a.timestamp < b.timestamp ? 1 : a.timestamp > b.timestamp ? -1 : 0
     })
 
-    setLogArr(log_arr)
+    setUserLogArr(user_log_arr)
   }
 
   get_log_arr()
@@ -69,7 +69,12 @@ const Log = ({ rest_api_url, setDetail }) => {
       <div className="mb-4"></div>
       <div className="p-4 border-solid border-2 border-indigo-400">
         <div>
-          <button onClick={() => setDetail("main")}>뒤로가기</button>
+          <button
+            onClick={() => setDetail("main")}
+            className="text-indigo-900 text-base font-semibold hover:text-white hover:bg-indigo-500 py-1 px-2 border border-blue-500 hover:border-transparent rounded"
+          >
+            뒤로가기
+          </button>
         </div>
         <table className="w-full table-fixed keep-all">
           <thead>
@@ -80,7 +85,7 @@ const Log = ({ rest_api_url, setDetail }) => {
             </tr>
           </thead>
           <tbody>
-            {logArr.map((user_log, index) => {
+            {UserlogArr.map((user_log, index) => {
               return (
                 <tr key={index}>
                   <td className="border border-indigo-200 px-2 py-2 text-center text-sm">{timestamp_to_date(user_log.timestamp)}</td>

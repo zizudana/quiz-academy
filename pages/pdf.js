@@ -11,6 +11,15 @@ const PDFPage = ({ pdf_binary }) => {
 
   return (
     <Layout>
+      <style jsx global>
+        {`
+          @media print {
+            svg {
+              display: none;
+            }
+          }
+        `}
+      </style>
       {/* 문제 제목 */}
       <div className="w-1/2 mx-auto text-center pt-5 rounded">
         <div className="color-2 text-indigo-100 px-4 py-3 leading-none rounded-full" role="alert">
@@ -35,7 +44,7 @@ const PDFPage = ({ pdf_binary }) => {
         }}
       >
         <div className="flex justify-center">
-          <PDFDocument pdf_binary={pdf_binary} />
+          <PDFDocument id="no-print" pdf_binary={pdf_binary} />
         </div>
       </motion.div>
 
@@ -86,7 +95,6 @@ const getServerSideProps = async (context) => {
   const session = await getSession(context)
   if (session) {
     const user_name = session.user.name
-    console.log("user name :", user_name)
 
     const res = await fetch(process.env.REST_API_URL + "/pdfs/9_3")
     const json = await res.json()
@@ -95,16 +103,15 @@ const getServerSideProps = async (context) => {
     if (pdf_binary) {
       axios
         .post(process.env.REST_API_URL + "/user-log", {
-          user_name: user_name,
-          log_type: "pdf",
-          log_content: "9_3",
+          username: user_name,
+          logtype: "pdf",
+          logcontent: "test 9_3",
         })
         .then((res) => {
-          console.log(`statusCode: ${res.status}`)
-          console.log(`data: ${JSON.stringify(res.data)}`)
+          console.log("SUCCESS : post user-log : " + JSON.stringify(res.data))
         })
         .catch((error) => {
-          console.error(error)
+          console.log("FAIL : post user-log")
         })
     }
 

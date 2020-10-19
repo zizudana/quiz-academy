@@ -8,7 +8,7 @@ const SignInPage = ({ csrfToken, props }) => {
   return (
     <Layout>
       <div className="w-full max-w-xs mt-12 m-auto bg-indigo-100 rounded p-5">
-        <img src="/img/DCD_logo.png" alt="logo" className="w-32 mx-auto" />
+        <img src="/img/DCD_logo.png" alt="logo" className="w-32 mx-auto pb-5" />
         <form method="post" action="/api/auth/callback/credentials">
           <div>
             <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
@@ -29,11 +29,12 @@ const SignInPage = ({ csrfToken, props }) => {
           </div>
           <div>
             <p className="mb-1 text-red-600 text-base text-center">{props["error_message"]}</p>
-            <button className="w-full bg-indigo-700 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded focus:outline-none mb-2" type="submit">
+            <button className="w-full bg-indigo-700 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded focus:outline-none mb-2" type="submit">
               로그인
             </button>
+            <span className="text-gray-500 text-base">아직 회원이 아니라면?</span>
             <Link href="/auth/signup">
-              <a className="text-center text-gray-500 text-xs">회원가입</a>
+              <a className="text-red-400 text-base float-right">회원가입</a>
             </Link>
           </div>
           <style jsx>{`

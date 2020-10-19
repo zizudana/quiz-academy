@@ -13,11 +13,8 @@ const timestamp_to_date = (timestamp) => {
 
   if (month.length < 2) month = "0" + month
   if (day.length < 2) day = "0" + day
-  if (hour.length < 2) hour = "0" + hour
-  if (minute.length < 2) minute = "0" + minute
-  if (second.length < 2) second = "0" + second
 
-  return `${year}.${month}.${day} ${hour}:${minute}:${second}`
+  return `${year}.${month}.${day}`
 }
 
 const Layout = ({ children }) => (
@@ -47,22 +44,22 @@ const Layout = ({ children }) => (
   </>
 )
 
-const Log = ({ rest_api_url, setDetail }) => {
-  const [UserlogArr, setUserLogArr] = useState([])
+const Chart = ({ rest_api_url, setDetail }) => {
+  const [money_log_arr, set_money_log_arr] = useState([])
 
-  const get_log_arr = async () => {
-    const res = await fetch(rest_api_url + "/user-logs/500")
+  const get_money_log_arr = async () => {
+    const res = await fetch(rest_api_url + "/money-logs/500")
     const json = await res.json()
-    const user_log_arr = json.user_log_arr
+    const money_log_arr = json.money_log_arr
 
-    user_log_arr.sort(function (a, b) {
+    money_log_arr.sort(function (a, b) {
       return a.timestamp < b.timestamp ? 1 : a.timestamp > b.timestamp ? -1 : 0
     })
 
-    setUserLogArr(user_log_arr)
+    set_money_log_arr(money_log_arr)
   }
 
-  get_log_arr()
+  get_money_log_arr()
 
   return (
     <Layout>
@@ -80,17 +77,15 @@ const Log = ({ rest_api_url, setDetail }) => {
           <thead>
             <tr className="text-xl">
               <th className="w-1/4 px-2 py-2">일시</th>
-              <th className="w-1/4 px-2 py-2">학생 이름</th>
-              <th className="w-1/2 px-2 py-2">문제 정보</th>
+              <th className="w-1/4 px-2 py-2">금액</th>
             </tr>
           </thead>
           <tbody>
-            {UserlogArr.map((user_log, index) => {
+            {money_log_arr.map((money_log, index) => {
               return (
                 <tr key={index}>
-                  <td className="border border-indigo-200 px-2 py-2 text-center text-sm">{timestamp_to_date(user_log.timestamp)}</td>
-                  <td className="border border-indigo-200 px-2 py-2 text-center text-base">{user_log.username}</td>
-                  <td className="border border-indigo-200 px-5 py-2 text-base">{user_log.logcontent}</td>
+                  <td className="border border-indigo-200 px-2 py-2 text-center text-sm">{timestamp_to_date(money_log.timestamp)}</td>
+                  <td className="border border-indigo-200 px-2 py-2 text-center text-base">{money_log.money}</td>
                 </tr>
               )
             })}
@@ -101,4 +96,4 @@ const Log = ({ rest_api_url, setDetail }) => {
   )
 }
 
-export default Log
+export default Chart

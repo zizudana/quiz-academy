@@ -138,8 +138,8 @@ const ManagePage = ({ rest_api_url, user_log_arr, money_log_data, money_chart_op
                 return (
                   <tr key={index}>
                     <td className="border border-indigo-200 px-2 py-2 text-center text-sm">{timestamp_to_date(user_log.timestamp)}</td>
-                    <td className="border border-indigo-200 px-2 py-2 text-center text-base">{user_log.user_name}</td>
-                    <td className="border border-indigo-200 px-5 py-2 text-base">{user_log.log_content}</td>
+                    <td className="border border-indigo-200 px-2 py-2 text-center text-base">{user_log.username}</td>
+                    <td className="border border-indigo-200 px-5 py-2 text-base">{user_log.logcontent}</td>
                   </tr>
                 )
               })}

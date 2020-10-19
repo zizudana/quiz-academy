@@ -4,7 +4,7 @@ import { useSession, getSession } from "next-auth/client"
 import { useRouter } from "next/router"
 
 const Layout = ({ children }) => {
-  const [session, loading] = useSession()
+  const [session, _] = useSession()
 
   if (session) {
     const router = useRouter()

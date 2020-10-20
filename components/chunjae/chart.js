@@ -2,21 +2,6 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import Head from "next/head"
 
-const timestamp_to_date = (timestamp) => {
-  let d = new Date(timestamp * 1000)
-  let year = d.getFullYear()
-  let month = "" + (d.getMonth() + 1)
-  let day = "" + d.getDate()
-  let hour = "" + d.getHours()
-  let minute = "" + d.getMinutes()
-  let second = "" + d.getSeconds()
-
-  if (month.length < 2) month = "0" + month
-  if (day.length < 2) day = "0" + day
-
-  return `${year}.${month}.${day}`
-}
-
 const Layout = ({ children }) => (
   <>
     <Head>
@@ -63,7 +48,7 @@ const Chart = ({ rest_api_url, setDetail }) => {
 
   return (
     <Layout>
-      <div className="mb-4"></div>
+      <div className="mb-4" />
       <div className="p-4 border-solid border-2 border-indigo-400">
         <div>
           <button
@@ -94,6 +79,18 @@ const Chart = ({ rest_api_url, setDetail }) => {
       </div>
     </Layout>
   )
+}
+
+const timestamp_to_date = (timestamp) => {
+  let d = new Date(timestamp * 1000)
+  let year = d.getFullYear()
+  let month = "" + (d.getMonth() + 1)
+  let day = "" + d.getDate()
+
+  if (month.length < 2) month = "0" + month
+  if (day.length < 2) day = "0" + day
+
+  return `${year}.${month}.${day}`
 }
 
 export default Chart

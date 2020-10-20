@@ -2,24 +2,6 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import Head from "next/head"
 
-const timestamp_to_date = (timestamp) => {
-  let d = new Date(timestamp * 1000)
-  let year = d.getFullYear()
-  let month = "" + (d.getMonth() + 1)
-  let day = "" + d.getDate()
-  let hour = "" + d.getHours()
-  let minute = "" + d.getMinutes()
-  let second = "" + d.getSeconds()
-
-  if (month.length < 2) month = "0" + month
-  if (day.length < 2) day = "0" + day
-  if (hour.length < 2) hour = "0" + hour
-  if (minute.length < 2) minute = "0" + minute
-  if (second.length < 2) second = "0" + second
-
-  return `${year}.${month}.${day} ${hour}:${minute}:${second}`
-}
-
 const Layout = ({ children }) => (
   <>
     <Head>
@@ -48,9 +30,9 @@ const Layout = ({ children }) => (
 )
 
 const Log = ({ rest_api_url, setDetail }) => {
-  const [UserlogArr, setUserLogArr] = useState([])
+  const [user_log_arr, set_user_log_arr] = useState([])
 
-  const get_log_arr = async () => {
+  const get_user_log_arr = async () => {
     const res = await fetch(rest_api_url + "/user-logs/500")
     const json = await res.json()
     const user_log_arr = json.user_log_arr
@@ -59,14 +41,14 @@ const Log = ({ rest_api_url, setDetail }) => {
       return a.timestamp < b.timestamp ? 1 : a.timestamp > b.timestamp ? -1 : 0
     })
 
-    setUserLogArr(user_log_arr)
+    set_user_log_arr(user_log_arr)
   }
 
-  get_log_arr()
+  get_user_log_arr()
 
   return (
     <Layout>
-      <div className="mb-4"></div>
+      <div className="mb-4" />
       <div className="p-4 border-solid border-2 border-indigo-400">
         <div>
           <button
@@ -85,7 +67,7 @@ const Log = ({ rest_api_url, setDetail }) => {
             </tr>
           </thead>
           <tbody>
-            {UserlogArr.map((user_log, index) => {
+            {user_log_arr.map((user_log, index) => {
               return (
                 <tr key={index}>
                   <td className="border border-indigo-200 px-2 py-2 text-center text-sm">{timestamp_to_date(user_log.timestamp)}</td>
@@ -99,6 +81,24 @@ const Log = ({ rest_api_url, setDetail }) => {
       </div>
     </Layout>
   )
+}
+
+const timestamp_to_date = (timestamp) => {
+  let date = new Date(timestamp * 1000)
+  let year = date.getFullYear()
+  let month = "" + (date.getMonth() + 1)
+  let day = "" + date.getDate()
+  let hour = "" + date.getHours()
+  let minute = "" + date.getMinutes()
+  let second = "" + date.getSeconds()
+
+  if (month.length < 2) month = "0" + month
+  if (day.length < 2) day = "0" + day
+  if (hour.length < 2) hour = "0" + hour
+  if (minute.length < 2) minute = "0" + minute
+  if (second.length < 2) second = "0" + second
+
+  return `${year}.${month}.${day} ${hour}:${minute}:${second}`
 }
 
 export default Log

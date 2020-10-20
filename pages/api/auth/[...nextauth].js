@@ -3,9 +3,9 @@ import Providers from "next-auth/providers"
 
 const options = {
   pages: {
-    signIn: "/auth/signin",
+    // signIn: "/guest/signin",
     // signOut: "/auth/signout",
-    error: "/auth/signin", // Error code passed in query string as ?error=
+    error: "/guest/signin", // Error code passed in query string as ?error=
     // verifyRequest: "/auth/verify-request", // (used for check email message)
     // newUser: "/auth/new_user", // If set, new users will be directed here on first sign in
   },

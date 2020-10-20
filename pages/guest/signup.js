@@ -1,6 +1,8 @@
+import Layout from "../../components/layout/layout_guest"
+
 import React, { useState } from "react"
-import Layout from "../../components/layout_guest"
 import { useRouter } from "next/router"
+import Link from "next/link"
 
 const SignUp = () => {
   var checkUnique = 0
@@ -75,7 +77,7 @@ const SignUp = () => {
 
   const moveHref = () => {
     alert("회원가입을 완료했습니다. 가입 정보로 로그인 해주세요.")
-    router.push("/auth/signin")
+    router.push("/guest/signin")
   }
 
   const numberCheck = () => {
@@ -124,9 +126,10 @@ const SignUp = () => {
 
   return (
     <Layout>
-      {/* <div className="w-fullrounded p-5"> */}
-      <div className="bg-white max-w-lg shadow-md rounded bg-indigo-100 px-8 pt-6 pb-8 mx-auto mt-12 mb-12 flex flex-col my-2">
-        <img src="/img/DCD_logo.png" alt="logo" className="w-32 mx-auto pb-8" />
+      <div className="max-w-lg shadow-md rounded bg-indigo-100 px-8 pt-6 pb-8 mx-auto mt-12 mb-12 flex flex-col my-2">
+        <Link href="/guest/signin">
+          <img src="/img/DCD_logo.png" alt="logo" className="w-32 mx-auto mb-5 cursor-pointer" />
+        </Link>
         <div className="-mx-3 md:flex mb-2">
           <div className="md:w-full px-3">
             <label className="pl-2 uppercase tracking-wide text-grey-darker text-sm" htmlFor="grid-id">
@@ -148,7 +151,7 @@ const SignUp = () => {
               placeholder="아이디 입력"
               autoComplete="off"
             />
-            <p class={`${message_color} text-xs mb-3 pl-3`} id="id_alert_message">
+            <p className={`${message_color} text-xs mb-3 pl-3`} id="id_alert_message">
               {id_alert_message}
             </p>
           </div>
@@ -170,7 +173,7 @@ const SignUp = () => {
               type="password"
               placeholder="비밀번호 확인"
             />
-            <p class={`text-gray-500 text-xs mb-3 pl-3`} id="id_alert_message">
+            <p className={`text-gray-500 text-xs mb-3 pl-3`} id="id_alert_message">
               영어, 숫자, 특수문자(_-!@#$%^&*)로 구성된 6~20자
             </p>
           </div>
@@ -266,8 +269,8 @@ const SignUp = () => {
                 <option>고3</option>
                 <option>해당없음</option>
               </select>
-              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
                 </svg>
               </div>

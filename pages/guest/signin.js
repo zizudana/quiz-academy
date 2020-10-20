@@ -1,14 +1,16 @@
 import React from "react"
 import Link from "next/link"
-import Layout from "../../components/layout_guest"
+import Layout from "../../components/layout/layout_guest"
 
 import { csrfToken } from "next-auth/client"
 
 const SignInPage = ({ csrfToken, props }) => {
   return (
     <Layout>
-      <div className="w-full max-w-xs mt-12 m-auto bg-indigo-100 rounded p-5">
-        <img src="/img/DCD_logo.png" alt="logo" className="w-32 mx-auto pb-5" />
+      <div className="w-full max-w-lg mt-12 mx-auto bg-indigo-100 rounded p-6">
+        <Link href="/">
+          <img src="/img/DCD_logo.png" alt="logo" className="w-32 mx-auto mb-5 cursor-pointer" />
+        </Link>
         <form method="post" action="/api/auth/callback/credentials">
           <div>
             <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
@@ -33,7 +35,7 @@ const SignInPage = ({ csrfToken, props }) => {
               로그인
             </button>
             <span className="text-gray-500 text-base">아직 회원이 아니라면?</span>
-            <Link href="/auth/signup">
+            <Link href="/guest/signup">
               <a className="text-red-400 text-base float-right">회원가입</a>
             </Link>
           </div>

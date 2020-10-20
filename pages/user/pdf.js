@@ -1,5 +1,5 @@
-import Layout from "../components/layout_user"
-import PDFDocument from "../components/pdf_document"
+import Layout from "../../components/layout/layout_user"
+import PDFDocument from "../../components/pdf_document"
 
 import { motion } from "framer-motion"
 import Link from "next/link"
@@ -73,7 +73,7 @@ const PDFPage = ({ pdf_binary }) => {
 
           <div className="col-span-1 flex justify-end items-center">
             {/* button : 다음 문제 */}
-            <Link href="/pdf2">
+            <Link href="/user/pdf2">
               <a className="bg-gray-300 hover:bg-gray-400 h-12 text-gray-800 px-4 rounded flex items-center">
                 {/* next icon svg */}
                 <svg className="fill-current w-6 h-6 mr-1" enableBackground="new 0 0 64 64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">

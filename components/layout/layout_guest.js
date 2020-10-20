@@ -1,15 +1,19 @@
 import Head from "next/head"
 import { motion } from "framer-motion"
-import { useSession, getSession } from "next-auth/client"
+import { useSession } from "next-auth/client"
 import { useRouter } from "next/router"
 
 const Layout = ({ children }) => {
-  const [session, _] = useSession()
+  const [session, loading] = useSession()
+
+  if (loading) {
+    return null
+  }
 
   if (session) {
     const router = useRouter()
     if (typeof window !== "undefined") {
-      router.push("/pdf")
+      router.push("/user/pdf")
     }
     return null
   } else {
@@ -39,13 +43,6 @@ const Layout = ({ children }) => {
         </main>
       </>
     )
-  }
-}
-
-export async function getServerSideProps(context) {
-  const session = await getSession(context)
-  return {
-    props: { session },
   }
 }
 

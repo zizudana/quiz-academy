@@ -16,12 +16,7 @@ const Nav = () => {
           </a>
         </Link>
         <div>
-          {/* <input
-            className="hidden sm:inline-block border-2 border-gray-300 bg-white h-6 px-3 mr-3 rounded-lg text-sm focus:outline-none"
-            type="search"
-            placeholder="검색"
-          /> */}
-          <Link href="/pdf">
+          <Link href="/user/pdf">
             <a className="hidden sm:inline-block px-2 py-0">문제풀이</a>
           </Link>
           <Link href="/">
@@ -42,7 +37,7 @@ const Nav = () => {
       </div>
 
       <div id="hidden-header" className="hidden sm:hidden px-6 py-2 color-3">
-        <Link href="/pdf">
+        <Link href="/user/pdf">
           <a onClick={() => toggle_hidden_header()} className="block px-2 py-2 font-bold text-white hover:bg-indigo-200 rounded">
             문제풀이
           </a>

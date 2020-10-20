@@ -1,7 +1,8 @@
-import Head from "next/head"
 import Nav from "./nav"
+
+import Head from "next/head"
 import { motion } from "framer-motion"
-import { useSession, getSession } from "next-auth/client"
+import { useSession } from "next-auth/client"
 import { useRouter } from "next/router"
 
 const Layout = ({ children }) => {
@@ -46,13 +47,6 @@ const Layout = ({ children }) => {
         </main>
       </>
     )
-  }
-}
-
-export async function getServerSideProps(context) {
-  const session = await getSession(context)
-  return {
-    props: { session },
   }
 }
 

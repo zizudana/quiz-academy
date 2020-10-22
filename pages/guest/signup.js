@@ -206,7 +206,7 @@ const SignUp = () => {
             />
           </div>
           <div className="md:w-3/5 px-3 mb-2">
-            <label className="pl-2 block uppercase tracking-wide text-grey-darker text-xs text-sm mb-2" htmlFor="grid-last-name">
+            <label className="pl-2 block uppercase tracking-wide text-grey-darker text-sm mb-2" htmlFor="grid-last-name">
               학생 연락처
             </label>
             <input
@@ -235,7 +235,7 @@ const SignUp = () => {
             />
           </div>
           <div className="md:w-3/5 px-3 mb-2">
-            <label className="pl-2 block uppercase tracking-wide text-grey-darker text-xs text-sm mb-2" htmlFor="grid-last-name">
+            <label className="pl-2 block uppercase tracking-wide text-grey-darker text-sm mb-2" htmlFor="grid-last-name">
               학부모 연락처
             </label>
             <input
@@ -253,14 +253,11 @@ const SignUp = () => {
 
         <div className="-mx-3 md:flex mb-2">
           <div className="md:w-1/2 px-3">
-            <label className="pl-2 block uppercase tracking-wide text-grey-darker text-sm mb-2" htmlFor="grid-state">
+            <label className="pl-2 block uppercase tracking-wide text-sm mb-2" htmlFor="grid-state">
               학년
             </label>
             <div className="relative">
-              <select
-                className="block appearance-none w-full focus:outline-none bg-grey-lighter border border-grey-lighter text-grey-darker py-3 pl-4 pr-8 rounded"
-                id="grid-state"
-              >
+              <select className="block appearance-none w-full focus:outline-none bg-grey-lighter border py-3 pl-4 pr-8 rounded" id="grid-state">
                 <option>중1</option>
                 <option>중2</option>
                 <option>중3</option>
@@ -292,8 +289,6 @@ const SignUp = () => {
           </div>
         </div>
       </div>
-
-      {/* <script type="text/javascript" src="/js/signup.js"></script> */}
     </Layout>
   )
 }

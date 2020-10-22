@@ -11,18 +11,17 @@ const Nav = () => {
       <div className="color-2 overflow-hidden text-lg text-white h-20 px-6 py-2 flex items-center justify-between">
         <Link href="/">
           <a className="flex items-center">
-            <img src="/img/DCD_logo.png" alt="logo" className="w-8 mr-2" />
-            <span className="block tracking-widest text-white text-2xl font-bold">DCD On</span>
+            <img src="/img/DCD_logo_full_white.png" alt="logo" className="w-64 mr-2" />
           </a>
         </Link>
         <div>
           <Link href="/user/pdf">
             <a className="hidden sm:inline-block px-2 py-0">문제풀이</a>
           </Link>
-          <Link href="/">
-            <a className="hidden sm:inline-block px-2 py-0">오답노트</a>
+          <Link href="/user/video">
+            <a className="hidden sm:inline-block px-2 py-0">동영상강의</a>
           </Link>
-          <Link href="/">
+          <Link href="/user/connector">
             <a className="hidden sm:inline-block px-2 py-0">질의응답</a>
           </Link>
 
@@ -42,12 +41,12 @@ const Nav = () => {
             문제풀이
           </a>
         </Link>
-        <Link href="/">
+        <Link href="/user/video">
           <a onClick={() => toggle_hidden_header()} className="block px-2 py-2 font-bold text-white hover:bg-indigo-200 rounded">
             오답노트
           </a>
         </Link>
-        <Link href="/">
+        <Link href="/user/connector">
           <a onClick={() => toggle_hidden_header()} className="block px-2 py-2 font-bold text-white hover:bg-indigo-200 rounded">
             질의응답
           </a>

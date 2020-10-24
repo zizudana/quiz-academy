@@ -3,7 +3,7 @@ import Providers from "next-auth/providers"
 
 const options = {
   pages: {
-    // signIn: "/guest/signin",
+    signIn: "/guest/signin",
     // signOut: "/auth/signout",
     error: "/guest/signin", // Error code passed in query string as ?error=
     // verifyRequest: "/auth/verify-request", // (used for check email message)

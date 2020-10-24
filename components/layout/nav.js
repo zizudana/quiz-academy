@@ -9,7 +9,7 @@ const Nav = () => {
   return (
     <>
       <div className="color-2 overflow-hidden text-lg text-white h-20 px-6 py-2 flex items-center justify-between">
-        <Link href="/">
+        <Link href="/user">
           <a className="flex items-center">
             <img src="/img/DCD_logo_full_white.png" alt="logo" className="w-64 mr-2" />
           </a>

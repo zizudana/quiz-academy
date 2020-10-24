@@ -1,3 +1,5 @@
+import Nav from "./nav"
+
 import Head from "next/head"
 import { motion } from "framer-motion"
 import { useSession } from "next-auth/client"
@@ -13,9 +15,9 @@ const Layout = ({ children }) => {
   if (session) {
     const router = useRouter()
     if (typeof window !== "undefined") {
-      router.push("/user/pdf")
+      router.push("/user")
     }
-    return null
+    return <Nav />
   } else {
     return (
       <>

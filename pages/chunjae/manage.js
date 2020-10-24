@@ -65,7 +65,7 @@ const ManagePage = ({ rest_api_url, user_log_arr, money_log_data, money_chart_op
     setErrorMessage("비밀번호를 확인해주세요")
   }
 
-  if (isChecked) {
+  if (!isChecked) {
     return (
       <Layout>
         <div className="w-full max-w-xs mt-12 m-auto bg-indigo-100 rounded p-5">

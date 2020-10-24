@@ -9,7 +9,7 @@ const SignInPage = ({ csrfToken, props }) => {
     <Layout>
       <div className="w-full max-w-lg mt-12 mx-auto bg-indigo-100 rounded p-6">
         <Link href="/">
-          <img src="/img/DCD_logo.png" alt="logo" className="w-32 mx-auto mb-5 cursor-pointer" />
+          <img src="/img/DCD_logo.png" alt="logo" className="w-20 mx-auto mb-5 cursor-pointer" />
         </Link>
         <form method="post" action="/api/auth/callback/credentials">
           <div>

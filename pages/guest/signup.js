@@ -128,7 +128,7 @@ const SignUp = () => {
     <Layout>
       <div className="max-w-lg shadow-md rounded bg-indigo-100 px-8 pt-6 pb-8 mx-auto mt-12 mb-12 flex flex-col my-2">
         <Link href="/guest/signin">
-          <img src="/img/DCD_logo.png" alt="logo" className="w-32 mx-auto mb-5 cursor-pointer" />
+          <img src="/img/DCD_logo.png" alt="logo" className="w-20 mx-auto mb-5 cursor-pointer" />
         </Link>
         <div className="-mx-3 md:flex mb-2">
           <div className="md:w-full px-3">

@@ -13,27 +13,30 @@ const IndexPage = () => {
         }
       `}</style>
 
-      <div className="h-auto px-6 pt-10 flex flex-col">
-        <img src="/img/DCD_logo_full_white.png" alt="logo" className="md:w-2/3 w-full mx-auto" />
+      <div className="my-8" />
+      <div className="flex flex-col">
+        <img src="/img/DCD_logo_full_white.png" alt="DCD_logo_full_white" className="w-full sm:w-4/5 lg:w-1/2 px-2 md:px-0 mx-auto" />
 
         <Link href="/guest/signin">
-          <a className="mx-auto mb-20 bg-indigo-100 hover:bg-indigo-300 text-gray-800 font-bold text-2xl py-1 px-4 text-center rounded-full">
+          <a className="mx-auto mb-8 bg-indigo-100 hover:bg-indigo-300 text-gray-800 font-bold text-xl px-4 py-1 text-center rounded-full">
             접속하기
           </a>
         </Link>
+
+        <AwesomeSlider
+          bullets={false}
+          selected={0}
+          className="w-full md:w-4/5 mx-auto"
+          onFirstMount={() => {
+            document.querySelector(".awssld").setAttribute("style", `--slider-height-percentage : ${60000 / 1140}%;`)
+          }}
+        >
+          <div data-src="/img/banner_test_1.jpg" />
+          <div data-src="/img/banner_test_2.jpg" />
+          <div>3</div>
+          <div>4</div>
+        </AwesomeSlider>
       </div>
-      <AwesomeSlider
-        bullets={false}
-        selected={0}
-        onFirstMount={() => {
-          document.querySelector(".awssld").setAttribute("style", `--slider-height-percentage:${60000 / 1140}%`)
-        }}
-      >
-        <div data-src="/img/banner_test_1.jpg" />
-        <div data-src="/img/banner_test_2.jpg" />
-        <div>3</div>
-        <div>4</div>
-      </AwesomeSlider>
     </Layout>
   )
 }

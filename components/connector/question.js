@@ -13,7 +13,7 @@ const Question = () => {
           rows="5"
           placeholder="내용"
         />
-        <div class="grid justify-items-end">
+        <div className="grid justify-items-end">
           <button className="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded focus:outline-none">저장</button>
         </div>
       </div>

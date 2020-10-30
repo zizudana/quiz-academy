@@ -1,6 +1,6 @@
-import { useState } from "react"
 import { motion } from "framer-motion"
 import Head from "next/head"
+import useSWR from "swr"
 
 const Layout = ({ children }) => (
   <>
@@ -30,21 +30,17 @@ const Layout = ({ children }) => (
 )
 
 const Log = ({ rest_api_url, setDetail }) => {
-  const [user_log_arr, set_user_log_arr] = useState([])
+  const fetcher = (...args) => fetch(...args).then((res) => res.json())
+  const { data, error } = useSWR(rest_api_url + "/user-logs/500", fetcher)
 
-  const get_user_log_arr = async () => {
-    const res = await fetch(rest_api_url + "/user-logs/500")
-    const json = await res.json()
-    const user_log_arr = json.user_log_arr
+  if (error) return <div>failed to load</div>
+  if (!data) return <div>loading...</div>
 
-    user_log_arr.sort(function (a, b) {
-      return a.timestamp < b.timestamp ? 1 : a.timestamp > b.timestamp ? -1 : 0
-    })
+  const user_log_arr = data.user_log_arr
 
-    set_user_log_arr(user_log_arr)
-  }
-
-  get_user_log_arr()
+  user_log_arr.sort(function (a, b) {
+    return a.timestamp < b.timestamp ? 1 : a.timestamp > b.timestamp ? -1 : 0
+  })
 
   return (
     <Layout>

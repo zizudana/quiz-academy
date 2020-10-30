@@ -1,16 +1,3 @@
-const axios = require("axios")
-
-const timestamp_to_mmdd = (timestamp) => {
-  let d = new Date(timestamp * 1000)
-  let month = "" + (d.getMonth() + 1)
-  let day = "" + d.getDate()
-
-  if (month.length < 2) month = "0" + month
-  if (day.length < 2) day = "0" + day
-
-  return `${month}/${day}`
-}
-
 const get_money_log = async () => {
   const money_log_res = await fetch(process.env.REST_API_URL + "/money-logs")
   const money_log_json = await money_log_res.json()
@@ -56,6 +43,17 @@ const get_money_log = async () => {
     money_log_data,
     money_chart_options,
   }
+}
+
+const timestamp_to_mmdd = (timestamp) => {
+  let d = new Date(timestamp * 1000)
+  let month = "" + (d.getMonth() + 1)
+  let day = "" + d.getDate()
+
+  if (month.length < 2) month = "0" + month
+  if (day.length < 2) day = "0" + day
+
+  return `${month}/${day}`
 }
 
 export default get_money_log

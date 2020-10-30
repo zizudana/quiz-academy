@@ -6,24 +6,9 @@ import Head from "next/head"
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { Line } from "react-chartjs-2"
+import useSWR from "swr"
 
-const timestamp_to_date = (timestamp) => {
-  let d = new Date(timestamp * 1000)
-  let year = d.getFullYear()
-  let month = "" + (d.getMonth() + 1)
-  let day = "" + d.getDate()
-  let hour = "" + d.getHours()
-  let minute = "" + d.getMinutes()
-  let second = "" + d.getSeconds()
-
-  if (month.length < 2) month = "0" + month
-  if (day.length < 2) day = "0" + day
-  if (hour.length < 2) hour = "0" + hour
-  if (minute.length < 2) minute = "0" + minute
-  if (second.length < 2) second = "0" + second
-
-  return `${year}.${month}.${day} ${hour}:${minute}:${second}`
-}
+const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
 const Layout = ({ children }) => (
   <>
@@ -52,10 +37,21 @@ const Layout = ({ children }) => (
   </>
 )
 
-const ManagePage = ({ rest_api_url, user_log_arr, money_log_data, money_chart_options }) => {
+const ManagePage = ({ rest_api_url, money_log_data, money_chart_options, initial_data }) => {
   const [isChecked, setIsChecked] = useState(false)
   const [errorMessage, setErrorMessage] = useState(undefined)
   const [detailComponent, setDetailComponent] = useState("main")
+
+  const { data, error } = useSWR(rest_api_url + "/user-logs/10", fetcher, { initial_data })
+
+  if (error) return <div>failed to load</div>
+  if (!data) return <div>loading...</div>
+
+  const user_log_arr = data.user_log_arr
+
+  user_log_arr.sort(function (a, b) {
+    return a.timestamp < b.timestamp ? 1 : a.timestamp > b.timestamp ? -1 : 0
+  })
 
   const check_manager = async () => {
     const manager_password = document.getElementById("manager-password").value
@@ -159,17 +155,30 @@ const ManagePage = ({ rest_api_url, user_log_arr, money_log_data, money_chart_op
 
 const getServerSideProps = async () => {
   const rest_api_url = process.env.REST_API_URL
-  const user_log_res = await fetch(rest_api_url + "/user-logs/10")
-  const user_log_json = await user_log_res.json()
-  const user_log_arr = user_log_json.user_log_arr
-
-  user_log_arr.sort(function (a, b) {
-    return a.timestamp < b.timestamp ? 1 : a.timestamp > b.timestamp ? -1 : 0
-  })
 
   const { money_log_data, money_chart_options } = await get_money_log()
 
-  return { props: { rest_api_url, user_log_arr, money_log_data, money_chart_options } }
+  const initial_data = await fetcher(rest_api_url + "/user-logs/10")
+
+  return { props: { rest_api_url, money_log_data, money_chart_options, initial_data } }
+}
+
+const timestamp_to_date = (timestamp) => {
+  let d = new Date(timestamp * 1000)
+  let year = d.getFullYear()
+  let month = "" + (d.getMonth() + 1)
+  let day = "" + d.getDate()
+  let hour = "" + d.getHours()
+  let minute = "" + d.getMinutes()
+  let second = "" + d.getSeconds()
+
+  if (month.length < 2) month = "0" + month
+  if (day.length < 2) day = "0" + day
+  if (hour.length < 2) hour = "0" + hour
+  if (minute.length < 2) minute = "0" + minute
+  if (second.length < 2) second = "0" + second
+
+  return `${year}.${month}.${day} ${hour}:${minute}:${second}`
 }
 
 export { getServerSideProps, Layout }

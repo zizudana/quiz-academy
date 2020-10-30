@@ -1,6 +1,6 @@
-import { useState } from "react"
 import { motion } from "framer-motion"
 import Head from "next/head"
+import useSWR from "swr"
 
 const Layout = ({ children }) => (
   <>
@@ -30,21 +30,17 @@ const Layout = ({ children }) => (
 )
 
 const Chart = ({ rest_api_url, setDetail }) => {
-  const [money_log_arr, set_money_log_arr] = useState([])
+  const fetcher = (...args) => fetch(...args).then((res) => res.json())
+  const { data, error } = useSWR(rest_api_url + "/money-logs/500", fetcher)
 
-  const get_money_log_arr = async () => {
-    const res = await fetch(rest_api_url + "/money-logs/500")
-    const json = await res.json()
-    const money_log_arr = json.money_log_arr
+  if (error) return <div>failed to load</div>
+  if (!data) return <div>loading...</div>
 
-    money_log_arr.sort(function (a, b) {
-      return a.timestamp < b.timestamp ? 1 : a.timestamp > b.timestamp ? -1 : 0
-    })
+  const money_log_arr = data.money_log_arr
 
-    set_money_log_arr(money_log_arr)
-  }
-
-  get_money_log_arr()
+  money_log_arr.sort(function (a, b) {
+    return a.timestamp < b.timestamp ? 1 : a.timestamp > b.timestamp ? -1 : 0
+  })
 
   return (
     <Layout>

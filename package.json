@@ -19,7 +19,9 @@
     "react-dom": "^16.13.1",
     "react-pdf": "^5.0.0",
     "react-rating-stars-component": "^2.2.0",
-    "react-youtube": "^7.13.0"
+    "react-select": "^3.1.0",
+    "react-youtube": "^7.13.0",
+    "swr": "^0.3.7"
   },
   "devDependencies": {
     "postcss-flexbugs-fixes": "4.2.1",

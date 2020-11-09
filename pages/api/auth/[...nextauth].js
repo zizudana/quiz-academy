@@ -24,7 +24,7 @@ const options = {
         const user_profile = await res.json()
 
         if (user_profile.user_name) {
-          const user = { name: user_profile.user_name }
+          const user = { name: user_profile.user_name, email: user_profile.user_type }
           // Any object returned will be saved in `user` property of the JWT
           return Promise.resolve(user)
         } else {

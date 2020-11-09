@@ -46,6 +46,7 @@ const SignUp = () => {
     } else if (checkUnique != 1) {
       alert("ID 중복체크를 완료해주세요.")
     } else {
+      SubmitDict["user_type"] = "student"
       SubmitDict["id"] = document.getElementById("grid-id").value
       SubmitDict["password"] = tmp_password
       SubmitDict["email"] = document.getElementById("grid-email").value
@@ -54,7 +55,6 @@ const SignUp = () => {
       SubmitDict["parent_name"] = document.getElementById("grid-parent-name").value
       SubmitDict["parent_phone"] = tmp_parent_phone
       SubmitDict["age"] = state_age
-      console.log("element: ", SubmitDict)
 
       SendDict(SubmitDict)
     }

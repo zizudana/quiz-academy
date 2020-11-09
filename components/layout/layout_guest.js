@@ -12,12 +12,26 @@ const Layout = ({ children }) => {
     return null
   }
 
+  // session 있으면
   if (session) {
     const router = useRouter()
     if (typeof window !== "undefined") {
-      router.push("/user")
+      const user_type = session.user.email
+
+      if (user_type == "manager") {
+        // 관리자 계정
+        router.push("/manager")
+        return null
+      } else if (user_type == "teacher") {
+        // 교사 계정
+        router.push("/manager/teacher")
+        return null
+      } else {
+        // 학생 계정
+        router.push("/user")
+        return <Nav />
+      }
     }
-    return <Nav />
   } else {
     return (
       <>

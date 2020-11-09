@@ -1,7 +1,8 @@
-import Link from "next/link"
-import { useState } from "react"
 import LockedSVG from "../svg/lock"
 import UnlockedSVG from "../svg/unlock"
+
+import Link from "next/link"
+import { useState } from "react"
 
 const ConnectorTop = () => {
   const [is_open, set_is_open] = useState(false)

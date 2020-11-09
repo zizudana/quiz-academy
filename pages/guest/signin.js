@@ -9,7 +9,11 @@ const SignInPage = ({ csrfToken, props }) => {
     <Layout>
       <div className="w-full max-w-lg mt-12 mx-auto bg-indigo-100 rounded p-6">
         <Link href="/">
-          <img src="/img/DCD_logo.png" alt="logo" className="w-20 mx-auto mb-5 cursor-pointer" />
+          <img
+            src="/img/DCD_logo.png"
+            alt="logo"
+            className="w-20 mx-auto mb-5 cursor-pointer transition duration-500 ease-in-out transform hover:scale-125"
+          />
         </Link>
         <form method="post" action="/api/auth/callback/credentials">
           <div>
@@ -31,7 +35,10 @@ const SignInPage = ({ csrfToken, props }) => {
           </div>
           <div>
             <p className="mb-1 text-red-600 text-base text-center">{props["error_message"]}</p>
-            <button className="w-full bg-indigo-700 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded focus:outline-none mb-2" type="submit">
+            <button
+              className="w-full bg-indigo-700 transition duration-500 ease-in-out hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded focus:outline-none mb-2"
+              type="submit"
+            >
               로그인
             </button>
             <span className="text-gray-500 text-base">아직 회원이 아니라면?</span>

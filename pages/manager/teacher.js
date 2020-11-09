@@ -1,5 +1,6 @@
 import Layout from "../../components/layout/layout_teacher"
 import QnaPanel from "../../components/manager/teacher/qna_panel"
+import ManagerMessage from "../../components/manager/teacher/manager_message"
 
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -58,6 +59,7 @@ const teacherPage = (props) => {
 
           {props.qna_list.map((qna_object, index) => {
             const qna_title = qna_object.title
+
             return (
               <div key={index}>
                 <Link href={`/manager/teacher?panel=${qna_title}`}>
@@ -94,7 +96,7 @@ const teacherPage = (props) => {
               }
             })}
 
-            {current_panel === "message" && <div>관리자 메세지</div>}
+            {current_panel === "message" && <ManagerMessage rest_api_url={props.rest_api_url} />}
           </div>
         </Scrollbars>
       </div>

@@ -1,6 +1,7 @@
 import LockedSVG from "../../svg/lock"
 import UnlockedSVG from "../../svg/unlock"
 import CheckSVG from "../../svg/check"
+import RefreshSVG from "../../svg/refresh"
 import NewStudent from "./new_student"
 import StudentPanel from "./student_panel"
 
@@ -152,6 +153,13 @@ const QnaPanel = (props) => {
         opacity: 1,
       }}
     >
+      {/* 새로고침 */}
+      <div className="flex flex-row-reverse">
+        <button className="w-6 h-6 rounded-full p-1 outline-none border border-green-500" onClick={() => set_refresh(refresh + 1)}>
+          <RefreshSVG fill="#48bb78" />
+        </button>
+      </div>
+
       {/* OPEN or CLOSED */}
       <div className="flex items-center justify-center mb-8">
         <div

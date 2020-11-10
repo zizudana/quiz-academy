@@ -1,5 +1,6 @@
 import XSVG from "../../svg/x"
 import CheckSVG from "../../svg/check"
+import RefreshSVG from "../../svg/refresh"
 
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -94,12 +95,18 @@ const StudentPanel = ({ qnastudent_object, rest_api_url }) => {
           opacity: 1,
         }}
       >
-        <div className="flex flex-row-reverse">
+        <div className="flex flex-row-reverse gap-2">
+          {/* 나가기 */}
           <Link href={`/manager/teacher?panel=${current_panel}`}>
-            <button className="w-6 h-6 border-2 border-red-500 rounded-full p-1 outline-none">
+            <button className="w-6 h-6 border border-red-500 rounded-full p-1 outline-none">
               <XSVG />
             </button>
           </Link>
+
+          {/* 새로고침 */}
+          <button className="w-6 h-6 border border-green-500 rounded-full p-1 outline-none" onClick={() => set_refresh(refresh + 1)}>
+            <RefreshSVG fill="#48bb78" />
+          </button>
         </div>
 
         <div className="text-center text-xl mb-4">{qnastudent_object.studentname}</div>

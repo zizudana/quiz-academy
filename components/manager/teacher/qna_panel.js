@@ -277,7 +277,7 @@ const QnaPanel = (props) => {
           return <StudentPanel key={index} qnastudent_object={qnastudent_object} rest_api_url={props.rest_api_url} />
         }
       })}
-      {current_student === "new_student" && <NewStudent />}
+      {current_student === "new_student" && <NewStudent rest_api_url={props.rest_api_url} qna_id={props.qna_object._id} />}
     </>
   )
 }

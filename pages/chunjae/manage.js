@@ -55,7 +55,7 @@ const ManagePage = ({ rest_api_url, money_log_data, money_chart_options, initial
 
   const check_manager = async () => {
     const manager_password = document.getElementById("manager-password").value
-    const res = await fetch(rest_api_url + "/managers/" + manager_password)
+    const res = await fetch(rest_api_url + "/managers/chunjae/" + manager_password)
     const json = await res.json()
     setIsChecked(json.isChecked)
     setErrorMessage("비밀번호를 확인해주세요")

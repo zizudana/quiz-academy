@@ -48,6 +48,7 @@ const QnaPanel = (props) => {
     let tmp_qnaquery_unchecked_list = []
     let tmp_qnafeedback_list = []
 
+    // TODO : qna_id 기준으로 한 번에 불러오는 방식으로 변경
     props.qna_object.qnastudentlist.forEach((qnastudent_id) => {
       axios
         .get(`${props.rest_api_url}/qnastudents/${qnastudent_id}`)
@@ -83,6 +84,7 @@ const QnaPanel = (props) => {
         })
     })
 
+    // TODO : qna_id 기준으로 한 번에 불러오는 방식으로 변경
     props.qna_object.qnafeedbacklist.forEach((qnafeedback_id) => {
       axios
         .get(`${props.rest_api_url}/qnafeedbacks/${qnafeedback_id}`)
@@ -99,8 +101,14 @@ const QnaPanel = (props) => {
     })
 
     setTimeout(() => {
+      // 학생 목록을 이름 기준으로 정렬
+      tmp_qnastudent_list.sort((a, b) => a.studentname.localeCompare(b.studentname))
+
       // 미확인 질문 목록을 timestamp 기준으로 정렬
       tmp_qnaquery_unchecked_list.sort((a, b) => a.timestamp - b.timestamp)
+
+      // 피드백 목록을 timestamp 기준으로 정렬
+      tmp_qnafeedback_list.sort((a, b) => a.timestamp - b.timestamp)
 
       set_qnastudent_list(tmp_qnastudent_list)
       set_qnaquery_unchecked_list(tmp_qnaquery_unchecked_list)
@@ -109,16 +117,29 @@ const QnaPanel = (props) => {
   }, [refresh])
 
   const [zoom_link, set_zoom_link] = useState(props.qna_object.zoomlink)
+  const [qna_content, set_qna_content] = useState(props.qna_object.content)
+  const [operating_time, set_operating_time] = useState(props.qna_object.operatingtime)
   const [lock_object, set_lock_object] = useState(props.qna_object.isopen === "true" ? open_state.unlocked : open_state.locked)
+
+  const on_change_qna_content = (event) => {
+    set_qna_content(event.target.value)
+  }
+
+  const on_change_operating_time = (event) => {
+    set_operating_time(event.target.value)
+  }
 
   const on_change_zoom_link = (event) => {
     set_zoom_link(event.target.value)
   }
 
-  const save_zoom_link = () => {
-    axios.put(`${props.rest_api_url}/qnas`, { title: props.qna_object.title, zoomlink: zoom_link }).then((response) => {
-      console.log(response)
-    })
+  const save_qna_object = () => {
+    // TODO : qna_title이 아닌 qna_id 기준으로 update하도록 변경
+    axios
+      .put(`${props.rest_api_url}/qnas`, { title: props.qna_object.title, content: qna_content, operatingtime: operating_time, zoomlink: zoom_link })
+      .then((response) => {
+        console.log(response)
+      })
   }
 
   const save_qnaquery_check = (qnaquery_title) => {
@@ -133,11 +154,13 @@ const QnaPanel = (props) => {
   const toggle_is_open = () => {
     if (lock_object.is_open) {
       set_lock_object(open_state.locked)
+      // TODO : qna_title이 아닌 qna_id 기준으로 update하도록 변경
       axios.put(`${props.rest_api_url}/qnas`, { title: props.qna_object.title, isopen: "false" }).then((response) => {
         console.log(response)
       })
     } else {
       set_lock_object(open_state.unlocked)
+      // TODO : qna_title이 아닌 qna_id 기준으로 update하도록 변경
       axios.put(`${props.rest_api_url}/qnas`, { title: props.qna_object.title, isopen: "true" }).then((response) => {
         console.log(response)
       })
@@ -176,12 +199,30 @@ const QnaPanel = (props) => {
         </div>
       </div>
 
-      {/* Zoom 수정 */}
-      <div className="flex items-center justify-center mb-8">
-        <img src="/img/zoom_icon.png" alt="zoom_icon" className="w-8 h-8 mr-2" />
+      {/* 정보 수정 */}
+      <div className="flex flex-row gap-3 items-center justify-center mb-8">
+        <div className="flex flex-col gap-2 w-full">
+          <input
+            className="w-full bg-gray-100 px-2 outline-none border text-sm text-center mr-2"
+            placeholder="내용"
+            value={qna_content}
+            onChange={on_change_qna_content}
+          />
+          <input
+            className="w-full bg-gray-100 px-2 outline-none border text-sm text-center mr-2"
+            placeholder="운영시간"
+            value={operating_time}
+            onChange={on_change_operating_time}
+          />
+          <input
+            className="w-full bg-gray-100 px-2 outline-none border text-sm text-center mr-2"
+            placeholder="Zoom 링크"
+            value={zoom_link}
+            onChange={on_change_zoom_link}
+          />
+        </div>
 
-        <input className="w-1/2 bg-gray-100 px-2 outline-none border text-sm text-center mr-2" value={zoom_link} onChange={on_change_zoom_link} />
-        <button className="bg-indigo-600 hover:bg-indigo-400 text-white px-2 py-1 rounded outline-none" onClick={save_zoom_link}>
+        <button className="w-12 bg-indigo-600 hover:bg-indigo-400 text-white px-1 py-1 rounded outline-none" onClick={save_qna_object}>
           저장
         </button>
       </div>

@@ -19,7 +19,7 @@ const QuestionHistory = () => {
             </div>
           </div>
           <div id="question-list" className="hidden">
-            <div key="1" className="bg-gray-100 rounded p-4">
+            <div className="bg-gray-100 rounded p-4">
               <div className="md:flex md:justify-between items-center mb-1">
                 <div className="flex items-center">
                   <span className="text-sm">질문1</span>
@@ -30,7 +30,7 @@ const QuestionHistory = () => {
               </div>
               <div className="keep-all">어떠케풀어요</div>
             </div>
-            <div key="1" className="bg-gray-100 rounded p-4">
+            <div className="bg-gray-100 rounded p-4">
               <div className="md:flex md:justify-between items-center mb-1">
                 <div className="flex items-center">
                   <span className="text-sm">질문2</span>

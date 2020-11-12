@@ -46,7 +46,7 @@ const QnaPanel = ({ qna_object }) => {
               {message_content}
             </p>
             <Link href={qna_object.zoomlink}>
-              <a className="text-gray-900 font-bold text-xl hover:text-green-600">{qna_object.title.replaceAll("_", " ")}</a>
+              <a className="text-gray-900 font-bold text-xl hover:text-green-600">{qna_object.title}</a>
             </Link>
             <p className="text-gray-900 mb-2">{`${qna_object.teachername} 선생님`}</p>
             <p className="text-gray-700 text-base mb-2">{qna_object.content}</p>

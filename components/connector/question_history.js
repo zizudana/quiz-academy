@@ -9,38 +9,36 @@ const QuestionHistory = ({ qna_query_list }) => {
   return (
     <>
       <div className="mx-auto p-4 border shadow-lg rounded-lg mb-4">
-        <div className="mb-3">
-          <div className="flex justify-between">
-            <div className="text-lg">사전 질문 목록</div>
-            <div>
-              <Link href="/user/connector_question?user=테스터">
-                <a className="mr-2 text-green-600">새 질문</a>
-              </Link>
-              <button className="outline-none" onClick={() => is_click()}>
-                전체 보기
-              </button>
-            </div>
+        <div className="flex justify-between mb-3">
+          <div className="text-lg">사전 질문 목록</div>
+          <div>
+            <Link href="/user/connector_question?user=테스터">
+              <a className="mr-2 text-green-600">새 질문</a>
+            </Link>
+            <button className="outline-none" onClick={() => is_click()}>
+              전체 보기
+            </button>
           </div>
-          <div id="question-list" className="hidden">
-            {qna_query_list.map((qna_query_object, index) => {
-              return (
-                <div key={index} className="bg-gray-100 rounded p-4 mb-2">
-                  <div className="md:flex md:justify-between items-center mb-1">
-                    <div className="flex items-center">
-                      {qna_query_object.ischecked !== "true" && (
-                        <div className="bg-red-600 mx-2" style={{ width: "5px", height: "5px", borderRadius: "50%" }} />
-                      )}
-                      <span className="text-sm">{qna_query_object.title}</span>
-                    </div>
-                    <div className="text-xs">
-                      <span className="mr-1">{timestamp_to_date(qna_query_object.timestamp)}</span>
-                    </div>
+        </div>
+        <div id="question-list" className="hidden">
+          {qna_query_list.map((qna_query_object, index) => {
+            return (
+              <div key={index} className="bg-gray-100 rounded p-4 mb-2">
+                <div className="md:flex md:justify-between items-center mb-1">
+                  <div className="flex items-center">
+                    {qna_query_object.ischecked !== "true" && (
+                      <div className="bg-red-600 mx-2" style={{ width: "5px", height: "5px", borderRadius: "50%" }} />
+                    )}
+                    <span className="text-sm">{qna_query_object.title}</span>
                   </div>
-                  <div className="keep-all">{qna_query_object.content}</div>
+                  <div className="text-xs">
+                    <span className="mr-1">{timestamp_to_date(qna_query_object.timestamp)}</span>
+                  </div>
                 </div>
-              )
-            })}
-          </div>
+                <div className="keep-all">{qna_query_object.content}</div>
+              </div>
+            )
+          })}
         </div>
       </div>
     </>

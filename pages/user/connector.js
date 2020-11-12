@@ -9,6 +9,7 @@ const axios = require("axios")
 
 const ConnectorPage = ({ rest_api_url }) => {
   const [refresh, set_refresh] = useState(0) // 새로고침
+  const [current_qna, set_current_qna] = useState(0) // 선택한 질의응답 번호
   const [qna_student_list, set_qna_student_list] = useState([]) // 질의응답 목록
   const [qna_list, set_qna_list] = useState([]) // 질의응답 목록
   const [session, loading] = useSession()
@@ -55,6 +56,7 @@ const ConnectorPage = ({ rest_api_url }) => {
                  * * @param {Array} qnafeedbacklist 피드백 목록
                  */
                 let qna_object = response.data
+                qna_object.title = qna_object.title.replaceAll("_", " ")
                 tmp_qna_list.push(qna_object)
               })
               .catch(function (error) {
@@ -69,11 +71,16 @@ const ConnectorPage = ({ rest_api_url }) => {
         })
     }
 
-    setTimeout(() => {
+    const set_states = () => {
       set_qna_student_list(tmp_qna_student_list)
       set_qna_list(tmp_qna_list)
+    }
+
+    // TODO : refresh 안하면 갱신이 안됨
+    setTimeout(() => {
+      set_states()
     }, 500)
-  }, [refresh])
+  }, [refresh, session, loading])
 
   if (!session || loading) {
     return null
@@ -88,17 +95,43 @@ const ConnectorPage = ({ rest_api_url }) => {
         </button>
       </div>
 
+      {/* navigation */}
+      {1 < qna_list.length && (
+        <div className="border-b border-black">
+          <table className="w-full table-fixed">
+            <tbody>
+              <tr>
+                {qna_list.map((qna_object, index) => {
+                  return (
+                    <td
+                      className="text-center py-2 hover:bg-gray-200 cursor-pointer"
+                      onClick={() => {
+                        set_current_qna(index)
+                      }}
+                    >
+                      {qna_object.title}
+                    </td>
+                  )
+                })}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      )}
+
       {0 < qna_list.length &&
         qna_student_list.map((qna_student_object, index) => {
-          return (
-            <div key={"connector-" + index}>
-              {/* Top */}
-              <ConnectorTop qna_object={qna_list[index]} rest_api_url={rest_api_url} />
+          if (current_qna == index) {
+            return (
+              <div key={"connector-" + index}>
+                {/* Top */}
+                <ConnectorTop refresh={refresh} qna_object={qna_list[index]} rest_api_url={rest_api_url} />
 
-              {/* Bottom */}
-              <ConnectorBottom qna_student_id={qna_student_object._id} rest_api_url={rest_api_url} />
-            </div>
-          )
+                {/* Bottom */}
+                <ConnectorBottom refresh={refresh} qna_student_id={qna_student_object._id} rest_api_url={rest_api_url} />
+              </div>
+            )
+          }
         })}
     </Layout>
   )

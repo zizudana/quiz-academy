@@ -5,6 +5,7 @@ import ConnectorBottom from "../../components/connector/connector_bottom"
 
 import { useSession } from "next-auth/client"
 import { useState, useEffect } from "react"
+import { motion } from "framer-motion"
 const axios = require("axios")
 
 const ConnectorPage = ({ rest_api_url }) => {
@@ -76,7 +77,6 @@ const ConnectorPage = ({ rest_api_url }) => {
       set_qna_list(tmp_qna_list)
     }
 
-    // TODO : refresh 안하면 갱신이 안됨
     setTimeout(() => {
       set_states()
     }, 500)
@@ -123,13 +123,21 @@ const ConnectorPage = ({ rest_api_url }) => {
         qna_student_list.map((qna_student_object, index) => {
           if (current_qna == index) {
             return (
-              <div key={"connector-" + index}>
+              <motion.div
+                initial={{
+                  opacity: 0,
+                }}
+                animate={{
+                  opacity: 1,
+                }}
+                key={"connector-" + index}
+              >
                 {/* Top */}
                 <ConnectorTop refresh={refresh} qna_object={qna_list[index]} rest_api_url={rest_api_url} />
 
                 {/* Bottom */}
                 <ConnectorBottom refresh={refresh} qna_student_id={qna_student_object._id} rest_api_url={rest_api_url} />
-              </div>
+              </motion.div>
             )
           }
         })}

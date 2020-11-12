@@ -1,6 +1,6 @@
 import Link from "next/link"
 
-const QuestionHistory = ({ qna_query_list }) => {
+const QuestionHistory = ({ qna_student_id, qna_query_list }) => {
   const is_click = () => {
     var question_list_button = document.getElementById("question-list")
     question_list_button.classList.toggle("hidden")
@@ -12,7 +12,7 @@ const QuestionHistory = ({ qna_query_list }) => {
         <div className="flex justify-between mb-3">
           <div className="text-lg">사전 질문 목록</div>
           <div>
-            <Link href="/user/connector_question?user=테스터">
+            <Link href={`/user/connector_question?qna_student_id=${qna_student_id}`}>
               <a className="mr-2 text-green-600">새 질문</a>
             </Link>
             <button className="outline-none" onClick={() => is_click()}>

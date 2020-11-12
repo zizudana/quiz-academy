@@ -67,7 +67,7 @@ const ConnectorBottom = ({ qna_student_id, rest_api_url, refresh }) => {
       <div className="mx-auto mt-8 flex rounded-lg" style={{ width: "650px" }}>
         <div className="w-full keep-all">
           <Comment qna_comment_list={qna_comment_list} />
-          <QuestionHistory qna_query_list={qna_query_list} />
+          <QuestionHistory qna_student_id={qna_student_id} qna_query_list={qna_query_list} />
         </div>
       </div>
     </>

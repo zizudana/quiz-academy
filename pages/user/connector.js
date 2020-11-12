@@ -9,12 +9,16 @@ const axios = require("axios")
 
 const ConnectorPage = ({ rest_api_url }) => {
   const [refresh, set_refresh] = useState(0) // 새로고침
-  const [qna_list, set_qna_list] = useState([]) // 학생 목록
+  const [qna_student_list, set_qna_student_list] = useState([]) // 질의응답 목록
+  const [qna_list, set_qna_list] = useState([]) // 질의응답 목록
   const [session, loading] = useSession()
 
-  if (session && !loading) {
-    useEffect(() => {
-      let tmp_qna_list = []
+  useEffect(() => {
+    let tmp_qna_student_list = []
+    let tmp_qna_list = []
+
+    if (session && !loading) {
+      // qna_student_list 불러오기
       axios
         .get(`${rest_api_url}/qnastudents/all/studentid/${session.user.image}`)
         .then(function (response) {
@@ -29,10 +33,11 @@ const ConnectorPage = ({ rest_api_url }) => {
            * * @param {Array} qnaquerylist 상시 질문 목록
            * * @param {Array} qnacommentlist 코멘트 목록
            */
-          let tmp_qna_student_list = response.data.qna_student_arr
+          tmp_qna_student_list = response.data.qna_student_arr
           tmp_qna_student_list.sort((a, b) => a._id.localeCompare(b._id))
 
           tmp_qna_student_list.map((qna_student_object) => {
+            // qna_object 불러오기
             axios
               .get(`${rest_api_url}/qnas/${qna_student_object.qnaid}`)
               .then(function (response) {
@@ -62,33 +67,39 @@ const ConnectorPage = ({ rest_api_url }) => {
           // handle error
           console.log(error)
         })
+    }
 
-      setTimeout(() => {
-        set_qna_list(tmp_qna_list)
-      }, 500)
-    }, [])
+    setTimeout(() => {
+      set_qna_student_list(tmp_qna_student_list)
+      set_qna_list(tmp_qna_list)
+    }, 500)
+  }, [refresh])
+
+  if (!session || loading) {
+    return null
   }
 
   return (
     <Layout>
-      {qna_list.map((qna_object, index) => {
-        return (
-          <div key={"connector-" + index}>
-            {/* 새로고침 */}
-            <div className="mx-auto mt-8 flex flex-row-reverse" style={{ width: "650px" }}>
-              <button className="w-6 h-6 rounded-full p-1 outline-none border border-green-500" onClick={() => set_refresh(refresh + 1)}>
-                <RefreshSVG fill="#48bb78" />
-              </button>
+      {/* 새로고침 */}
+      <div className="mx-auto mt-8 flex flex-row-reverse" style={{ width: "650px" }}>
+        <button className="w-6 h-6 rounded-full p-1 outline-none border border-green-500" onClick={() => set_refresh(refresh + 1)}>
+          <RefreshSVG fill="#48bb78" />
+        </button>
+      </div>
+
+      {0 < qna_list.length &&
+        qna_student_list.map((qna_student_object, index) => {
+          return (
+            <div key={"connector-" + index}>
+              {/* Top */}
+              <ConnectorTop qna_object={qna_list[index]} rest_api_url={rest_api_url} />
+
+              {/* Bottom */}
+              <ConnectorBottom qna_student_id={qna_student_object._id} rest_api_url={rest_api_url} />
             </div>
-
-            {/* Top */}
-            <ConnectorTop qna_object={qna_object} rest_api_url={rest_api_url} />
-
-            {/* Bottom */}
-            <ConnectorBottom qna_object={qna_object} rest_api_url={rest_api_url} />
-          </div>
-        )
-      })}
+          )
+        })}
     </Layout>
   )
 }

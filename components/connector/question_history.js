@@ -1,10 +1,11 @@
 import Link from "next/link"
 
-const QuestionHistory = () => {
+const QuestionHistory = ({ qna_query_list }) => {
   const is_click = () => {
     var question_list_button = document.getElementById("question-list")
     question_list_button.classList.toggle("hidden")
   }
+
   return (
     <>
       <div className="mx-auto p-4 border shadow-lg rounded-lg mb-4">
@@ -15,40 +16,46 @@ const QuestionHistory = () => {
               <Link href="/user/connector_question?user=테스터">
                 <a className="mr-2 text-green-600">새 질문</a>
               </Link>
-              <button onClick={() => is_click()}>전체 보기</button>
+              <button className="outline-none" onClick={() => is_click()}>
+                전체 보기
+              </button>
             </div>
           </div>
           <div id="question-list" className="hidden">
-            <div className="bg-gray-100 rounded p-4">
-              <div className="md:flex md:justify-between items-center mb-1">
-                <div className="flex items-center">
-                  <span className="text-sm">질문1</span>
+            {qna_query_list.map((qna_query_object, index) => {
+              return (
+                <div key={index} className="bg-gray-100 rounded p-4 mb-2">
+                  <div className="md:flex md:justify-between items-center mb-1">
+                    <div className="flex items-center">
+                      {qna_query_object.ischecked !== "true" && (
+                        <div className="bg-red-600 mx-2" style={{ width: "5px", height: "5px", borderRadius: "50%" }} />
+                      )}
+                      <span className="text-sm">{qna_query_object.title}</span>
+                    </div>
+                    <div className="text-xs">
+                      <span className="mr-1">{timestamp_to_date(qna_query_object.timestamp)}</span>
+                    </div>
+                  </div>
+                  <div className="keep-all">{qna_query_object.content}</div>
                 </div>
-                <div className="text-xs">
-                  <span className="mr-1">{"2020.11.09"}</span>
-                </div>
-              </div>
-              <div className="keep-all">어떠케풀어요</div>
-            </div>
-            <div className="bg-gray-100 rounded p-4">
-              <div className="md:flex md:justify-between items-center mb-1">
-                <div className="flex items-center">
-                  <span className="text-sm">질문2</span>
-                </div>
-                <div className="text-xs">
-                  <span className="mr-1">{"2020.11.09"}</span>
-                </div>
-              </div>
-              <div className="keep-all">
-                시험 조지고 올게! 하지만 언제나 조져지는 것은 저였습니다. 21년 10월 모평 화학 27번 문제에 세포 둘의 자강두천 화학반응을 보니 가슴이
-                웅장해집니다. 풀이해주세요.
-              </div>
-            </div>
+              )
+            })}
           </div>
         </div>
       </div>
     </>
   )
+}
+
+const timestamp_to_date = (timestamp) => {
+  let date = new Date(timestamp * 1000)
+  let year = date.getFullYear()
+  let month = "" + (date.getMonth() + 1)
+  let day = "" + date.getDate()
+
+  if (month.length < 2) month = "0" + month
+  if (day.length < 2) day = "0" + day
+  return `${year}.${month}.${day}`
 }
 
 export default QuestionHistory

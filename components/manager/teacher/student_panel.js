@@ -1,6 +1,7 @@
 import XSVG from "../../svg/x"
 import CheckSVG from "../../svg/check"
 import RefreshSVG from "../../svg/refresh"
+import NewComment from "./new_comment"
 
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -10,6 +11,7 @@ const axios = require("axios")
 
 /**
  * @param {Object} qnastudent_object
+ * * @param {String} _id (본인) 질의응답+학생 ID
  * * @param {String} qnaid (부모) 질의응답 ID
  * * @param {String} studentid (부모) 학생 ID
  * * @param {String} studentname 학생 이름
@@ -24,6 +26,11 @@ const StudentPanel = ({ qnastudent_object, rest_api_url }) => {
   const [qnaquery_unchecked_list, set_qnaquery_unchecked_list] = useState([]) // 미확인 질문 목록
   const [qnaquery_checked_list, set_qnaquery_checked_list] = useState([]) // 확인 질문 목록
   const [qnacomment_list, set_qnacomment_list] = useState([]) // 코멘트 목록
+  const [is_new_comment, set_is_new_comment] = useState(false) // 새로운 코멘트 작성 여부
+
+  const toggle_is_new_comment = () => {
+    is_new_comment ? set_is_new_comment(false) : set_is_new_comment(true)
+  }
 
   useEffect(() => {
     let tmp_qnaquery_unchecked_list = []
@@ -159,7 +166,10 @@ const StudentPanel = ({ qnastudent_object, rest_api_url }) => {
         <div className="my-8 border-b border-gray-600" />
 
         {/*  코멘트 */}
-        <div className="text-center text-lg mb-4">코멘트</div>
+        <div className="text-center text-lg mb-4 cursor-pointer select-none hover:text-indigo-600" onClick={toggle_is_new_comment}>
+          코멘트
+        </div>
+        {is_new_comment && <NewComment qna_student_id={qnastudent_object._id} rest_api_url={rest_api_url} set_is_new_comment={set_is_new_comment} />}
         <div className="flex-col space-y-4 max-w-md mx-auto">
           {qnacomment_list.map((qnacomment_object, index) => {
             return (

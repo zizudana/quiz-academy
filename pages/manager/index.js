@@ -1,4 +1,4 @@
-import ManagerMessage from "../../components/manager/teacher/manager_message"
+import TeacherMessage from "../../components/manager/manager/teacher_message"
 
 import Head from "next/head"
 import Link from "next/link"
@@ -139,14 +139,14 @@ const ManagePage = ({ rest_api_url }) => {
 
             <Link href={`/manager?panel=message`}>
               <div className={`py-4 text-sm cursor-pointer ${get_tab_color("message")} border-b border-gray-300 transition duration-500 ease-out`}>
-                관리자 메세지
+                교사 메세지
               </div>
             </Link>
           </div>
 
           {/* right panel */}
           <Scrollbars universal autoHide autoHideTimeout={1000}>
-            <div className="w-full px-4 md:px-16 py-8">{current_panel === "message" && <ManagerMessage rest_api_url={rest_api_url} />}</div>
+            <div className="w-full px-4 md:px-16 py-8">{current_panel === "message" && <TeacherMessage />}</div>
           </Scrollbars>
         </div>
       </Layout>

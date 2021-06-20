@@ -9,13 +9,16 @@ const UserIndexPage = () => {
   return (
     <Layout>
       <div className="mb-12 md:-mb-12" />
-      <div className="md:flex md:justify-around items-center" style={{ height: "80vh" }}>
+      <div
+        className="md:flex md:justify-around items-center"
+        style={{ height: "80vh" }}
+      >
         {/* 문제 풀이 */}
         <div
           className="flex flex-col items-center rounded overflow-hidden shadow-custom border border-gray-300 p-4 mb-6 mx-auto text-center"
           style={{ width: "15rem", height: "fit-content" }}
         >
-          <Link href="/user/pdf">
+          <Link href="/user/quiz-set">
             <div className="cursor-pointer">
               <PdfSVG className="w-32 h-32 mx-auto mb-4" />
               <a className="font-bold text-lg mb-2">문제 풀이</a>

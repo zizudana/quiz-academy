@@ -22,7 +22,7 @@ const Layout = ({ children }) => {
   }, [session])
 
   if (loading) {
-    return null
+    return <main>loading</main>
   }
 
   // student 계정
@@ -30,7 +30,10 @@ const Layout = ({ children }) => {
     <>
       <Head>
         <title>대치동 온라인</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

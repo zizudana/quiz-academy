@@ -30,13 +30,13 @@ const QuizSetIndexPage = ({ quiz_set_arr }) => {
               scope="col"
               className="px-6 py-3 text-xs font-light text-gray-500 uppercase tracking-wider"
             >
-              Count
+              Solved
             </th>
             <th
               scope="col"
               className="px-6 py-3 text-xs font-light text-gray-500 uppercase tracking-wider"
             >
-              Solved
+              Score
             </th>
           </tr>
         </thead>
@@ -54,11 +54,6 @@ const QuizSetIndexPage = ({ quiz_set_arr }) => {
                   <tr className="cursor-pointer hover:bg-gray-100">
                     <td className="px-6 py-4">{index + 1}</td>
                     <td className="px-6 py-4">
-                      <div className="text-base font-semibold text-indigo-500">
-                        {quiz_set_info.num_quiz}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
                       {quiz_set_info.is_solved ? (
                         <div className="text-base font-semibold text-indigo-500">
                           SOLVED
@@ -66,6 +61,17 @@ const QuizSetIndexPage = ({ quiz_set_arr }) => {
                       ) : (
                         <div className="text-base font-semibold text-red-500">
                           NOT YET
+                        </div>
+                      )}
+                    </td>
+                    <td className="px-6 py-4">
+                      {quiz_set_info.is_solved ? (
+                        <div className="text-base font-semibold text-indigo-500">
+                          {quiz_set_info.num_correct} / {quiz_set_info.num_quiz}
+                        </div>
+                      ) : (
+                        <div className="text-base font-semibold text-red-500">
+                          {quiz_set_info.num_quiz}
                         </div>
                       )}
                     </td>

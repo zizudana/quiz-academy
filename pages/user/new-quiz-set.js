@@ -11,7 +11,7 @@ const NewQuizSetPage = () => {
   const [is_loading, set_is_loading] = useState(true)
   const [is_timeover, set_is_timeover] = useState(false)
 
-  const num_quiz = 15
+  const num_quiz = 3
 
   const post_quiz_set = () => {
     const new_quiz_set = {

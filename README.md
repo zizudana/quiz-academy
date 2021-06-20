@@ -1,4 +1,4 @@
 # web academy front
 started with with-tailwindcss next.js template
 
-```docker run -d -v /home/lab2b3e/front-next:/workspace -p 52245:3000  --name dcdon-quiz -it node:12 bash```
+```docker run -d -v [quiz-frontend path]:/workspace -p [public port]:3000 -it node:12 bash```

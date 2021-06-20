@@ -1,8 +1,5 @@
-const Preview = ({ quiz_id, quiz_content }) => {
+const Preview = ({ quiz_content }) => {
   // TODO quiz_content로 사진 불러오기
-  if (quiz_id == undefined) {
-    quiz_id = "abcd"
-  }
 
   // special token 목록 생성 [ 0 ~ 9, +, - ]
   let special_token_list = ["+", "-"]
@@ -50,7 +47,7 @@ const Preview = ({ quiz_id, quiz_content }) => {
 
     preview_html = preview_html.replaceAll(
       `[[`,
-      `<img class="p-4 max-h-56 mx-auto" src="https://editor-api.daechi-on.com/files/quizset/${quiz_id}/`
+      `<img class="p-4 max-h-56 mx-auto" src="https://editor-api.daechi-on.com/files/quizset/${quiz_content.quiz_id}/`
     )
     preview_html = preview_html.replaceAll(`]]`, `" />`)
 
@@ -59,9 +56,11 @@ const Preview = ({ quiz_id, quiz_content }) => {
 
   return (
     <div
-      className="mx-auto pt-8 select-none"
+      className="mx-auto select-none"
       style={{ width: "400px" }}
-      dangerouslySetInnerHTML={{ __html: get_preview_html(quiz_content) }}
+      dangerouslySetInnerHTML={{
+        __html: get_preview_html(quiz_content.content),
+      }}
     />
   )
 }

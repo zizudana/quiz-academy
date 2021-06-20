@@ -1,18 +1,18 @@
-import TeacherMessage from "../../components/manager/manager/teacher_message"
-
 import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import { motion } from "framer-motion"
 const axios = require("axios")
-import { Scrollbars } from "react-custom-scrollbars"
 
 const Layout = ({ children }) => (
   <>
     <Head>
       <title>DCD On : 천재교육 관리자</title>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+      />
       <link rel="icon" href="/favicon.ico" />
     </Head>
 
@@ -81,10 +81,15 @@ const ManagePage = ({ rest_api_url }) => {
   if (!isChecked) {
     return (
       <Layout>
-        <div className="w-full max-w-xs mt-12 m-auto bg-indigo-100 rounded p-5" onKeyPress={press_enter_key}>
+        <div
+          className="w-full max-w-xs mt-12 m-auto bg-indigo-100 rounded p-5"
+          onKeyPress={press_enter_key}
+        >
           <img src="/img/DCD_logo.png" alt="logo" className="w-32 mx-auto" />
 
-          <div className="w-full text-center font-bold my-5 text-gray-800 text-xl">대치동 온라인 관리자</div>
+          <div className="w-full text-center font-bold my-5 text-gray-800 text-xl">
+            대치동 온라인 관리자
+          </div>
 
           <label className="block mb-2 text-indigo-500" htmlFor="password">
             비밀번호
@@ -97,7 +102,9 @@ const ManagePage = ({ rest_api_url }) => {
           />
 
           <div>
-            <p className="mb-1 text-red-600 text-base text-center">{errorMessage}</p>
+            <p className="mb-1 text-red-600 text-base text-center">
+              {errorMessage}
+            </p>
             <button
               className="w-full bg-indigo-700 hover:bg-yellow-500 text-white font-bold py-2 px-2 mb-6 rounded focus:outline-none"
               onClick={check_manager}
@@ -123,31 +130,31 @@ const ManagePage = ({ rest_api_url }) => {
           }
         `}</style>
 
-        <div className="shadow-custom rounded-xl flex flex-row bg-white" style={{ marginTop: "3vh", height: "92vh" }}>
+        <div
+          className="shadow-custom rounded-xl flex flex-row bg-white"
+          style={{ marginTop: "3vh", height: "92vh" }}
+        >
           {/* left panel */}
           <div className="text-center select-none border-r border-gray-200">
             <div className="border-b border-gray-300 pb-5">
-              <img src="/img/DCD_logo_full.png" alt="logo" className="w-64 mx-auto transform scale-90" />
+              <img
+                src="/img/DCD_logo_full.png"
+                alt="logo"
+                className="w-64 mx-auto transform scale-90"
+              />
               <span className="text-lg">대치동 온라인 관리자</span>
             </div>
 
             {/* 교사 목록 */}
-            <div className={`py-1 text-xs bg-white border-b border-gray-300`}>교사</div>
+            <div className={`py-1 text-xs bg-white border-b border-gray-300`}>
+              교사
+            </div>
 
             {/* 관리 */}
-            <div className={`py-1 text-xs bg-white border-b border-gray-300`}>관리</div>
-
-            <Link href={`/manager?panel=message`}>
-              <div className={`py-4 text-sm cursor-pointer ${get_tab_color("message")} border-b border-gray-300 transition duration-500 ease-out`}>
-                교사 메세지
-              </div>
-            </Link>
+            <div className={`py-1 text-xs bg-white border-b border-gray-300`}>
+              관리
+            </div>
           </div>
-
-          {/* right panel */}
-          <Scrollbars universal autoHide autoHideTimeout={1000}>
-            <div className="w-full px-4 md:px-16 py-8">{current_panel === "message" && <TeacherMessage />}</div>
-          </Scrollbars>
         </div>
       </Layout>
     )

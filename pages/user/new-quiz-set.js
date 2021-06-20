@@ -10,8 +10,9 @@ const NewQuizSetPage = () => {
   const [session, _] = useSession()
   const [is_loading, set_is_loading] = useState(true)
   const [is_timeover, set_is_timeover] = useState(false)
+  const [new_quiz_set_id, set_new_quiz_set_id] = useState("")
 
-  const num_quiz = 3
+  const num_quiz = 15
 
   const post_quiz_set = () => {
     const new_quiz_set = {
@@ -25,6 +26,7 @@ const NewQuizSetPage = () => {
       })
       .then((response) => {
         console.log(response)
+        set_new_quiz_set_id(response.data.InsertedID)
         set_is_loading(false)
       })
       .catch((error) => {
@@ -68,8 +70,7 @@ const NewQuizSetPage = () => {
 
         {/* Redirect Button */}
         <div className="mx-auto">
-          {/* TODO /user/quiz_set/[new_quiz_set_id]로 바로 가도록 수정 */}
-          <Link href="/user/quiz-set">
+          <Link href={`/user/quiz-set/${new_quiz_set_id}`}>
             <a className="inline-flex items-center my-6 px-6 py-2 rounded-md bg-indigo-500 hover:bg-indigo-600 text-white focus:outline-none cursor-pointer">
               신규 문제집 바로가기
             </a>

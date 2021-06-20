@@ -114,7 +114,7 @@ const SolvePage = () => {
         num_correct: correct_count,
       }
     })
-    
+
     set_quiz_set(updated_quiz_set)
     put_quiz_set(updated_quiz_set)
   }, [solution_content_array])

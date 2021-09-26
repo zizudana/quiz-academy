@@ -1,6 +1,7 @@
 {
   "name": "next-academy",
   "version": "0.0.1",
+  "packageManager": "yarn@3.0.2",
   "scripts": {
     "dev": "next",
     "build": "next build",

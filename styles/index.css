@@ -1,6 +1,21 @@
 @tailwind base;
 
 /* Write your own custom base styles here */
+@layer base {
+  h1 {
+    font-size: 24px;
+    @apply font-bold;
+  }
+  
+  h2 {
+    font-size: 18px;
+    @apply font-bold;
+  }
+
+  h5 {
+    font-size: 12px;
+  }
+}
 
 /* Start purging... */
 @tailwind components;
@@ -16,35 +31,22 @@
 
 body {
   font-family: "Noto Sans KR", sans-serif;
+  font-size: 14px;
 
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+
+  background-color: #f8f8f8;
 }
 
 body::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }
 
+::placeholder {
+  font-weight: 400;
+}
+
 .keep-all {
   word-break: keep-all;
-}
-
-.color-1 {
-  background-color: #339ad5;
-}
-
-.color-2 {
-  background-color: #1e1651;
-}
-
-.color-3 {
-  background-color: #8093cb;
-}
-
-.color-4 {
-  background-color: #302e2f;
-}
-
-.color-5 {
-  background-color: #58585a;
 }

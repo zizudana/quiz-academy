@@ -1,6 +1,6 @@
 {
-  "name": "next-academy",
-  "version": "0.0.1",
+  "name": "quiz-front",
+  "version": "0.1.0",
   "packageManager": "yarn@3.0.2",
   "scripts": {
     "dev": "next",

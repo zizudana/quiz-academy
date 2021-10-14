@@ -1,71 +1,107 @@
-import React from "react"
+import { useState } from "react"
 import Link from "next/link"
+import { signIn } from "next-auth/client"
+
 import Layout from "../../components/layout/layout_guest"
+import { InputNormal } from "../../components/common/input"
+import { ButtonNormal } from "../../components/common/button"
+import { Checkbox } from "../../components/common/checkbox"
 
-import { csrfToken } from "next-auth/client"
+const IndexPage = () => {
+  const [id_input, set_id_input] = useState("")
+  const [password_input, set_password_input] = useState("")
+  const [is_auto_login, set_is_auto_login] = useState(true)
+  const [is_save_id, set_is_save_id] = useState(true)
 
-const SignInPage = ({ csrfToken, props }) => {
+  const toggle_is_auto_login = () => {
+    set_is_auto_login((prev_state) => !prev_state)
+  }
+
+  const toggle_is_save_id = () => {
+    set_is_save_id((prev_state) => !prev_state)
+  }
+
+  const sign_in = () => {
+    signIn("credentials", {
+      username: id_input,
+      password: password_input,
+    })
+  }
+
   return (
     <Layout>
-      <div className="w-full max-w-lg mt-12 mx-auto bg-indigo-100 rounded p-6">
-        <Link href="/">
+      <div className="flex justify-center content-center flex-wrap min-h-screen select-none">
+        <div
+          className="flex flex-col px-10 py-12 bg-white shadow-md"
+          style={{ width: "400px", height: "fit-content" }}
+        >
+          {/* 로고 */}
           <img
-            src="/img/DCD_logo.png"
-            alt="logo"
-            className="w-20 mx-auto mb-5 cursor-pointer transition duration-500 ease-in-out transform hover:scale-125"
+            src="/img/dco_vertical.png"
+            className="mx-auto mb-8"
+            style={{ width: "216px" }}
+            alt="dco logo"
           />
-        </Link>
-        <form method="post" action="/api/auth/callback/credentials">
-          <div>
-            <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
-            <label className="block mb-2 text-indigo-500" htmlFor="username">
-              Username
-            </label>
-            <input className="w-full p-2 mb-6 text-indigo-700 border-b-2 bg-indigo-100 border-indigo-500 outline-none" type="text" name="username" />
-          </div>
-          <div>
-            <label className="block mb-2 text-indigo-500" htmlFor="password">
-              Password
-            </label>
-            <input
-              className="w-full p-2 mb-6 text-indigo-700 border-b-2 bg-indigo-100 border-indigo-500 outline-none"
-              type="password"
-              name="password"
+
+          {/* 아이디 & 비밀번호 입력 */}
+          <div className="flex flex-col mb-8 gap-1">
+            <InputNormal
+              type="text"
+              className="tracking-wide"
+              placeholder="아이디를 입력해주세요"
+              user_input={id_input}
+              set_user_input={set_id_input}
             />
+            <InputNormal
+              type="password"
+              className="tracking-wide"
+              placeholder="비밀번호를 입력해주세요"
+              user_input={password_input}
+              set_user_input={set_password_input}
+            />
+
+            <div className="flex gap-6 mt-2">
+              <Checkbox checked={is_auto_login} onClick={toggle_is_auto_login}>
+                <h5>자동 로그인</h5>
+              </Checkbox>
+              <Checkbox checked={is_save_id} onClick={toggle_is_save_id}>
+                <h5>아이디 저장</h5>
+              </Checkbox>
+            </div>
           </div>
-          <div>
-            <p className="mb-1 text-red-600 text-base text-center">{props["error_message"]}</p>
-            <button
-              className="w-full bg-indigo-700 transition duration-500 ease-in-out hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded focus:outline-none mb-2"
-              type="submit"
-            >
-              로그인
-            </button>
-            <span className="text-gray-500 text-base">아직 회원이 아니라면?</span>
-            <Link href="/guest/signup">
-              <a className="text-red-400 text-base float-right">회원가입</a>
-            </Link>
+
+          {/* 접속 버튼 */}
+          <div className="mb-4 w-full">
+            <ButtonNormal className="w-full" onClick={sign_in}>
+              접속하기
+            </ButtonNormal>
           </div>
-          <style jsx>{`
-            input:-webkit-autofill {
-              -webkit-box-shadow: 0 0 0 1000px #ebf4ff inset;
-            }
-          `}</style>
-        </form>
+
+          <div className="text-center">
+            {/* 아이디 & 비밀번호 찾기 */}
+            <h5 className="mb-8">
+              계정을 잊으셨나요?{" "}
+              <Link href="/guest/not-yet">
+                <a className="text-color-main-1">아이디</a>
+              </Link>{" "}
+              또는{" "}
+              <Link href="/guest/not-yet">
+                <a className="text-color-main-1">비밀번호 찾기</a>
+              </Link>
+            </h5>
+
+            {/* 회원가입 */}
+            <h5>
+              아직 회원이 아니신가요?{" "}
+              <Link href="/guest/signup">
+                <a className="text-color-main-1">회원가입</a>
+              </Link>
+            </h5>
+          </div>
+        </div>
       </div>
     </Layout>
   )
 }
 
-SignInPage.getInitialProps = async (context) => {
-  let message = ""
-  if (context.query.error) {
-    message = "ID와 비밀번호를 확인해주세요"
-  }
-  return {
-    csrfToken: await csrfToken(context),
-    props: { error_message: message }, // will be passed to the page component as props
-  }
-}
-
-export default SignInPage
+export default IndexPage

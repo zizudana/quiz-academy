@@ -1,8 +1,8 @@
 import "../styles/index.css"
+import "../styles/color.css"
 
 import App from "next/app"
 import { Provider } from "next-auth/client"
-import "react-awesome-slider/dist/styles.css"
 
 const MyApp = ({ Component, pageProps }) => {
   return (

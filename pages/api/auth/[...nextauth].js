@@ -52,10 +52,9 @@ const options = {
         signIn: async (user, account, profile) => {
           const isAllowedToSignIn = true
           if (isAllowedToSignIn) {
-            return "/"
-            // return true
+            return "/user"
           } else {
-            return "/index?error=unauthorized"
+            return "/guest/signin?error=unauthorized"
           }
         },
         /**

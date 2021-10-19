@@ -28,6 +28,12 @@ const IndexPage = () => {
     })
   }
 
+  const press_enter_key = (e) => {
+    if (e.key === "Enter") {
+      sign_in()
+    }
+  }
+
   return (
     <Layout>
       <div className="flex justify-center content-center flex-wrap min-h-screen select-none">
@@ -44,7 +50,10 @@ const IndexPage = () => {
           />
 
           {/* 아이디 & 비밀번호 입력 */}
-          <div className="flex flex-col mb-8 gap-1">
+          <div
+            className="flex flex-col mb-8 gap-1"
+            onKeyPress={press_enter_key}
+          >
             <InputNormal
               type="text"
               className="tracking-wide"

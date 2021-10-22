@@ -1,395 +1,524 @@
-import Layout from "../../components/layout/layout_guest"
-
 import { useState } from "react"
-import { useRouter } from "next/router"
 import Link from "next/link"
+import Router from "next/router"
 const axios = require("axios")
 
+import Layout from "../../components/layout/layout_guest"
+import { InputNormal } from "../../components/common/input"
+import { ButtonNormal, DisabledButton } from "../../components/common/button"
+
 const SignUp = ({ rest_api_url }) => {
-  const router = useRouter()
+  const [id_input, set_id_input] = useState("")
+  const [is_unique_id, set_is_unique_id] = useState(false)
+  const [password_input, set_password_input] = useState("")
+  const [password2_input, set_password2_input] = useState("")
+  const [email_input, set_email_input] = useState("")
+  const [student_name_input, set_student_name_input] = useState("")
+  const [student_phone_input, set_student_phone_input] = useState("")
+  const [student_age_select, set_student_age_select] = useState(-1)
+  const [parent_name_input, set_parent_name_input] = useState("")
+  const [parent_phone_input, set_parent_phone_input] = useState("")
+  const [is_post_loading, set_is_post_loading] = useState(false)
 
-  const [is_id_unique, set_is_id_unique] = useState(false)
-  const [message_color, set_message_color] = useState("text-gray-500")
-  const [id_alert_message, set_alert_message] = useState(
-    "영어, 숫자, 밑줄(_)로 구성된 6~20자의 문자"
-  )
+  const set_id_input_custom = (user_input) => {
+    // 아이디 새로 입력하면 중복 체크 초기화
+    set_id_input(user_input)
+    set_is_unique_id(false)
+  }
 
-  const Submit = () => {
-    var SubmitDict = {}
-    var tmp_password = document.getElementById("grid-password").value
-    var tmp_password_check = document.getElementById(
-      "grid-password-isCorrect"
-    ).value
-    var tmp_phone = document.getElementById("grid-phone-number").value
-    var tmp_parent_phone = document.getElementById(
-      "grid-parent-phone-number"
-    ).value
-    var state_age = document.getElementById("grid-state")
-    var pattern_pw = /[a-zA-Z]/
-    var pattern_pw_spc = /[/_/~/!/@/#/$/%/^/&/-]/
-    var pattern_pw_num = /[0-9]/
-    var pattern_mail_spc = /@/
-    var passRule = /^\d{3}\d{3,4}\d{4}$/
-
-    if (state_age.selectedIndex == 6) {
-      state_age = 0
-    } else {
-      state_age = 14 + state_age.selectedIndex
-    }
-
-    if (tmp_password != tmp_password_check) {
-      alert("비밀번호가 일치하지 않습니다. 다시 입력해주세요.")
-    } else if (tmp_password.length < 6 || tmp_password.length > 20) {
-      alert("비밀번호를 6자 이상 20자 이하로 설정해주세요.")
-    } else if (
-      !(
-        pattern_pw.test(tmp_password) &&
-        pattern_pw_num.test(tmp_password) &&
-        pattern_pw_spc.test(tmp_password)
-      )
-    ) {
-      alert(
-        "비밀번호를 영어, 숫자, 특수문자(_-!@#$%^&*)를 조합해 만들어주세요."
-      )
-    } else if (
-      !pattern_mail_spc.test(document.getElementById("grid-email").value)
-    ) {
-      alert("이메일 형식을 지켜주세요.")
-    } else if (!passRule.test(tmp_phone)) {
-      alert("연락처 형식을 지켜주세요.")
-    } else if (
-      document.getElementById("grid-name").value == "" ||
-      tmp_phone == ""
-    ) {
-      alert("학생 정보(이름, 연락처)를 입력해주세요.")
-    } else if (
-      document.getElementById("grid-parent-name").value == "" ||
-      tmp_parent_phone == ""
-    ) {
-      alert("학부모 정보(이름, 연락처)를 입력해주세요.")
-    } else if (!is_id_unique) {
-      alert("ID 중복체크를 완료해주세요.")
-    } else {
-      SubmitDict["user_type"] = "student"
-      SubmitDict["id"] = document.getElementById("grid-id").value
-      SubmitDict["password"] = tmp_password
-      SubmitDict["email"] = document.getElementById("grid-email").value
-      SubmitDict["user_name"] = document.getElementById("grid-name").value
-      SubmitDict["user_phone"] = tmp_phone
-      SubmitDict["parent_name"] =
-        document.getElementById("grid-parent-name").value
-      SubmitDict["parent_phone"] = tmp_parent_phone
-      SubmitDict["age"] = state_age
-
-      SendDict(SubmitDict)
+  const set_password_input_custom = (user_input) => {
+    // 비밀번호는 영문, 숫자, 특수기호(_-!@#$^&*)만 입력
+    const pattern = /^[0-9a-zA-Z\_\-\!\@\#\$\^\&\*]*$/
+    if (user_input.match(pattern)) {
+      set_password_input(user_input)
     }
   }
 
-  const SendDict = (SubmitDict) => {
-    var xhr = new XMLHttpRequest()
-    var url = `${rest_api_url}/users`
-    xhr.open("POST", url, true)
-    xhr.setRequestHeader("Content-Type", "application/json")
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        var json = JSON.parse(xhr.responseText)
-        console.log(json)
-      }
+  const set_student_phone_input_custom = (user_input) => {
+    // 학생 전화번호는 숫자만 입력
+    const pattern = /^[0-9]*$/
+    if (user_input.match(pattern)) {
+      set_student_phone_input(user_input)
     }
-    var data = JSON.stringify(SubmitDict)
-    xhr.send(data)
-    moveHref()
   }
 
-  const moveHref = () => {
-    alert("회원가입을 완료했습니다. 가입 정보로 로그인 해주세요.")
-    router.push("/guest/signin")
+  const set_parent_phone_input_custom = (user_input) => {
+    // 학부모 전화번호는 숫자만 입력
+    const pattern = /^[0-9]*$/
+    if (user_input.match(pattern)) {
+      set_parent_phone_input(user_input)
+    }
   }
 
-  // const numberCheck = () => {
-  //   var number = document.getElementById("grid-phone-number").value.replace(/[^0-9]/g, "")
-  //   console.log(number)
-  // }
+  const set_student_age_select_custom = (user_input) => {
+    // 나이를 숫자로 변경
 
-  // const numberCheckParent = () => {
-  //   var number = document.getElementById("grid-parent-phone-number").value.replace(/[^0-9]/g, "")
-  //   console.log(number)
-  // }
+    user_input = Number(user_input)
+    set_student_age_select(user_input)
+  }
 
-  const isUnique = () => {
-    set_is_id_unique(false)
+  const is_in_range = (text) => {
+    // 6~20글자
+    const text_length = text.length
 
-    var pattern_id = /[0-9a-zA-Z_]/
-    // var pattern_num = /[0-9]/ // 숫자
-    // var pattern_eng = /[a-zA-Z]/ // 문자
-    // var pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/ // 특수문자
-    // var pattern_spc = /_/
-    // var pattern_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/ // 한글체크
-    var user_id = document.getElementById("grid-id").value
-    // var id_alert_message = document.getElementById("id_alert_message").value
+    // 6글자 이상
+    if (text_length < 6) {
+      return false
+    }
 
-    if (user_id.length < 6) {
-      set_alert_message("아이디를 더 길게 설정해주세요.")
-    } else if (user_id.length > 20) {
-      set_alert_message(
-        "아이디를 20글자보다 짧게 설정해주세요. 현재 아이디는 " +
-          user_id.length +
-          "글자 입니다."
-      )
-    } else {
-      for (var tmp = 0; tmp < user_id.length; tmp++) {
-        if (pattern_id.test(user_id.charAt(tmp))) {
-          set_is_id_unique(true)
-        } else {
-          set_is_id_unique(false)
-          set_alert_message(
-            "아이디에는 영문, 숫자, 밑줄(_)만 들어갈 수 있습니다."
-          )
-          set_message_color("text-red-500")
-          break
-        }
-      }
+    // 20글자 이하
+    if (20 < text_length) {
+      return false
+    }
 
-      // 아이디가 조건에 해당하면 중복 확인
+    return true
+  }
+
+  const is_matched = (text) => {
+    // 영문, 숫자, 밑줄로 구성
+
+    const pattern = /^[0-9a-zA-Z_]*$/
+
+    if (text.match(pattern)) {
+      return true
+    }
+
+    return false
+  }
+
+  const is_include_english = (text) => {
+    // 영문 포함
+
+    const pattern = /[a-zA-Z]/
+
+    if (text.match(pattern)) {
+      return true
+    }
+
+    return false
+  }
+
+  const is_include_number = (text) => {
+    // 숫자 포함
+
+    const pattern = /\d/
+
+    if (text.match(pattern)) {
+      return true
+    }
+
+    return false
+  }
+
+  const is_include_special = (text) => {
+    // 특수문자 포함
+
+    const pattern = /[\_\-\!\@\#\$\^\&\*]/
+
+    if (text.match(pattern)) {
+      return true
+    }
+
+    return false
+  }
+
+  const is_checked_id = () => {
+    // 영문, 숫자, 밑줄로 구성된 6~20글자
+
+    // 6~20글자
+    if (!is_in_range(id_input)) {
+      return false
+    }
+
+    // 영문, 숫자, 밑줄로 구성
+    if (!is_matched(id_input)) {
+      return false
+    }
+
+    return true
+  }
+
+  const is_email = (text) => {
+    // 올바른 이메일 형식
+
+    const pattern =
+      /^[0-9a-zA-Z]([\-\_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([\-\_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/
+
+    if (text.match(pattern)) {
+      return true
+    }
+
+    return false
+  }
+
+  const is_age_in_range = () => {
+    // 중1(14) ~ 고3/N수생(19)
+
+    if (student_age_select < 14) {
+      return false
+    }
+
+    if (19 < student_age_select) {
+      return false
+    }
+
+    return true
+  }
+
+  const check_unique_id = () => {
+    if (is_checked_id()) {
       axios
-        .get(`${rest_api_url}/users/is-exist/${user_id}`)
+        .get(`${rest_api_url}/users/is-exist/${id_input}`)
         .then(function (response) {
           let is_exist = response.data.is_exist
 
           if (!is_exist) {
-            set_alert_message("사용가능한 ID입니다.")
-            set_message_color("text-green-500")
+            set_is_unique_id(true)
           } else {
-            set_alert_message("이미 존재하는 ID입니다.")
-            set_message_color("text-red-500")
-            set_is_id_unique(false)
+            set_is_unique_id(false)
+            alert(`[${id_input}]는 이미 사용 중인 아이디입니다.`)
           }
         })
         .catch(function (error) {
-          // handle error
-          console.log(error)
+          console.error(error)
         })
     }
   }
 
-  const press_enter_key = (e) => {
-    if (e.key === "Enter") {
-      Submit()
+  const is_ok = () => {
+    // 아이디 조건
+    if (!is_checked_id()) return false
+
+    // 아이디 중복 확인
+    if (!is_unique_id) return false
+
+    // 비밀번호 조건
+    if (!is_in_range(password_input)) return false
+    if (!is_include_english(password_input)) return false
+    if (!is_include_number(password_input)) return false
+    if (!is_include_special(password_input)) return false
+
+    // 비밀번호 확인
+    if (password_input !== password2_input) return false
+    if (password_input.length == 0) return false
+
+    // 이메일 형식
+    if (!is_email(email_input)) return false
+
+    // 학생 정보
+    if (student_name_input.length == 0) return false
+    if (student_phone_input.length == 0) return false
+
+    // 학생 학년 조건
+    if (!is_age_in_range()) return false
+
+    // 학부모 정보
+    if (parent_name_input.length == 0) return false
+    if (parent_phone_input.length == 0) return false
+
+    // 회원가입 진행 중 (API 대기)
+    if (is_post_loading) return false
+
+    return true
+  }
+
+  const initialize_every_input = () => {
+    set_id_input("")
+    set_is_unique_id(false)
+    set_password_input("")
+    set_password2_input("")
+    set_email_input("")
+    set_student_name_input("")
+    set_student_phone_input("")
+    set_student_age_select(-1)
+    set_parent_name_input("")
+    set_parent_phone_input("")
+  }
+
+  const post_sign_up = () => {
+    // Prevent duplicated post
+    set_is_post_loading(true)
+
+    // Set user information json
+    const new_user_dict = {
+      user_type: "student",
+      id: id_input,
+      password: password_input,
+      email: email_input,
+      user_name: student_name_input,
+      user_phone: student_phone_input,
+      parent_name: parent_name_input,
+      parent_phone: parent_phone_input,
+      age: student_age_select,
     }
+    const new_user_json = JSON.stringify(new_user_dict)
+
+    // Post with axios
+    axios
+      .post(`${rest_api_url}/users`, new_user_json, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then(function (response) {
+        console.log(response)
+        initialize_every_input()
+
+        // Redirect to signin page
+        Router.push("/guest/signin")
+      })
+      .catch(function (error) {
+        console.error(error)
+        set_is_post_loading(false)
+      })
   }
 
   return (
     <Layout>
-      <div
-        className="max-w-lg shadow-md rounded bg-indigo-100 px-8 pt-6 pb-8 mx-auto mt-12 mb-12 flex flex-col my-2"
-        onKeyPress={press_enter_key}
-      >
-        {/* 로그인 page로 돌아가는 버튼 */}
-        <Link href="/guest/signin">
-          <img
-            src="/img/DCD_logo.png"
-            alt="logo"
-            className="w-20 mx-auto mb-5 cursor-pointer"
-          />
-        </Link>
+      <div className="flex justify-center content-center flex-wrap min-h-screen select-none">
+        <div
+          className="flex flex-col px-10 py-12 bg-white shadow-md"
+          style={{ width: "500px", height: "fit-content" }}
+        >
+          {/* 로고 */}
+          <Link href="/guest/signin">
+            <img
+              src="/img/dco_default_logo.svg"
+              className="mx-auto mb-1 cursor-pointer"
+              style={{ width: "80px" }}
+              alt="dco logo"
+            />
+          </Link>
 
-        {/* 입력 */}
-        <div className="-mx-3 md:flex mb-2">
-          <div className="md:w-full px-3">
-            <label
-              className="pl-2 uppercase tracking-wide text-grey-darker text-sm"
-              htmlFor="grid-id"
-            >
+          {/* 제목 */}
+          <h2 className="mb-8 text-center">회원가입</h2>
+
+          {/* 아이디 */}
+          <div className="mb-4">
+            <div className="flex mb-1 justify-between">
               <span>아이디</span>
-            </label>
-            <button
-              className="float-right w-20 h-5 text-xs bg-indigo-600 text-center hover:bg-indigo-500 text-white rounded focus:outline-none"
-              type="button"
-              id="btn-id-isUnique"
-              onClick={isUnique}
-            >
-              중복체크
-            </button>
-
-            <input
-              className="appearance-none block focus:outline-none w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mt-2"
-              id="grid-id"
-              type="text"
-              placeholder="아이디 입력"
-              autoComplete="off"
-            />
-            <p
-              className={`${message_color} text-xs mb-3 pl-3`}
-              id="id_alert_message"
-            >
-              {id_alert_message}
-            </p>
-          </div>
-        </div>
-        <div className="-mx-3 md:flex mb-2">
-          <div className="md:w-full px-3">
-            <label
-              className="pl-2 block uppercase tracking-wide text-grey-darker text-sm mb-2"
-              htmlFor="grid-password"
-            >
-              비밀번호
-            </label>
-            <input
-              className="appearance-none block w-full focus:outline-none bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3"
-              id="grid-password"
-              type="password"
-              placeholder="비밀번호 입력"
-            />
-            <input
-              className="appearance-none block w-full focus:outline-none bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
-              id="grid-password-isCorrect"
-              type="password"
-              placeholder="비밀번호 확인"
-            />
-            <p
-              className={`text-gray-500 text-xs mb-3 pl-3`}
-              id="id_alert_message"
-            >
-              영어, 숫자, 특수문자(_-!@#$%^&*)로 구성된 6~20자
-            </p>
-          </div>
-        </div>
-        <div className="-mx-3 md:flex mb-2">
-          <div className="md:w-full px-3">
-            <label
-              className="pl-2 block uppercase tracking-wide focus:outline-none text-grey-darker text-sm mb-2"
-              htmlFor="grid-email"
-            >
-              이메일
-            </label>
-            <input
-              className="appearance-none block focus:outline-none w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3"
-              id="grid-email"
-              type="email"
-              placeholder="abcd@mail.com"
-              autoComplete="off"
-            />
-          </div>
-        </div>
-        <div className="-mx-3 md:flex">
-          <div className="md:w-2/5 px-3 md:pr-3 mb-2">
-            <label
-              className="pl-2 block uppercase tracking-wide text-grey-darker text-sm mb-2"
-              htmlFor="grid-first-name"
-            >
-              학생 이름
-            </label>
-            <input
-              className="appearance-none block focus:outline-none w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3"
-              id="grid-name"
-              type="text"
-              placeholder="이름"
-              autoComplete="off"
-            />
-          </div>
-          <div className="md:w-3/5 px-3 mb-2">
-            <label
-              className="pl-2 block uppercase tracking-wide text-grey-darker text-sm mb-2"
-              htmlFor="grid-last-name"
-            >
-              학생 연락처
-            </label>
-            <input
-              className="appearance-none block focus:outline-none w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
-              id="grid-phone-number"
-              type="tel"
-              placeholder="숫자만 입력해주세요."
-              autoComplete="off"
-              // onKeyUp={() => {
-              //   numberCheck()
-              // }}
-            />
-          </div>
-        </div>
-        <div className="-mx-3 md:flex">
-          <div className="md:w-2/5 px-3 mb-2 ">
-            <label
-              className="pl-2 block uppercase tracking-wide text-grey-darker text-sm mb-2"
-              htmlFor="grid-parent-name"
-            >
-              학부모 이름
-            </label>
-            <input
-              className="appearance-none block focus:outline-none w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3"
-              id="grid-parent-name"
-              type="text"
-              placeholder="이름"
-              autoComplete="off"
-            />
-          </div>
-          <div className="md:w-3/5 px-3 mb-2">
-            <label
-              className="pl-2 block uppercase tracking-wide text-grey-darker text-sm mb-2"
-              htmlFor="grid-last-name"
-            >
-              학부모 연락처
-            </label>
-            <input
-              className="appearance-none block focus:outline-none w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
-              id="grid-parent-phone-number"
-              type="tel"
-              placeholder="숫자만 입력해주세요."
-              autoComplete="off"
-              // onKeyUp={() => {
-              //   numberCheckParent()
-              // }}
-            />
-          </div>
-        </div>
-
-        <div className="-mx-3 md:flex mb-2">
-          <div className="md:w-1/2 px-3">
-            <label
-              className="pl-2 block uppercase tracking-wide text-sm mb-2"
-              htmlFor="grid-state"
-            >
-              학년
-            </label>
-            <div className="relative">
-              <select
-                className="block appearance-none w-full focus:outline-none bg-grey-lighter border py-3 pl-4 pr-8 rounded"
-                id="grid-state"
+              <h5
+                className="text-color-main-1 font-bold cursor-pointer"
+                onClick={check_unique_id}
               >
-                <option>중1</option>
-                <option>중2</option>
-                <option>중3</option>
-                <option>고1</option>
-                <option>고2</option>
-                <option>고3 / N수생</option>
-                {/* <option>해당없음</option> */}
+                중복 체크
+              </h5>
+            </div>
+
+            <InputNormal
+              type="text"
+              className="mb-1"
+              placeholder="아이디 입력"
+              user_input={id_input}
+              set_user_input={set_id_input_custom}
+            />
+
+            <div className="flex gap-4 text-color-black-3">
+              <h5 className={is_checked_id() ? "text-color-main-1" : ""}>
+                &#10004; 영어,숫자,밑줄(_)로 구성된 6-20글자
+              </h5>
+              <h5 className={is_unique_id ? "text-color-main-1" : ""}>
+                &#10004; 사용 가능한 아이디
+              </h5>
+            </div>
+          </div>
+
+          {/* 비밀번호 */}
+          <div className="mb-4">
+            <div className="flex mb-1">
+              <span>비밀번호</span>
+            </div>
+
+            <InputNormal
+              type="password"
+              className="mb-1 tracking-wide"
+              placeholder="비밀번호 입력"
+              user_input={password_input}
+              set_user_input={set_password_input_custom}
+            />
+
+            <div className="flex mb-2 gap-4 text-color-black-3">
+              <h5
+                className={
+                  is_in_range(password_input) ? "text-color-main-1" : ""
+                }
+              >
+                &#10004; 6-20글자
+              </h5>
+              <h5
+                className={
+                  is_include_english(password_input) ? "text-color-main-1" : ""
+                }
+              >
+                &#10004; 영문 포함
+              </h5>
+              <h5
+                className={
+                  is_include_number(password_input) ? "text-color-main-1" : ""
+                }
+              >
+                &#10004; 숫자 포함
+              </h5>
+              <h5
+                className={
+                  is_include_special(password_input) ? "text-color-main-1" : ""
+                }
+              >
+                &#10004; 특수문자 포함(_-!@#$^&*)
+              </h5>
+            </div>
+
+            <InputNormal
+              type="password"
+              className="mb-1 tracking-wide"
+              placeholder="비밀번호 확인"
+              user_input={password2_input}
+              set_user_input={set_password2_input}
+            />
+
+            <div className="flex gap-4 text-color-black-3">
+              <h5
+                className={
+                  password_input == password2_input && 0 < password_input.length
+                    ? "text-color-main-1"
+                    : ""
+                }
+              >
+                &#10004; 비밀번호 일치
+              </h5>
+            </div>
+          </div>
+
+          {/* 이메일 */}
+          <div className="mb-4">
+            <div className="flex mb-1">
+              <span>이메일</span>
+            </div>
+
+            <InputNormal
+              type="text"
+              className="mb-1"
+              placeholder="@를 포함한 이메일 입력"
+              user_input={email_input}
+              set_user_input={set_email_input}
+            />
+
+            <div className="flex gap-4 text-color-black-3">
+              <h5 className={is_email(email_input) ? "text-color-main-1" : ""}>
+                &#10004; 이메일 형식
+              </h5>
+            </div>
+          </div>
+
+          {/* 학생 정보 */}
+          <div className="mb-4">
+            <div className="flex mb-1">
+              <span>학생 정보</span>
+            </div>
+
+            <div className="flex mb-1 gap-2 justify-between">
+              <div className="w-1/3">
+                <InputNormal
+                  type="text"
+                  className="mb-1"
+                  placeholder="이름"
+                  user_input={student_name_input}
+                  set_user_input={set_student_name_input}
+                />
+              </div>
+
+              <div className="w-2/3">
+                <InputNormal
+                  type="text"
+                  className="mb-1"
+                  placeholder="연락처"
+                  user_input={student_phone_input}
+                  set_user_input={set_student_phone_input_custom}
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end text-color-black-3">
+              <h5>숫자만 입력해 주세요</h5>
+            </div>
+
+            <div className="relative flex cursor-pointer">
+              <select
+                className="px-4 py-3 w-full outline-none focus:outline-none"
+                style={{
+                  backgroundColor: "#f4f4f4",
+                  borderRadius: "6px",
+                }}
+                onChange={(e) => {
+                  set_student_age_select_custom(e.target.value)
+                }}
+                value={student_age_select}
+              >
+                <option value="-1" disabled>
+                  학년
+                </option>
+                <option value="14">중1</option>
+                <option value="15">중2</option>
+                <option value="16">중3</option>
+                <option value="17">고1</option>
+                <option value="18">고2</option>
+                <option value="19">고3 / N수생</option>
               </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                <svg
-                  className="fill-current h-4 w-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                </svg>
+              <div className="absolute flex h-full right-0 pl-4 pr-4">
+                <img src="/img/ic_dropdown_arrow.svg" className="inline w-3" />
               </div>
             </div>
           </div>
 
-          <div className="md:w-1/2 px-3">
-            <label
-              className="pl-2 block uppercase tracking-wide text-grey-darker text-sm mb-2"
-              htmlFor="grid-state"
-            >
-              ㅤ
-            </label>
-            <button
-              id="submit-btn"
-              className="w-full bg-indigo-700 hover:bg-indigo-300 text-white font-bold py-3 px-4 mb-12 rounded focus:outline-none"
-              type="submit"
-              onClick={Submit}
-            >
-              회원가입
-            </button>
+          {/* 학부모 정보 */}
+          <div className="mb-4">
+            <div className="flex mb-1">
+              <span>학부모 정보</span>
+            </div>
+
+            <div className="flex mb-1 gap-2 justify-between">
+              <div className="w-1/3">
+                <InputNormal
+                  type="text"
+                  className="mb-1"
+                  placeholder="이름"
+                  user_input={parent_name_input}
+                  set_user_input={set_parent_name_input}
+                />
+              </div>
+
+              <div className="w-2/3">
+                <InputNormal
+                  type="text"
+                  className="mb-1"
+                  placeholder="연락처"
+                  user_input={parent_phone_input}
+                  set_user_input={set_parent_phone_input_custom}
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end text-color-black-3">
+              <h5>숫자만 입력해 주세요</h5>
+            </div>
+          </div>
+
+          {/* 회원가입 버튼 */}
+          <div className="mb-4 w-full">
+            {is_ok() ? (
+              <ButtonNormal
+                className="w-full"
+                onClick={() => {
+                  if (is_ok()) {
+                    post_sign_up()
+                  }
+                }}
+              >
+                회원가입
+              </ButtonNormal>
+            ) : (
+              <DisabledButton className="w-full">회원가입</DisabledButton>
+            )}
           </div>
         </div>
       </div>

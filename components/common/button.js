@@ -20,3 +20,19 @@ export const ButtonNormal = ({ className, onClick, children }) => {
     </>
   )
 }
+
+export const DisabledButton = ({ className, children }) => {
+  return (
+    <>
+      <button
+        className={`border py-3 border-color-black-4 text-color-black-4 font-bold focus:outline-none cursor-default ${className}`}
+        style={{
+          fontSize: "16px",
+          borderRadius: "6px",
+        }}
+      >
+        {children}
+      </button>
+    </>
+  )
+}

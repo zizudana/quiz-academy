@@ -6,7 +6,7 @@
     font-size: 24px;
     @apply font-bold;
   }
-  
+
   h2 {
     font-size: 18px;
     @apply font-bold;
@@ -49,4 +49,11 @@ body::-webkit-scrollbar {
 
 .keep-all {
   word-break: keep-all;
+}
+
+select {
+  -o-appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }

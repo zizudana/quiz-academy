@@ -6,13 +6,13 @@ import { useState, useEffect } from "react"
 import { useSession } from "next-auth/client"
 import axios from "axios"
 
-const NewQuizSetPage = () => {
+const NewQuizSetPage = ({ rest_api_url }) => {
   const [session, _] = useSession()
   const [is_loading, set_is_loading] = useState(true)
   const [is_timeover, set_is_timeover] = useState(false)
   const [new_quiz_set_id, set_new_quiz_set_id] = useState("")
 
-  const num_quiz = 15
+  const num_quiz = 5
 
   const post_quiz_set = () => {
     const new_quiz_set = {
@@ -21,11 +21,10 @@ const NewQuizSetPage = () => {
     }
 
     axios
-      .post(`https://editor-api.daechi-on.com/quiz-sets`, new_quiz_set, {
+      .post(`${rest_api_url}/quiz-sets`, new_quiz_set, {
         timeout: 5000,
       })
       .then((response) => {
-        console.log(response)
         set_new_quiz_set_id(response.data.InsertedID)
         set_is_loading(false)
       })
@@ -85,10 +84,12 @@ const NewQuizSetPage = () => {
   )
 }
 
-export function getServerSideProps() {
+const getStaticProps = () => {
   const rest_api_url = process.env.REST_API_URL
 
   return { props: { rest_api_url } }
 }
+
+export { getStaticProps }
 
 export default NewQuizSetPage

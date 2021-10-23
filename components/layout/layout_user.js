@@ -14,7 +14,7 @@ const Layout = ({ children }) => {
   useEffect(() => {
     if (!session) {
       // guest 계정
-      router.push("/")
+      router.push("/guest/signin")
     } else if (session.user.email !== "student") {
       // student가 아닌 다른 계정
       router.push("/")

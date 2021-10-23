@@ -1,10 +1,30 @@
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import axios from "axios"
-import { getSession } from "next-auth/client"
+import { useSession } from "next-auth/client"
 
 import Layout from "../../components/layout/layout_user"
 
-const QuizSetIndexPage = ({ quiz_set_arr }) => {
+const QuizSetIndexPage = ({ rest_api_url }) => {
+  const [quiz_set_arr, set_quiz_set_arr] = useState([])
+  const [session, loading] = useSession()
+
+  useEffect(() => {
+    if (session) {
+      const student_id = session.user.image
+      console.log("student id:", student_id)
+      axios
+        .get(`${rest_api_url}/quiz-sets/all/${student_id}`)
+        .then(function (response) {
+          const quiz_set_data = response.data
+          set_quiz_set_arr(quiz_set_data.quiz_set_arr)
+        })
+        .catch(function (error) {
+          console.error(error)
+        })
+    }
+  }, [session])
+
   return (
     <Layout>
       {/* 신규 문제집 신청 */}
@@ -41,64 +61,54 @@ const QuizSetIndexPage = ({ quiz_set_arr }) => {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200 text-center">
-          {quiz_set_arr &&
-            quiz_set_arr
-              .sort((a, b) => (a._id > b._id ? 1 : -1))
-              .map((quiz_set_info, index) => (
-                <Link
-                  key={`quiz-set-${index}`}
-                  href={`/user/${
-                    quiz_set_info.is_solved ? "solve" : "quiz-set"
-                  }/${quiz_set_info._id}`}
-                >
-                  <tr className="cursor-pointer hover:bg-gray-100">
-                    <td className="px-6 py-4">{index + 1}</td>
-                    <td className="px-6 py-4">
-                      {quiz_set_info.is_solved ? (
-                        <div className="text-base font-semibold text-indigo-500">
-                          SOLVED
-                        </div>
-                      ) : (
-                        <div className="text-base font-semibold text-red-500">
-                          NOT YET
-                        </div>
-                      )}
-                    </td>
-                    <td className="px-6 py-4">
-                      {quiz_set_info.is_solved ? (
-                        <div className="text-base font-semibold text-indigo-500">
-                          {quiz_set_info.num_correct} / {quiz_set_info.num_quiz}
-                        </div>
-                      ) : (
-                        <div className="text-base font-semibold text-red-500">
-                          {quiz_set_info.num_quiz}
-                        </div>
-                      )}
-                    </td>
-                  </tr>
-                </Link>
-              ))}
+          {quiz_set_arr
+            .sort((a, b) => (a._id > b._id ? 1 : -1))
+            .map((quiz_set_info, index) => (
+              <Link
+                key={`quiz-set-${index}`}
+                href={`/user/${
+                  quiz_set_info.is_solved ? "solve" : "quiz-set"
+                }/${quiz_set_info._id}`}
+              >
+                <tr className="cursor-pointer hover:bg-gray-100">
+                  <td className="px-6 py-4">{index + 1}</td>
+                  <td className="px-6 py-4">
+                    {quiz_set_info.is_solved ? (
+                      <div className="text-base font-semibold text-indigo-500">
+                        SOLVED
+                      </div>
+                    ) : (
+                      <div className="text-base font-semibold text-red-500">
+                        NOT YET
+                      </div>
+                    )}
+                  </td>
+                  <td className="px-6 py-4">
+                    {quiz_set_info.is_solved ? (
+                      <div className="text-base font-semibold text-indigo-500">
+                        {quiz_set_info.num_correct} / {quiz_set_info.num_quiz}
+                      </div>
+                    ) : (
+                      <div className="text-base font-semibold text-red-500">
+                        {quiz_set_info.num_quiz}
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              </Link>
+            ))}
         </tbody>
       </table>
     </Layout>
   )
 }
 
-export async function getServerSideProps(context) {
-  const session = await getSession(context)
-  const student_id = session.user.image
-  const quiz_set_res = await axios.get(
-    `https://editor-api.daechi-on.com/quiz-sets/all/${student_id}`
-  )
-  const quiz_set_all_data = quiz_set_res.data
-  const quiz_set_arr = quiz_set_all_data.quiz_set_arr
+const getStaticProps = () => {
+  const rest_api_url = process.env.REST_API_URL
 
-  return {
-    props: {
-      student_id: student_id,
-      quiz_set_arr: quiz_set_arr,
-    },
-  }
+  return { props: { rest_api_url } }
 }
+
+export { getStaticProps }
 
 export default QuizSetIndexPage

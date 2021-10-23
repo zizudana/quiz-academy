@@ -37,11 +37,14 @@ const Layout = ({ children }) => {
       <>
         <Head>
           <title>대치동 온라인</title>
-          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+          />
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <main className="container mx-auto mb-5">
+        <main className="container mx-auto mb-5 select-none">
           <motion.div
             initial="pageInitial"
             animate="pageAnimate"

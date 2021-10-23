@@ -36,7 +36,7 @@ const IndexPage = () => {
 
   return (
     <Layout>
-      <div className="flex justify-center content-center flex-wrap min-h-screen select-none">
+      <div className="flex justify-center content-center flex-wrap min-h-screen">
         <div
           className="flex flex-col px-10 py-12 bg-white shadow-md"
           style={{ width: "400px", height: "fit-content" }}

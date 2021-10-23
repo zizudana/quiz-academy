@@ -43,7 +43,7 @@ const Layout = ({ children }) => {
 
       <Nav session={session} />
 
-      <main className="container mx-auto mb-5">
+      <main className="container mx-auto mb-5 select-none">
         <motion.div
           initial="pageInitial"
           animate="pageAnimate"

@@ -5835,25 +5835,6 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"next-academy@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "next-academy@workspace:."
-  dependencies:
-    axios: ^0.20.0
-    bcryptjs: ^2.4.3
-    framer-motion: ^2.7.1
-    next: latest
-    next-auth: ^3.1.0
-    postcss-flexbugs-fixes: 4.2.1
-    postcss-preset-env: ^6.7.0
-    react: ^16.6.0
-    react-dom: ^16.13.1
-    react-select: ^3.1.0
-    styled-jsx: ^4.0.1
-    tailwindcss: ^1.7.4
-  languageName: unknown
-  linkType: soft
-
 "next-auth@npm:^3.1.0":
   version: 3.1.0
   resolution: "next-auth@npm:3.1.0"
@@ -7191,6 +7172,25 @@ next@latest:
   checksum: 8258d6734f19be27e93f601758858c299bdebe71147909e367101ba459b95446fbe5b975bf9beb76390156a592b6f4ac3a68b6087cea165c259705b8b4e56a69
   languageName: node
   linkType: hard
+
+"quiz-front@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "quiz-front@workspace:."
+  dependencies:
+    axios: ^0.20.0
+    bcryptjs: ^2.4.3
+    framer-motion: ^2.7.1
+    next: latest
+    next-auth: ^3.1.0
+    postcss-flexbugs-fixes: 4.2.1
+    postcss-preset-env: ^6.7.0
+    react: ^16.6.0
+    react-dom: ^16.13.1
+    react-select: ^3.1.0
+    styled-jsx: ^4.0.1
+    tailwindcss: ^1.7.4
+  languageName: unknown
+  linkType: soft
 
 "randombytes@npm:^2.0.0, randombytes@npm:^2.0.1, randombytes@npm:^2.0.5, randombytes@npm:^2.1.0":
   version: 2.1.0

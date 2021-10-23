@@ -4,6 +4,7 @@ import axios from "axios"
 import { useSession } from "next-auth/client"
 
 import Layout from "../../components/layout/layout_user"
+import { ButtonNormal } from "../../components/common/button"
 
 const QuizSetIndexPage = ({ rest_api_url }) => {
   const [quiz_set_arr, set_quiz_set_arr] = useState([])
@@ -25,42 +26,48 @@ const QuizSetIndexPage = ({ rest_api_url }) => {
     }
   }, [session])
 
+  if (loading) {
+    return <Layout></Layout>
+  }
+
   return (
     <Layout>
       {/* 신규 문제집 신청 */}
-      <div className="flex justify-center">
+      <div className="flex items-center justify-between mt-8 mb-4">
+        <h1 className="flex">
+          <img src="/img/ic_subject_big.svg" className="mr-2" alt="book" />
+          문제집 목록
+        </h1>
         <Link href="/user/new-quiz-set">
-          <a className="inline-flex items-center my-6 px-6 py-2 rounded-md bg-indigo-500 hover:bg-indigo-600 text-white focus:outline-none cursor-pointer">
-            신규 문제집
-          </a>
+          <ButtonNormal className="px-4 py-2">문제집 추가</ButtonNormal>
         </Link>
       </div>
 
       {/* 기존에 받은 문제집 */}
-      <table className="min-w-full divide-y divide-gray-200 select-none">
+      <table className="w-full divide-y divide-gray-400 border border-color-black-4">
         <thead className="bg-gray-50">
           <tr>
             <th
               scope="col"
-              className="px-6 py-3 text-xs font-light text-gray-500 uppercase tracking-wider"
+              className="py-3 text-md font-bold uppercase tracking-widest"
             >
-              index
+              Index
             </th>
             <th
               scope="col"
-              className="px-6 py-3 text-xs font-light text-gray-500 uppercase tracking-wider"
+              className="py-3 text-md font-bold uppercase tracking-widest"
             >
               Solved
             </th>
             <th
               scope="col"
-              className="px-6 py-3 text-xs font-light text-gray-500 uppercase tracking-wider"
+              className="py-3 text-md font-bold uppercase tracking-widest"
             >
               Score
             </th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200 text-center">
+        <tbody className="divide-y divide-gray-400 text-center">
           {quiz_set_arr
             .sort((a, b) => (a._id > b._id ? 1 : -1))
             .map((quiz_set_info, index) => (
@@ -70,26 +77,22 @@ const QuizSetIndexPage = ({ rest_api_url }) => {
                   quiz_set_info.is_solved ? "solve" : "quiz-set"
                 }/${quiz_set_info._id}`}
               >
-                <tr className="cursor-pointer hover:bg-gray-100">
-                  <td className="px-6 py-4">{index + 1}</td>
-                  <td className="px-6 py-4">
+                <tr className="cursor-pointer hover:bg-white">
+                  <td className="py-4">{index + 1}</td>
+                  <td className="py-4">
                     {quiz_set_info.is_solved ? (
-                      <div className="text-base font-semibold text-indigo-500">
-                        SOLVED
-                      </div>
+                      <div className="text-base text-indigo-500">SOLVED</div>
                     ) : (
-                      <div className="text-base font-semibold text-red-500">
-                        NOT YET
-                      </div>
+                      <div className="text-base text-red-500">NOT YET</div>
                     )}
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="py-4">
                     {quiz_set_info.is_solved ? (
-                      <div className="text-base font-semibold text-indigo-500">
+                      <div className="text-base text-indigo-500">
                         {quiz_set_info.num_correct} / {quiz_set_info.num_quiz}
                       </div>
                     ) : (
-                      <div className="text-base font-semibold text-red-500">
+                      <div className="text-base text-red-500">
                         {quiz_set_info.num_quiz}
                       </div>
                     )}

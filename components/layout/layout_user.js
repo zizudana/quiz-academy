@@ -22,7 +22,11 @@ const Layout = ({ children }) => {
   }, [session])
 
   if (loading) {
-    return <main>loading</main>
+    return <main></main>
+  }
+
+  if (!session) {
+    return <main></main>
   }
 
   // student 계정
@@ -37,7 +41,7 @@ const Layout = ({ children }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Nav />
+      <Nav session={session} />
 
       <main className="container mx-auto mb-5">
         <motion.div

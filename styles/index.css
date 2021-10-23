@@ -12,6 +12,10 @@
     @apply font-bold;
   }
 
+  h3 {
+    font-size: 18px;
+  }
+
   h5 {
     font-size: 12px;
   }

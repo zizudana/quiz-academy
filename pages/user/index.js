@@ -13,7 +13,6 @@ const QuizSetIndexPage = ({ rest_api_url }) => {
   useEffect(() => {
     if (session) {
       const student_id = session.user.image
-      console.log("student id:", student_id)
       axios
         .get(`${rest_api_url}/quiz-sets/all/${student_id}`)
         .then(function (response) {
@@ -30,6 +29,10 @@ const QuizSetIndexPage = ({ rest_api_url }) => {
     return <Layout></Layout>
   }
 
+  if (!session) {
+    return <Layout></Layout>
+  }
+
   return (
     <Layout>
       {/* 신규 문제집 신청 */}
@@ -39,7 +42,9 @@ const QuizSetIndexPage = ({ rest_api_url }) => {
           문제집 목록
         </h1>
         <Link href="/user/new-quiz-set">
-          <ButtonNormal className="px-4 py-2">문제집 추가</ButtonNormal>
+          <div>
+            <ButtonNormal className="px-4 py-2">문제집 추가</ButtonNormal>
+          </div>
         </Link>
       </div>
 

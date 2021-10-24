@@ -149,7 +149,7 @@ const QuizSetPage = ({ rest_api_url }) => {
           router.push(`/user/solve/${quiz_set_data._id}`)
         })
         .catch((error) => {
-          console.log(error)
+          console.error(error)
           alert(
             "제출에 문제가 발생했습니다.\n" +
               "관리자에게 문의해주세요.\n" +
@@ -171,7 +171,7 @@ const QuizSetPage = ({ rest_api_url }) => {
         </style>
 
         {/* 문제 제목 */}
-        <div className="mx-auto pt-5">
+        <div className="mx-auto pt-6">
           <h2 className="text-center text-color-black-1 mb-4">
             {solving_number + 1}번 문제
           </h2>

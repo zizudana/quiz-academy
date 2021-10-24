@@ -177,7 +177,7 @@ const QuizSetPage = ({ rest_api_url }) => {
           </h2>
         </div>
 
-        <div className="flex justify-between">
+        <div className="flex mb-32 px-4 justify-between">
           <div className="w-24" />
 
           {/* 문제 */}
@@ -219,9 +219,7 @@ const QuizSetPage = ({ rest_api_url }) => {
                 제출
               </ButtonNormal>
             ) : (
-              <DisabledButton className="w-full">
-                제출
-              </DisabledButton>
+              <DisabledButton className="w-full">제출</DisabledButton>
             )}
           </div>
         </div>
@@ -230,36 +228,36 @@ const QuizSetPage = ({ rest_api_url }) => {
           <div className="grid grid-cols-4 gap-3 px-5 h-full">
             <div className="col-span-1 flex justify-start items-center">
               {/* button : 이전 문제 */}
-              <button
-                className="bg-gray-300 hover:bg-gray-400 h-12 text-gray-800 px-4 rounded flex items-center"
+              <ButtonNormal
+                className="flex px-4 h-12 items-center"
                 onClick={move_to_previous_number}
               >
                 <span className="hidden sm:block keep-all">이전 문제</span>
                 <CircleLeftSVG className="fill-current w-6 h-6 ml-1" />
-              </button>
+              </ButtonNormal>
             </div>
 
             <div className="col-span-2 flex justify-center items-center gap-4">
               {answer_button_array.map((button_index, index) => (
-                <button
+                <ButtonNormal
                   key={index}
-                  className="z-10 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
+                  className="px-4"
                   onClick={() => select_answer(button_index)}
                 >
                   {button_index}
-                </button>
+                </ButtonNormal>
               ))}
             </div>
 
             <div className="col-span-1 flex justify-end items-center">
               {/* button : 다음 문제 */}
-              <button
-                className="bg-gray-300 hover:bg-gray-400 h-12 text-gray-800 px-4 rounded flex items-center"
+              <ButtonNormal
+                className="flex px-4 h-12 items-center"
                 onClick={move_to_next_number}
               >
                 <CircleRightSVG className="fill-current w-6 h-6 mr-1" />
                 <span className="hidden sm:block keep-all">다음 문제</span>
-              </button>
+              </ButtonNormal>
             </div>
           </div>
         </div>

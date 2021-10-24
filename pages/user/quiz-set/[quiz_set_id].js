@@ -1,12 +1,13 @@
+import { useState, useEffect } from "react"
+import axios from "axios"
+import { useRouter } from "next/router"
+
 import Layout from "../../../components/layout/layout_user"
 import Preview from "../../../components/quiz/preview"
 import TailSpinSVG from "../../../components/svg/tail-spin"
 import CircleLeftSVG from "../../../components/svg/circle-left"
 import CircleRightSVG from "../../../components/svg/circle-right"
-
-import { useState, useEffect } from "react"
-import axios from "axios"
-import { useRouter } from "next/router"
+import { ButtonNormal, DisabledButton } from "../../../components/common/button"
 
 const QuizSetPage = ({ rest_api_url }) => {
   const router = useRouter()
@@ -186,7 +187,7 @@ const QuizSetPage = ({ rest_api_url }) => {
 
           {/* 답지 */}
           <div className="w-24">
-            <table className="mb-2 border-collapse border w-full">
+            <table className="mb-4 border w-full bg-white shadow">
               <tbody>
                 {selected_answer_list.map((answer_number, index) => (
                   <tr
@@ -199,7 +200,9 @@ const QuizSetPage = ({ rest_api_url }) => {
                       {index + 1}번
                     </td>
                     {answer_number === 0 ? (
-                      <td className="border px-2 text-center bg-red-200" />
+                      <td className="border px-2 text-center bg-color-main-3">
+                        &nbsp;&nbsp;
+                      </td>
                     ) : (
                       <td className="border px-2 text-center">
                         {answer_number}
@@ -211,13 +214,14 @@ const QuizSetPage = ({ rest_api_url }) => {
             </table>
 
             {/* 제출 버튼 */}
-            {is_solved() && (
-              <button
-                className="flex items-center mx-auto rounded px-4 py-2 bg-indigo-500 hover:bg-indigo-700 text-white"
-                onClick={post_solving_info}
-              >
+            {is_solved() ? (
+              <ButtonNormal className="w-full" onClick={post_solving_info}>
                 제출
-              </button>
+              </ButtonNormal>
+            ) : (
+              <DisabledButton className="w-full">
+                제출
+              </DisabledButton>
             )}
           </div>
         </div>

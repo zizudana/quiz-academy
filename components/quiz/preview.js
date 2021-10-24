@@ -1,6 +1,4 @@
-const Preview = ({ quiz_content }) => {
-  // TODO quiz_content로 사진 불러오기
-
+const Preview = ({ rest_api_url, quiz_content }) => {
   // special token 목록 생성 [ 0 ~ 9, +, - ]
   let special_token_list = ["+", "-"]
   for (const x of Array(10).keys()) {
@@ -47,7 +45,7 @@ const Preview = ({ quiz_content }) => {
 
     preview_html = preview_html.replaceAll(
       `[[`,
-      `<img class="p-4 max-h-56 mx-auto" src="https://editor-api.daechi-on.com/files/quizset/${quiz_content.quiz_id}/`
+      `<img class="p-4 max-h-56 mx-auto" src="${rest_api_url}/files/quizset/${quiz_content.quiz_id}/`
     )
     preview_html = preview_html.replaceAll(`]]`, `" />`)
 

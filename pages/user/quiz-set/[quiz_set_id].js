@@ -181,7 +181,7 @@ const QuizSetPage = ({ rest_api_url }) => {
 
           {/* 문제 */}
           <div className="px-8 py-6 bg-white shadow">
-            <Preview quiz_content={quiz_content} />
+            <Preview rest_api_url={rest_api_url} quiz_content={quiz_content} />
           </div>
 
           {/* 답지 */}

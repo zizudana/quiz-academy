@@ -195,7 +195,7 @@ const SolvePage = () => {
         {/* 문제 & 풀이 */}
         <div>
           {/* 문제 */}
-          <Preview quiz_content={quiz_content} />
+          <Preview rest_api_url={rest_api_url} quiz_content={quiz_content} />
 
           {/* 구분선 */}
           <hr className="my-6 border-gray-800 w-full" />
@@ -205,7 +205,10 @@ const SolvePage = () => {
           </p>
 
           {/* 풀이 */}
-          <Preview quiz_content={solution_content_array[checking_number]} />
+          <Preview
+            rest_api_url={rest_api_url}
+            quiz_content={solution_content_array[checking_number]}
+          />
         </div>
 
         {/* 답지 */}

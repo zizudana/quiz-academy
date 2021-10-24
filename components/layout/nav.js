@@ -5,7 +5,7 @@ const Nav = ({ session }) => {
   return (
     <>
       <div
-        className="flex items-center justify-center bg-white select-none"
+        className="flex px-8 items-center justify-center bg-white select-none"
         style={{ height: "100px", boxShadow: "0px 1px 3px #00000014" }}
       >
         <div className="container flex items-center justify-between h-full">

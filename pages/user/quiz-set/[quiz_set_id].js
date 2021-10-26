@@ -28,7 +28,6 @@ const QuizSetPage = ({ rest_api_url }) => {
 
   const Loading = () => (
     <div className="flex flex-col flex-wrap content-center justify-center h-screen">
-      {/* Loading */}
       <div className="mx-auto">
         <TailSpinSVG className="w-20" fill="#000" />
       </div>

@@ -1,0 +1,63 @@
+@tailwind base;
+
+/* Write your own custom base styles here */
+@layer base {
+  h1 {
+    font-size: 24px;
+    @apply font-bold;
+  }
+
+  h2 {
+    font-size: 18px;
+    @apply font-bold;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+
+  h5 {
+    font-size: 12px;
+  }
+}
+
+/* Start purging... */
+@tailwind components;
+/* Stop purging. */
+
+/* Start purging... */
+@tailwind utilities;
+/* Stop purging. */
+
+/* Your own custom utilities */
+
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap");
+
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 14px;
+
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+
+  background-color: #f8f8f8;
+}
+
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+
+::placeholder {
+  font-weight: 400;
+}
+
+.keep-all {
+  word-break: keep-all;
+}
+
+select {
+  -o-appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}

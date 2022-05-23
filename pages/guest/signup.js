@@ -283,7 +283,7 @@ const SignUp = ({ rest_api_url }) => {
           {/* 로고 */}
           <Link href="/guest/signin">
             <img
-              src="/img/dco_default_logo.svg"
+              src="/img/dco_default_logo2.png"
               className="mx-auto mb-1 cursor-pointer"
               style={{ width: "80px" }}
               alt="dco logo"

@@ -15,7 +15,7 @@ const IndexPage = () => {
       <div className="my-8" />
       <div className="flex flex-col">
         <img
-          src="/img/DCD_logo_full_white.png"
+          src="/img/DCD_logo_full_white2.png"
           alt="DCD_logo_full_white"
           className="w-full sm:w-4/5 lg:w-1/2 px-2 md:px-0 mx-auto"
         />

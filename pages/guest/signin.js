@@ -43,7 +43,7 @@ const IndexPage = () => {
         >
           {/* 로고 */}
           <img
-            src="/img/dco_vertical.svg"
+            src="/img/dco_vertical2.png"
             className="mx-auto mb-8"
             style={{ width: "216px" }}
             alt="dco logo"

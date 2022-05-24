@@ -13,7 +13,7 @@ const Nav = ({ session }) => {
             <Link href="/user">
               <a className="flex items-center">
                 <img
-                  src="/img/dco_default.svg"
+                  src="/img/dco_default2.png"
                   alt="logo"
                   style={{ width: "184px" }}
                 />
@@ -21,13 +21,6 @@ const Nav = ({ session }) => {
             </Link>
           </div>
           {/*비디오 추가*/}
-          <div className="flex items-center">
-            <Link href="/user/video">
-              <h3>
-                강의 듣기
-              </h3>
-            </Link>
-          </div>
           <div className="flex items-center">
             <img
               src="/img/ic_teacher_big.svg"

@@ -35,11 +35,51 @@ const QuizSetIndexPage = ({ rest_api_url }) => {
 
   return (
     <Layout>
+      {/*강의듣기 추가*/}
+      <div className="flex items-center justify-between mt-8 mb-4">
+        <h1 className="flex">
+          <img src="/img/ic_subject_big.svg" className="mr-2" alt="book" />
+          동영상 강의
+        </h1>
+        <Link href="/user/video">
+          <div>
+            <ButtonNormal className="px-4 py-2">강의 듣기</ButtonNormal>
+          </div>
+        </Link>
+      </div>
+      {/*강의 목록 테이블*/}
+      <table className="w-full divide-y divide-gray-400 border border-color-black-4">
+        <thead className="bg-gray-50">
+          <tr>
+            <th
+              scope="col"
+              className="py-3 text-md font-bold uppercase tracking-widest"
+            >
+              Date
+            </th>
+            <th
+              scope="col"
+              className="py-3 text-md font-bold uppercase tracking-widest"
+            >
+              Chapter
+            </th>
+            <th
+              scope="col"
+              className="py-3 text-md font-bold uppercase tracking-widest"
+            >
+              Rate
+            </th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-gray-400 text-center">
+          
+        </tbody>
+      </table>
       {/* 신규 문제집 신청 */}
       <div className="flex items-center justify-between mt-8 mb-4">
         <h1 className="flex">
           <img src="/img/ic_subject_big.svg" className="mr-2" alt="book" />
-          문제집 목록
+          문제 풀이
         </h1>
         <Link href="/user/new-quiz-set">
           <div>

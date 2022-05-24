@@ -8,7 +8,7 @@ const IndexPage = () => {
     <Layout>
       <style jsx global>{`
         body {
-          background-color: #1e1651;
+          background-color: #000000;
         }
       `}</style>
 

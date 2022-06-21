@@ -47,6 +47,7 @@ const QuizSetIndexPage = ({ rest_api_url }) => {
           </div>
         </Link>
       </div>
+      
       {/*강의 목록 테이블*/}
       <table className="w-full divide-y divide-gray-400 border border-color-black-4">
         <thead className="bg-gray-50">
@@ -72,9 +73,26 @@ const QuizSetIndexPage = ({ rest_api_url }) => {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-400 text-center">
-          
+          {
+          <tr className="cursor-pointer hover:bg-white">
+            <td className="py-4">{1}</td>
+            <td className="py-4">
+              {
+                <div className="text-base text-indigo-500">ENDED</div>
+              }
+            </td>
+            <td className="py-4">
+              { 
+                <div className="text-base text-red-500">
+
+                </div>
+              }
+            </td>
+          </tr>
+          }
         </tbody>
       </table>
+    
       {/* 신규 문제집 신청 */}
       <div className="flex items-center justify-between mt-8 mb-4">
         <h1 className="flex">

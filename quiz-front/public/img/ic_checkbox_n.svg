@@ -1,7 +1,0 @@
-<svg id="ic_checkbox_n" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
-  <g id="타원_351" data-name="타원 351" fill="none" stroke="#4460e3" stroke-width="1">
-    <circle cx="7" cy="7" r="7" stroke="none"/>
-    <circle cx="7" cy="7" r="6.5" fill="none"/>
-  </g>
-  <path id="Checkbox" d="M3.745,6.118,1,3.373l.651-.651L3.745,4.769,7.514,1l.651.651Z" transform="translate(2.5 3.735)" fill="#4460e3"/>
-</svg>

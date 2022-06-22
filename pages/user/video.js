@@ -6,18 +6,19 @@ import { useState, useEffect, useCallback } from "react"
 import { useSession } from "next-auth/client"
 import axios from "axios"
 import Vimeo from "@u-wave/react-vimeo";
+import React, { useContext } from 'react'
+import { VideoContext } from "."
 
 const VideoPage = () => {
   const [session, _] = useSession()
   const [is_loading, set_is_loading] = useState(true)
-  const [video_set_data, set_video_set_data] = useState(false)
-  const myCallback = () => {console.log("Video has ended")}
+  const myCallback = () => {useContext(VideoContext).is_ended=true}
 
   return (
     <Layout>
       <div className="flex flex-col flex-wrap content-center justify-center h-screen">
         <Vimeo
-          video="https://player.vimeo.com/video/713143205?h=db7937585c"
+          video= { useContext(VideoContext).src }
           autoplay
           width="854"
           height="480"

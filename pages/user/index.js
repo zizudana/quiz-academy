@@ -1,10 +1,34 @@
-import { useState, useEffect } from "react"
+import React, { useState, useEffect, useReducer, useContext } from "react"
 import Link from "next/link"
 import axios from "axios"
 import { useSession } from "next-auth/client"
 
 import Layout from "../../components/layout/layout_user"
 import { ButtonNormal } from "../../components/common/button"
+
+export const VideoContext = React.createContext(
+  {
+    src: "https://player.vimeo.com/video/713143205?h=db7937585c",
+    is_ended: false,
+    name: "Chapter1. Apple"
+  }
+)
+
+/*}
+function Video() {
+  return (
+    <VideoContext.Provider value={dispatch}>
+      <CreateVideo
+        src={"https://player.vimeo.com/video/713143205?h=db7937585c"}
+        is_ended={true}
+        name={"Chapter1. Apple"}
+      />
+    </VideoContext.Provider>
+  )
+  }
+
+export { Video }
+*/
 
 const QuizSetIndexPage = ({ rest_api_url }) => {
   const [quiz_set_arr, set_quiz_set_arr] = useState([])
@@ -41,11 +65,6 @@ const QuizSetIndexPage = ({ rest_api_url }) => {
           <img src="/img/ic_subject_big.svg" className="mr-2" alt="book" />
           동영상 강의
         </h1>
-        <Link href="/user/video">
-          <div>
-            <ButtonNormal className="px-4 py-2">강의 듣기</ButtonNormal>
-          </div>
-        </Link>
       </div>
       
       {/*강의 목록 테이블*/}
@@ -56,7 +75,7 @@ const QuizSetIndexPage = ({ rest_api_url }) => {
               scope="col"
               className="py-3 text-md font-bold uppercase tracking-widest"
             >
-              Date
+              Index
             </th>
             <th
               scope="col"
@@ -68,27 +87,27 @@ const QuizSetIndexPage = ({ rest_api_url }) => {
               scope="col"
               className="py-3 text-md font-bold uppercase tracking-widest"
             >
-              Rate
+              Ended
             </th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-400 text-center">
           {
-          <tr className="cursor-pointer hover:bg-white">
-            <td className="py-4">{1}</td>
-            <td className="py-4">
-              {
-                <div className="text-base text-indigo-500">ENDED</div>
-              }
-            </td>
-            <td className="py-4">
-              { 
-                <div className="text-base text-red-500">
-
+          <Link href="/user/video">
+            <tr className="cursor-pointer hover:bg-white">
+              <td className="py-4">1</td>
+              <td className="py-4">
+                <div className="text-base text-indigo-500">
+                  {useContext(VideoContext).name}
                 </div>
-              }
-            </td>
-          </tr>
+              </td>
+              <td className="py-4">
+                {useContext(VideoContext).is_ended ? (
+                <div className="text-base text-indigo-500">ENDED</div>) : (<div className="text-base text-red-500">NOT YET</div>)
+                }
+              </td>
+            </tr>
+          </Link>
           }
         </tbody>
       </table>
@@ -169,6 +188,8 @@ const QuizSetIndexPage = ({ rest_api_url }) => {
   )
 }
 
+
+
 const getStaticProps = () => {
   const rest_api_url = process.env.REST_API_URL
 
@@ -176,5 +197,4 @@ const getStaticProps = () => {
 }
 
 export { getStaticProps }
-
 export default QuizSetIndexPage

@@ -1,19 +1,43 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/router"
 import axios from "axios"
-
+import Link from "next/link"
 import Layout from "../../../components/layout/layout_user"
 import Preview from "../../../components/quiz/solve-preview"
 import TailSpinSVG from "../../../components/svg/tail-spin"
 import CircleLeftSVG from "../../../components/svg/circle-left"
 import CircleRightSVG from "../../../components/svg/circle-right"
 import { ButtonNormal } from "../../../components/common/button"
+import { session } from "next-auth/client"
+import { useSession } from "next-auth/client"
 
 const SolvePage = ({ rest_api_url }) => {
   const router = useRouter()
+  const [session, _] = useSession()
   const { quiz_solving_id } = router.query
-
+  const [is_loading, set_is_loading] = useState(true)
   const [quiz_solving, set_quiz_solving] = useState(null)
+
+  const post_wrong_content = (quiz_id) =>{
+	const new_wrong_content = {
+		student_id: session.user.image,
+		chpater: 1,
+		quiz_id: quiz_id,
+		number: 1,
+	}
+	console.log("Dfdf", new_wrong_content)
+	axios
+      .post(`${rest_api_url}/wrongcontents`, new_wrong_content, {
+        timeout: 5000,
+      })
+      .then((response) => {
+        set_is_loading(false)
+      })
+      .catch((error) => {
+        alert(error)
+      })
+ }
+
 
   useEffect(() => {
     axios
@@ -40,6 +64,7 @@ const SolvePage = ({ rest_api_url }) => {
     const [quiz_set, set_quiz_set] = useState(null)
     const [solution_content_array, set_solution_content_array] = useState(null)
 
+
     useEffect(() => {
       get_quiz_set(quiz_solving.quiz_set_id)
       get_solution_content_array(quiz_solving.quiz_set_id)
@@ -59,7 +84,10 @@ const SolvePage = ({ rest_api_url }) => {
         quiz_solving.answer_array.map((answer_number, index) => {
           if (answer_number === solution_content_array[index].answer) {
             correct_count += 1
-          }
+          }else if(answer_number !== solution_content_array[index].answer){
+				post_wrong_content(quiz_set.quiz_content_id_arr[index])
+				//////////////////////
+			 }
           updated_quiz_set = {
             ...quiz_set,
             num_correct: correct_count,
@@ -233,6 +261,17 @@ const SolvePage = ({ rest_api_url }) => {
               </div>
             )}
           </div>
+{/* /////////////////////////////////////////////////////////////////////////////////////////////////// */ }
+			<div className="flex items-center justify-between mt-8 mb-4">
+				{quiz_set &&(
+					<p> 아이디 : {quiz_set.quiz_content_id_arr[checking_number]}</p>
+					
+				)}
+		  		<Link href="/user/wrong">
+            	<ButtonNormal className="px-4 py-2">오답노트로 가기</ButtonNormal> 
+        		</Link>
+      	</div>
+{/* ////////////////////////////////////quiz_solving_id는 quiz_set_id /////////////////////////////////////////////////////////// */ }
 
           {/* 답지 */}
           <div className="w-24">
@@ -283,24 +322,28 @@ const SolvePage = ({ rest_api_url }) => {
           <div className="grid grid-cols-2 px-5 h-full">
             <div className="col-span-1 flex justify-start items-center">
               {/* button : 이전 문제 */}
+				  {checking_number != 0?
               <ButtonNormal
                 className="flex px-4 h-12 items-center"
                 onClick={move_to_previous_number}
               >
                 <span className="hidden sm:block keep-all">이전 문제</span>
                 <CircleLeftSVG className="fill-current w-6 h-6 ml-1" />
-              </ButtonNormal>
+              </ButtonNormal> : null
+  					}	
             </div>
 
             <div className="col-span-1 flex justify-end items-center">
               {/* button : 다음 문제 */}
+				  {checking_number < 19?
               <ButtonNormal
                 className="flex px-4 h-12 items-center"
                 onClick={move_to_next_number}
               >
                 <CircleRightSVG className="fill-current w-6 h-6 mr-1" />
                 <span className="hidden sm:block keep-all">다음 문제</span>
-              </ButtonNormal>
+              </ButtonNormal> : null
+  					}
             </div>
           </div>
         </div>

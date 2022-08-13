@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useReducer, useContext } from "react"
 import Link from "next/link"
+//import {Link } from "react-router-dom"
+
 import axios from "axios"
 import { useSession } from "next-auth/client"
 
 import Layout from "../../components/layout/layout_user"
 import { ButtonNormal } from "../../components/common/button"
 
+import {BrowserRouter, Route} from "react-router-dom"
+import NewQuizSetPage from "./new-quiz-set"
 
 export const VideoContext = React.createContext(
   {
@@ -36,6 +40,7 @@ const QuizSetIndexPage = ({ rest_api_url }) => {
   const [quiz_set_arr, set_quiz_set_arr] = useState([])
   const [session, loading] = useSession()
 
+  
   useEffect(() => {
     if (session) {
       const student_id = session.user.image
@@ -122,10 +127,23 @@ const QuizSetIndexPage = ({ rest_api_url }) => {
         </h1>
         <Link href="/user/new-quiz-set">
           <div>
-            <ButtonNormal className="px-4 py-2">문제집 추가</ButtonNormal>
+            <ButtonNormal className="px-4 py-2">1장 문제집 추가</ButtonNormal>
           </div>
         </Link>
+		  <Link href={{
+				pathname: "/user/new-quiz-set",
+				state : {
+					chapter : 1
+				}
+		  }}>
+          <div>
+            <ButtonNormal className="px-4 py-2">2장 문제집 추가</ButtonNormal>
+          </div>
+			 
+        </Link>
+		  
       </div>
+		
 
       {/* 기존에 받은 문제집 */}
       <table className="w-full divide-y divide-gray-400 border border-color-black-4">
@@ -186,6 +204,58 @@ const QuizSetIndexPage = ({ rest_api_url }) => {
             ))}
         </tbody>
       </table>
+
+		{/*오답노트*/}
+      <div className="flex items-center justify-between mt-8 mb-4">
+        <h1 className="flex">
+          <img src="/img/ic_subject_big.svg" className="mr-2" alt="book" />
+			 오답노트
+        </h1>
+      </div>
+      
+      {/*오답노트 목록*/}
+      <table className="w-full divide-y divide-gray-400 border border-color-black-4">
+        <thead className="bg-gray-50">
+          <tr>
+            <th
+              scope="col"
+              className="py-3 text-md font-bold uppercase tracking-widest"
+            >
+              Index
+            </th>
+            <th
+              scope="col"
+              className="py-3 text-md font-bold uppercase tracking-widest"
+            >
+              Chapter
+            </th>
+            <th
+              scope="col"
+              className="py-3 text-md font-bold uppercase tracking-widest"
+            >
+              Ended
+            </th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-gray-400 text-center">
+          {
+          <Link href="/user/wrong">
+            <tr className="cursor-pointer hover:bg-white">
+              <td className="py-4">1</td>
+              <td className="py-4">
+                <div className="text-base text-indigo-500">
+                  {useContext(VideoContext).name}
+                </div>
+              </td>
+              
+            </tr>
+          </Link>
+          }
+        </tbody>
+      </table>					
+
+
+
     </Layout>
   )
 }
@@ -195,7 +265,7 @@ const QuizSetIndexPage = ({ rest_api_url }) => {
 const getStaticProps = () => {
   const rest_api_url = process.env.REST_API_URL
 
-  return { props: { rest_api_url } }
+  return { props: { rest_api_url}}
 }
 
 export { getStaticProps }

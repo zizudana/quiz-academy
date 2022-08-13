@@ -66,6 +66,7 @@ func main() {
 	initQuizSolving(e)
 	initSolutionContent(e)
 	initQuizSet(e)
+	initWrongContent(e)
 
 	// Start server
 	e.Logger.Fatal(e.Start(":1323"))

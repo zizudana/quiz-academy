@@ -12,6 +12,7 @@ type quizSetStruct struct {
 	StudentID        primitive.ObjectID   `json:"student_id" bson:"student_id"`
 	Title            string               `json:"title" bson:"title"`
 	NumQuiz          int64                `json:"num_quiz" bson:"num_quiz"`
+	Chapter          int64                `json:"chapter" bson:"chapter"`
 	NumCorrect       int64                `json:"num_correct" bson:"num_correct"`
 	IsSolved         bool                 `json:"is_solved" bson:"is_solved"`
 	IsAlive          bool                 `json:"is_alive" bson:"is_alive"`
@@ -23,6 +24,7 @@ type quizSetStructWithObjectID struct {
 	StudentID        primitive.ObjectID   `json:"student_id" bson:"student_id"`
 	Title            string               `json:"title" bson:"title"`
 	NumQuiz          int64                `json:"num_quiz" bson:"num_quiz"`
+	Chapter          int64                `json:"chapter" bson:"chapter"`
 	NumCorrect       int64                `json:"num_correct" bson:"num_correct"`
 	IsSolved         bool                 `json:"is_solved" bson:"is_solved"`
 	IsAlive          bool                 `json:"is_alive" bson:"is_alive"`
@@ -37,12 +39,12 @@ func initQuizSet(e *echo.Echo) {
 	e.DELETE("/quiz-sets", deleteQuizSet)
 }
 
-func getRandomQuizContentIDArr(numQuiz int64) (quizIDArr []primitive.ObjectID) {
+func getRandomQuizContentIDArr(numQuiz int64, chapter int64) (quizIDArr []primitive.ObjectID) {
 	pipeline := make([]bson.M, 0)
 
 	matchStage := bson.M{
 		"$match": bson.M{
-			// "is_alive": true,
+			"Chapter": chapter,
 		},
 	}
 
@@ -58,6 +60,7 @@ func getRandomQuizContentIDArr(numQuiz int64) (quizIDArr []primitive.ObjectID) {
 		ctx,
 		pipeline,
 	)
+
 	errCheck(err)
 	defer cur.Close(ctx)
 
@@ -80,13 +83,16 @@ func createQuizSet(c echo.Context) error {
 	err := c.Bind(newQuizSet)
 	errCheck(err)
 
-	quizIDArr := getRandomQuizContentIDArr(newQuizSet.NumQuiz)
+	//quizIDArr := getRandomQuizContentIDArr(newQuizSet.NumQuiz, newQuizSet.Chapter)
+
+	quizIDArr := getRandomQuizContentIDArr(newQuizSet.NumQuiz, newQuizSet.Chapter)
 
 	insertOneResult, err := collection["quiz_set"].InsertOne(
 		ctx,
 		bson.M{
 			"title":               "No Title",
 			"num_quiz":            newQuizSet.NumQuiz,
+			"chapter":             newQuizSet.Chapter,
 			"num_correct":         0,
 			"student_id":          newQuizSet.StudentID,
 			"quiz_content_id_arr": quizIDArr,

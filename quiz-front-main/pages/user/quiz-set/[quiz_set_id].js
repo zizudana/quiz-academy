@@ -86,7 +86,6 @@ const QuizSetPage = ({ rest_api_url }) => {
     const get_quiz_content = (quiz_content_index) => {
       const quiz_content_id =
         quiz_set_data.quiz_content_id_arr[quiz_content_index]
-
       axios
         .get(`${rest_api_url}/quizcontents/id/${quiz_content_id}`)
         .then(function (response) {
@@ -191,6 +190,7 @@ const QuizSetPage = ({ rest_api_url }) => {
           </div>
 
           {/* 답지 */}
+			 
           <div className="w-24">
             <table className="mb-4 border w-full bg-white shadow">
               <tbody>
@@ -233,13 +233,15 @@ const QuizSetPage = ({ rest_api_url }) => {
           <div className="grid grid-cols-4 gap-3 px-5 h-full">
             <div className="col-span-1 flex justify-start items-center">
               {/* button : 이전 문제 */}
+				  {solving_number != 0?
               <ButtonNormal
                 className="flex px-4 h-12 items-center"
                 onClick={move_to_previous_number}
               >
                 <span className="hidden sm:block keep-all">이전 문제</span>
                 <CircleLeftSVG className="fill-current w-6 h-6 ml-1" />
-              </ButtonNormal>
+              </ButtonNormal>:null
+  				}
             </div>
 
             <div className="col-span-2 flex justify-center items-center gap-4">
@@ -256,14 +258,15 @@ const QuizSetPage = ({ rest_api_url }) => {
 
             <div className="col-span-1 flex justify-end items-center">
               {/* button : 다음 문제 */}
-				  
+				  {solving_number < 19?
               <ButtonNormal
                 className="flex px-4 h-12 items-center"
                 onClick={move_to_next_number}
               >
                 <CircleRightSVG className="fill-current w-6 h-6 mr-1" />
                 <span className="hidden sm:block keep-all">다음 문제</span>
-              </ButtonNormal>
+              </ButtonNormal> : null
+  				  }
   
             </div>
           </div>

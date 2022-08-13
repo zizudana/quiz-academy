@@ -1,10 +1,24 @@
 import Layout from "../../components/layout/layout_user"
-import TailSpinSVG from "../../components/svg/tail-spin"
 
+import TailSpinSVG from "../../components/svg/tail-spin"
+import React from 'react'
 import Link from "next/link"
+//import {Link } from "react-router-dom"
 import { useState, useEffect } from "react"
 import { useSession } from "next-auth/client"
+import {BrowserRouter, useLocation} from "react-router-dom"
+import {ReactDOM} from 'react-dom'
 import axios from "axios"
+
+import QuizSetIndexPage from "./"
+
+// ReactDOM.render(
+// 	//<React.StrictMode>
+// 		<BrowserRouter>
+// 		<QuizSetIndexPage />
+// 		</BrowserRouter>
+// 	//</React.StrictMode>
+// )
 
 const NewQuizSetPage = ({ rest_api_url }) => {
   const [session, _] = useSession()
@@ -12,14 +26,19 @@ const NewQuizSetPage = ({ rest_api_url }) => {
   const [is_timeover, set_is_timeover] = useState(false)
   const [new_quiz_set_id, set_new_quiz_set_id] = useState("")
 
-  const num_quiz = 5
+  const num_quiz = 20
 
   const post_quiz_set = () => {
     const new_quiz_set = {
       student_id: session.user.image,
       num_quiz: num_quiz,
+		chapter: 1
+		//quiz_set.go에 값 전달됨
+		//chapter: props.name,
     }
-
+	console.log(props.chapter)
+	
+	 
     axios
       .post(`${rest_api_url}/quiz-sets`, new_quiz_set, {
         timeout: 5000,

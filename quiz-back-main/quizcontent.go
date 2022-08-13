@@ -14,6 +14,7 @@ import (
 type quizContentStruct struct {
 	QuizID  primitive.ObjectID `json:"quiz_id" bson:"quiz_id"`
 	Number  int64              `json:"number" bson:"number"`
+	Chapter int64              `json:"chapter" bson:"chapter"`
 	Content string             `json:"content" bson:"content"`
 }
 
@@ -21,6 +22,7 @@ type quizContentStructWithObjectID struct {
 	ObjectID primitive.ObjectID `json:"_id" bson:"_id"`
 	QuizID   primitive.ObjectID `json:"quiz_id" bson:"quiz_id"`
 	Number   int64              `json:"number" bson:"number"`
+	Chapter  int64              `json:"chapter" bson:"chapter"`
 	Content  string             `json:"content" bson:"content"`
 }
 
@@ -28,6 +30,7 @@ func initQuizContent(e *echo.Echo) {
 	e.POST("/quizcontents", createQuizContent)
 	e.GET("/quizcontents/id/:hex", readQuizContentByID)
 	e.GET("/quizcontents/quizid/:quizid/:number", readQuizContentByQuizID)
+
 	e.PUT("/quizcontents", updateQuizContent)
 	e.DELETE("/quizcontents/:hex", deleteQuizContent)
 }

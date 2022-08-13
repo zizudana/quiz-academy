@@ -69,6 +69,7 @@ func readSolutionContentByQuizID(c echo.Context) error {
 			"number":  quizNumber,
 		},
 	).Decode(&getResult)
+
 	errCheck(err)
 
 	logger.Info("SUCCESS readSolutionContentByQuizID : %s %s", quizIDHex, quizNumberString)
@@ -129,10 +130,8 @@ func readSolutionContentAllByQuizSetID(c echo.Context) error {
 		},
 	).Decode(&quizSetFindResult)
 	errCheck(err)
-
 	solutionContentArr := []solutionContentStructWithObjectID{}
 	for _, quizContentID := range quizSetFindResult.QuizContentIDArr {
-
 		var solutionContentFindResult solutionContentStructWithObjectID
 		err = collection["solution_content"].FindOne(
 			ctx,

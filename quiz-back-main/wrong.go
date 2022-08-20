@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 	"go.mongodb.org/mongo-driver/bson"
@@ -29,7 +30,8 @@ func initWrongContent(e *echo.Echo) {
 	e.GET("/wrongcontents/id/:hex", readWrongContentByID)
 	e.GET("/wrongcontents/quizid/:quizid/:number", readWrongContentByQuizID)
 	e.GET("/wrongcontents/all/:student-id", readWrongContentAll)
-	e.GET("/wrongcontents/is-exist/:quiz_id", existQuiz)
+	e.GET("/wrongcontents/chapter/:chapter", readWrongContentByChapter)
+	e.GET("/wrongcontents/is-exist/:quizid", existQuiz)
 	e.PUT("/wrongcontents", updateWrongContent)
 	e.DELETE("/wrongcontents/:hex", deleteWrongContent)
 }
@@ -57,7 +59,10 @@ func createWrongContent(c echo.Context) error {
 }
 
 func existQuiz(c echo.Context) error {
-	quizID := c.Param("quiz_id")
+	quizIDHex := c.Param("quizid")
+	quizID, err := primitive.ObjectIDFromHex(quizIDHex)
+	errCheck(err)
+
 	itemCount, err := collection["wrong_content"].CountDocuments(
 		ctx,
 		bson.M{
@@ -68,14 +73,16 @@ func existQuiz(c echo.Context) error {
 
 	logger.Info("SUCCESS readIsExistID : %s", quizID)
 
-	// ¿ÃπÃ æ∆¿Ãµ∞° ¿÷¿∏∏È
+	// Ïò§ÎãµÎÖ∏Ìä∏Ïóê Ïù¥ÎØ∏ Ï°¥Ïû¨
 	if 0 < itemCount {
+		fmt.Println("truee")
 		return c.JSON(http.StatusOK, bson.M{
 			"is_exist": true,
 		})
 	}
 
-	// æ∆¿Ãµ∞° æ¯¿∏∏È
+	// Ïò§ÎãµÎÖ∏Ìä∏Ïóê ÏóÜÏùå
+	fmt.Println("falseee")
 	return c.JSON(http.StatusOK, bson.M{
 		"is_exist": false,
 	})
@@ -156,6 +163,42 @@ func readWrongContentAll(c echo.Context) error {
 		"quiz_set_arr": wrongContentArr,
 	}
 	fmt.Println(response)
+	return c.JSON(http.StatusOK, response)
+}
+
+func readWrongContentByChapter(c echo.Context) error {
+	chapter := c.Param("chapter")
+	wrongChapter, err := strconv.ParseInt(chapter, 10, 64)
+	errCheck(err)
+	cur, err := collection["wrong_content"].Find(
+		ctx,
+		bson.M{
+			"chapter": wrongChapter,
+		},
+	)
+	errCheck(err)
+	defer cur.Close(ctx)
+
+	wrongSetArr := []*wrongContentStructWithObjectID{}
+
+	for cur.Next(ctx) {
+		wrongSetResult := new(wrongContentStructWithObjectID)
+		err := cur.Decode(&wrongSetResult)
+		errCheck(err)
+
+		wrongSetArr = append(wrongSetArr, wrongSetResult)
+	}
+	if err := cur.Err(); err != nil {
+		return c.JSON(http.StatusInternalServerError, bson.M{
+			"message": "FAIL readWrongSetAll",
+		})
+	}
+
+	logger.Info("SUCCESS readWrongSetAll")
+
+	response := bson.M{
+		"wrong_set_arr": wrongSetArr,
+	}
 	return c.JSON(http.StatusOK, response)
 }
 

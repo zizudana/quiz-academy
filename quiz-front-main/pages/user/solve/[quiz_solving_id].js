@@ -18,14 +18,14 @@ const SolvePage = ({ rest_api_url }) => {
   const [is_loading, set_is_loading] = useState(true)
   const [quiz_solving, set_quiz_solving] = useState(null)
 
-  const post_wrong_content = (quiz_id) =>{
+  const post_wrong_content = (quiz_id,number,chapter) =>{
 	const new_wrong_content = {
 		student_id: session.user.image,
-		chpater: 1,
+		chapter: chapter,
 		quiz_id: quiz_id,
-		number: 1,
+		number: number,
 	}
-	console.log("Dfdf", new_wrong_content)
+	console.log("오답노트:",new_wrong_content)
 	axios
       .post(`${rest_api_url}/wrongcontents`, new_wrong_content, {
         timeout: 5000,
@@ -76,6 +76,36 @@ const SolvePage = ({ rest_api_url }) => {
       }
     }, [quiz_set])
 
+	 const check_unique_id = (index) => {
+		const wrong_content_id = quiz_set.quiz_content_id_arr[index]
+		axios
+		  .get(`${rest_api_url}/wrongcontents/is-exist/${wrong_content_id}`)
+		  .then(function (response) {
+			 let is_exist = response.data.is_exist
+			 if (!is_exist) {
+				get_num_chapter(wrong_content_id)
+			 } 
+			 
+		  })
+		  .catch(function (error) {
+			 console.error(error)
+		  })
+	 
+  }
+
+  const get_num_chapter = (wrong_content_id) => {
+		axios
+		  .get(`${rest_api_url}/quizcontents/id/${wrong_content_id}`)
+		  .then(function (response) {
+			const quiz_data = response.data
+				post_wrong_content(wrong_content_id,quiz_data.number,quiz_data.chapter)
+		  }
+		  )
+		  .catch(function (error) {
+			console.error(error)
+		  })
+  }
+
     useEffect(() => {
       if (solution_content_array) {
         let correct_count = 0
@@ -85,8 +115,7 @@ const SolvePage = ({ rest_api_url }) => {
           if (answer_number === solution_content_array[index].answer) {
             correct_count += 1
           }else if(answer_number !== solution_content_array[index].answer){
-				post_wrong_content(quiz_set.quiz_content_id_arr[index])
-				//////////////////////
+				check_unique_id(index)
 			 }
           updated_quiz_set = {
             ...quiz_set,
@@ -263,13 +292,14 @@ const SolvePage = ({ rest_api_url }) => {
           </div>
 {/* /////////////////////////////////////////////////////////////////////////////////////////////////// */ }
 			<div className="flex items-center justify-between mt-8 mb-4">
-				{quiz_set &&(
+				{/* {quiz_set &&(
 					<p> 아이디 : {quiz_set.quiz_content_id_arr[checking_number]}</p>
 					
-				)}
-		  		<Link href="/user/wrong">
-            	<ButtonNormal className="px-4 py-2">오답노트로 가기</ButtonNormal> 
-        		</Link>
+				)} */}
+		  		{/* <Link href="/user/wrong"> */}
+				 {/* <Link onclick="location.href='/user/wrong'"> */}
+            	<ButtonNormal className="px-4 py-2" onclick="location.href='/user/wrong'">오답노트로 가기</ButtonNormal> 
+        		{/* </Link> */}
       	</div>
 {/* ////////////////////////////////////quiz_solving_id는 quiz_set_id /////////////////////////////////////////////////////////// */ }
 

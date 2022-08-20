@@ -2,7 +2,6 @@ package main
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/labstack/echo/v4"
 	"go.mongodb.org/mongo-driver/bson"
@@ -28,7 +27,8 @@ type solutionContentStructWithObjectID struct {
 
 func initSolutionContent(e *echo.Echo) {
 	e.POST("/solution-contents", createSolutionContent)
-	e.GET("/solution-contents/quizid/:quizid/:number", readSolutionContentByQuizID)
+	//e.GET("/solution-contents/quizid/:quizid/:number", readSolutionContentByQuizID)
+	e.GET("/solution-contents/quizid/:quizid", readSolutionContentByQuizID)
 	e.GET("/solution-contents/quiz-set-id/:hex", readSolutionContentAllByQuizSetID)
 	e.PUT("/solution-contents", updateSolutionContent)
 	e.DELETE("/solution-contents/:hex", deleteSolutionContent)
@@ -57,22 +57,23 @@ func readSolutionContentByQuizID(c echo.Context) error {
 	quizIDHex := c.Param("quizid")
 	quizID, err := primitive.ObjectIDFromHex(quizIDHex)
 	errCheck(err)
-	quizNumberString := c.Param("number")
-	quizNumber, err := strconv.ParseInt(quizNumberString, 10, 64)
-	errCheck(err)
+	// quizNumberString := c.Param("number")
+	// quizNumber, err := strconv.ParseInt(quizNumberString, 10, 64)
+	// errCheck(err)
 
 	var getResult solutionContentStructWithObjectID
 	err = collection["solution_content"].FindOne(
 		ctx,
 		bson.M{
 			"quiz_id": quizID,
-			"number":  quizNumber,
+			//"number":  quizNumber,
 		},
 	).Decode(&getResult)
 
 	errCheck(err)
 
-	logger.Info("SUCCESS readSolutionContentByQuizID : %s %s", quizIDHex, quizNumberString)
+	//logger.Info("SUCCESS readSolutionContentByQuizID : %s %s", quizIDHex, quizNumberString)
+	logger.Info("SUCCESS readSolutionContentByQuizID : %s", quizIDHex)
 
 	return c.JSON(http.StatusOK, getResult)
 }

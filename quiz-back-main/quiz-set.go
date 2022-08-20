@@ -39,43 +39,64 @@ func initQuizSet(e *echo.Echo) {
 	e.DELETE("/quiz-sets", deleteQuizSet)
 }
 
-func getRandomQuizContentIDArr(numQuiz int64, chapter int64) (quizIDArr []primitive.ObjectID) {
-	pipeline := make([]bson.M, 0)
-
-	matchStage := bson.M{
-		"$match": bson.M{
+func getQuizContentIDArr(chapter int64) (quizIDArr []primitive.ObjectID) {
+	cur, err := collection["quiz_content"].Find(
+		ctx,
+		bson.M{
 			"Chapter": chapter,
 		},
-	}
-
-	sampleStage := bson.M{
-		"$sample": bson.M{
-			"size": numQuiz,
-		},
-	}
-
-	pipeline = append(pipeline, matchStage, sampleStage)
-
-	cur, err := collection["quiz_content"].Aggregate(
-		ctx,
-		pipeline,
 	)
-
 	errCheck(err)
 	defer cur.Close(ctx)
+	//quizContentArr := []*quizContentStructWithObjectID{}
 
 	for cur.Next(ctx) {
-		quizSetResult := new(quizInfoStructWithObjectID)
-		err := cur.Decode(&quizSetResult)
+		quizContentResult := new(quizContentStructWithObjectID)
+		err := cur.Decode(&quizContentResult)
 		errCheck(err)
 
-		quizIDArr = append(quizIDArr, quizSetResult.ObjectID)
+		quizIDArr = append(quizIDArr, quizContentResult.ObjectID)
 	}
-	err = cur.Err()
-	errCheck(err)
-
 	return
 }
+
+// func getRandomQuizContentIDArr(numQuiz int64, chapter int64) (quizIDArr []primitive.ObjectID) {
+// 	pipeline := make([]bson.M, 0)
+
+// 	matchStage := bson.M{
+// 		"$match": bson.M{
+// 			"Chapter": chapter,
+// 		},
+// 	}
+
+// 	sampleStage := bson.M{
+// 		"$sample": bson.M{
+// 			"size": numQuiz,
+// 		},
+// 	}
+
+// 	pipeline = append(pipeline, matchStage, sampleStage)
+
+// 	cur, err := collection["quiz_content"].Aggregate(
+// 		ctx,
+// 		pipeline,
+// 	)
+
+// 	errCheck(err)
+// 	defer cur.Close(ctx)
+
+// 	for cur.Next(ctx) {
+// 		quizSetResult := new(quizInfoStructWithObjectID)
+// 		err := cur.Decode(&quizSetResult)
+// 		errCheck(err)
+
+// 		quizIDArr = append(quizIDArr, quizSetResult.ObjectID)
+// 	}
+// 	err = cur.Err()
+// 	errCheck(err)
+
+// 	return
+// }
 
 func createQuizSet(c echo.Context) error {
 	newQuizSet := new(quizSetStruct)
@@ -85,8 +106,9 @@ func createQuizSet(c echo.Context) error {
 
 	//quizIDArr := getRandomQuizContentIDArr(newQuizSet.NumQuiz, newQuizSet.Chapter)
 
-	quizIDArr := getRandomQuizContentIDArr(newQuizSet.NumQuiz, newQuizSet.Chapter)
-
+	//quizIDArr := getRandomQuizContentIDArr(newQuizSet.NumQuiz, newQuizSet.Chapter)
+	quizIDArr := getQuizContentIDArr(newQuizSet.Chapter)
+	
 	insertOneResult, err := collection["quiz_set"].InsertOne(
 		ctx,
 		bson.M{

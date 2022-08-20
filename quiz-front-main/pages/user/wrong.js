@@ -10,23 +10,20 @@ import TailSpinSVG from "../../components/svg/tail-spin"
 const QuizWrongIndexPage = ({ rest_api_url }) => {
 	//const [quiz_set_arr, set_quiz_set_arr] = useState([])
 	const [session, loading] = useSession()
-	const [quiz_set_data, set_quiz_set_data] = useState(null)
-	const [quiz_content, set_quiz_content] = useState({
-      number: 0,
-      content: "<p>Loading contents ...</p>",
-    })
+	const [wrong_quiz_data, set_wrong_quiz_data] = useState(null)
+
 	useEffect(() => {
 	if (session) {
 		const student_id = session.user.image
 		axios
 			.get(`${rest_api_url}/wrongcontents/all/${student_id}`)
 			.then(function (response) {
-				const wrong_quiz_data = response.data
-				set_quiz_set_data(wrong_quiz_data.quiz_set_arr)
-				
-			//const quiz_id = quiz_set_data.quiz_set_arr[0].quiz_id
-			// console.log("aaaaaa",quiz_id)
-			//set_quiz_set_arr(quiz_set_data.quiz_set_arr)
+				const wrong_quiz_all = response.data
+				set_wrong_quiz_data(wrong_quiz_all.quiz_set_arr)
+			//wrong_quiz_data에 틀린 문제 정보 다 들어있음
+			//const quiz_id = wrong_quiz_data.quiz_set_arr[0].quiz_id
+			console.log("wrongquiz data",wrong_quiz_all)
+			//set_quiz_set_arr(wrong_quiz_data.quiz_set_arr)
 			})
 			.catch(function (error) {
 			console.error(error)
@@ -44,84 +41,6 @@ const QuizWrongIndexPage = ({ rest_api_url }) => {
 	 )
   
 	 const Loaded = () => {
-		const answer_button_array = Array.from(Array(5), (_, i) => i + 1)
-		const [solving_number, set_solving_number] = useState(0) // 현재 풀고 있는 문제 번호
-		const [solution_content_array, set_solution_content_array] = useState(null)
-		const [quiz_content, set_quiz_content] = useState({
-		  number: 0,
-		  content: "<p>Loading contents ...</p>",
-		})
-		
-
-		useEffect(() => {
-			//get_quiz_set(quiz_solving.quiz_set_id)
-			get_solution_content_array(0)
-		 }, [])
-
-		useEffect(() => {
-			get_quiz_content(0)
-		 }, [])
-  
-
-		const get_solution_content_array = (quiz_content_index) => {
-			const quiz_content_id =
-			quiz_set_data[quiz_content_index].quiz_id
-			const quiz_number = quiz_set_data[quiz_content_index].number
-			
-			axios
-			  .get(`${rest_api_url}/solution-contents/quizid/${quiz_content_id}/${quiz_number}`)
-			  .then((response) => {
-				 set_solution_content_array(response.data)
-				 
-			  })
-			  .catch((error) => {
-				 console.error(error)
-			  })
-		 } 
-
-
-
-		const get_quiz_content = (quiz_content_index) => {
-			const quiz_content_id =
-			quiz_set_data[quiz_content_index].quiz_id
-			
-			axios
-			.get(`${rest_api_url}/quizcontents/id/${quiz_content_id}`)
-			.then(function (response) {
-				
-				console.log(response.data) /////////////////////////////////////////////////
-				set_quiz_content(response.data)
-				
-			})
-			.catch(function (error) {
-				if (error.response) {
-					// 응답이 2xx가 아닌 경우
-					console.log("FAIL axios quizcontents : not 2xx", error.response)
-
-					if (error.response.status === 500) {
-					// 요청한 number가 없는 경우 
-					set_quiz_content({
-						number:  1,  
-						content: `
-							<p>${quiz_content_id} - 문제를 불러오지 못했습니다.</p>
-							<p>관리자에게 문의해주세요.</p>
-						`,
-					})
-					}
-				} else if (error.request) {
-					// 응답을 받지 못한 경우
-					console.log("FAIL axios quizcontents : no response", error.request)
-				} else {
-					// 요청에서 에러 발생
-					console.log(
-					"FAIL axios quizcontents : request error",
-					error.message
-					)
-				}
-			})
-		}
-		
-
 
 		return(
 			<>
@@ -144,38 +63,39 @@ const QuizWrongIndexPage = ({ rest_api_url }) => {
 					scope="col"
 					className="py-3 text-md font-bold uppercase tracking-widest"
 					>
-					Solved
+					Number
 					</th>
-					<th
-					scope="col"
-					className="py-3 text-md font-bold uppercase tracking-widest"
-					>
-					Score
-					</th>
+					
 				</tr>
 			</thead>
 			
+			<tbody className="divide-y divide-gray-400 text-center">
+          {wrong_quiz_data
+            .sort((a, b) => (a.number > b.number ? 1 : -1))
+            .map((quiz_data_info, index) => (
+              <Link
+               key={`wrong-content-${index}`}
+                href={`/user/wrong_content/${quiz_data_info.quiz_id}`}
+              >
+                <tr className="cursor-pointer hover:bg-white">
+                  <td className="py-4">{index + 1}</td>
+						<td>{quiz_data_info.number}번</td>
+                </tr>
+              </Link>
+            ))}
+        </tbody>
+
+
+
 			</table>
-			<div className="px-8 py-6 bg-white shadow">
-            <Preview rest_api_url={rest_api_url} quiz_content={quiz_content} />
-				{solution_content_array && (
-              <div className="block xl:hidden">
-					<hr className="block xl:hidden my-6 border-color-black-1 w-full" />
-                <Preview
-                  rest_api_url={rest_api_url}
-                  quiz_content={solution_content_array}
-                />
-              </div>
-            )}
-			 
-			 </div>
+			
 
 
 			 </>
 		)
 		
 }
-return <Layout>{quiz_set_data ? <Loaded /> : <Loading />}</Layout>
+return <Layout>{wrong_quiz_data ? <Loaded /> : <Loading />}</Layout>
 }
 	
 

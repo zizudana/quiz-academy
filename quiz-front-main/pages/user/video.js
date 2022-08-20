@@ -1,53 +1,115 @@
+import React, { useState, useEffect, useReducer, useContext } from "react"
 import Layout from "../../components/layout/layout_user"
+import axios from "axios"
+import Link from "next/link"
+import { useRouter } from "next/router"
+import { useSession } from "next-auth/client"
+import Preview from "../../components/quiz/preview"
 import TailSpinSVG from "../../components/svg/tail-spin"
 
-import Link from "next/link"
-import { useState, useEffect, useCallback } from "react"
-import { useSession } from "next-auth/client"
-import axios from "axios"
-import Vimeo from "@u-wave/react-vimeo";
-import React, { useContext } from 'react'
-import { VideoContext } from "."
+const VideoList = ({ rest_api_url }) => {
+	const [session, loading] = useSession()
+	const [video_data, set_video_data] = useState(null)
 
+	useEffect(() => {
+	if (session) {
+		const student_id = session.user.image
+		axios
+			.get(`${rest_api_url}/video/chapter/${student_id}`)
+			.then(function (response) {
+				const wrong_quiz_all = response.data
+				set_wrong_quiz_data(wrong_quiz_all.quiz_set_arr)
+			//wrong_quiz_data에 틀린 문제 정보 다 들어있음
+			//const quiz_id = wrong_quiz_data.quiz_set_arr[0].quiz_id
+			//console.log("wrongquiz data",wrong_quiz_all)
+			//set_quiz_set_arr(wrong_quiz_data.quiz_set_arr)
+			})
+			.catch(function (error) {
+			console.error(error)
+			})
+			
+	}
+	}, [session])
 
-//import QuizSetIndexPage from "."
-
-// const VideoContext = React.createContext(
-// 	{
-// 	  src: "https://player.vimeo.com/video/713143205?h=db7937585c",
-// 	  is_ended: false,
-// 	  name: "Chapter1. Apple"
-// 	}
-//  )
-const VideoPage = () => {
-  const [session, _] = useSession()
-  
-  
-  const myCallback = () => {
-	alert('강의가 끝났습니다.')
-  }
-
-  return (
-    <Layout>
-      <div className="flex flex-col flex-wrap content-center justify-center h-screen">
-        <div>
-			<h1>Chapter 1. 화학식량과 몰</h1>
+	const Loading = () => (
+		<div className="flex flex-col flex-wrap content-center justify-center h-screen">
+		  <div className="mx-auto">
+			 <TailSpinSVG className="w-20" fill="#000" />
 		  </div>
-		  
-		  <Vimeo
-          video= { useContext(VideoContext).src }
-          autoplay
-          width="854"
-          height="480"
-          onEnd={() => myCallback()}
-        />
+		</div>
+	 )
+  
+	 const Loaded = () => {
 
-        {/*<iframe id="v_play" src="https://player.vimeo.com/video/713143205?h=db7937585c" width="854" height="480" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen ></iframe>
-		    <iframe src="https://player.vimeo.com/video/713143205?h=db7937585c" width="640" height="564" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>*/}
-      </div>
-    </Layout>
-  )
+		return(
+			<>
+				<div className="flex items-center justify-between mt-8 mb-4">
+			<h1 className="flex">
+				<img src="/img/ic_subject_big.svg" className="mr-2" alt="book" />
+				오답노트
+			</h1>
+			</div>
+			<table className="w-full divide-y divide-gray-400 border border-color-black-4">
+			<thead className="bg-gray-50">
+				<tr>
+					<th
+					scope="col"
+					className="py-3 text-md font-bold uppercase tracking-widest"
+					>
+					Index
+					</th>
+					<th
+					scope="col"
+					className="py-3 text-md font-bold uppercase tracking-widest"
+					>
+					Solved
+					</th>
+					<th
+					scope="col"
+					className="py-3 text-md font-bold uppercase tracking-widest"
+					>
+					Score
+					</th>
+				</tr>
+			</thead>
+			
+			<tbody className="divide-y divide-gray-400 text-center">
+          {wrong_quiz_data
+            .sort((a, b) => (a._id > b._id ? 1 : -1))
+            .map((quiz_data_info, index) => (
+              <Link
+               key={`wrong-content-${index}`}
+                href={`/user/wrong_content/${quiz_data_info.quiz_id}`}
+              >
+                <tr className="cursor-pointer hover:bg-white">
+                  <td className="py-4">{index + 1}</td>
+                 
+                  
+                </tr>
+              </Link>
+            ))}
+        </tbody>
 
+
+
+			</table>
+			
+
+
+			 </>
+		)
+		
 }
+return <Layout>{wrong_quiz_data ? <Loaded /> : <Loading />}</Layout>
+}
+	
 
-export default VideoPage
+
+const getServerSideProps = () => {
+	const rest_api_url = process.env.REST_API_URL
+ 
+	return { props: { rest_api_url } }
+ }
+export { getServerSideProps }
+
+export default VideoList

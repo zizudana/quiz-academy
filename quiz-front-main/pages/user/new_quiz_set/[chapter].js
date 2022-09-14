@@ -1,42 +1,30 @@
-import Layout from "../../components/layout/layout_user"
+import Layout from "../../../components/layout/layout_user"
 
-import TailSpinSVG from "../../components/svg/tail-spin"
+import TailSpinSVG from "../../../components/svg/tail-spin"
 import React from 'react'
 import Link from "next/link"
-//import {Link } from "react-router-dom"
 import { useState, useEffect } from "react"
 import { useSession } from "next-auth/client"
-import {BrowserRouter, useLocation} from "react-router-dom"
-import {ReactDOM} from 'react-dom'
 import axios from "axios"
-
-import QuizSetIndexPage from "./"
-
-// ReactDOM.render(
-// 	//<React.StrictMode>
-// 		<BrowserRouter>
-// 		<QuizSetIndexPage />
-// 		</BrowserRouter>
-// 	//</React.StrictMode>
-// )
+import { useRouter } from "next/router"
 
 const NewQuizSetPage = ({ rest_api_url }) => {
+  const router = useRouter()
   const [session, _] = useSession()
+  const { chapter } = router.query
   const [is_loading, set_is_loading] = useState(true)
   const [is_timeover, set_is_timeover] = useState(false)
   const [new_quiz_set_id, set_new_quiz_set_id] = useState("")
-
   const num_quiz = 20
 
   const post_quiz_set = () => {
     const new_quiz_set = {
       student_id: session.user.image,
       num_quiz: num_quiz,
-		chapter: 1
+		chapter: Number(chapter)
 		//quiz_set.go에 값 전달됨
-		//chapter: props.name,
     }
-	console.log(props.chapter)
+	// console.log("new quiz set", new_quiz_set)
 	
 	 
     axios
@@ -44,6 +32,7 @@ const NewQuizSetPage = ({ rest_api_url }) => {
         timeout: 5000,
       })
       .then((response) => {
+		  console.log("response",response.data)
         set_new_quiz_set_id(response.data.InsertedID)
         set_is_loading(false)
       })
@@ -56,7 +45,7 @@ const NewQuizSetPage = ({ rest_api_url }) => {
     if (session) {
       post_quiz_set()
     }
-
+	
     setTimeout(() => {
       set_is_timeover(true)
     }, 1500)
@@ -85,7 +74,6 @@ const NewQuizSetPage = ({ rest_api_url }) => {
         <div className="mb-6">
           <h1 className="text-3xl font-bold">문제집 생성 완료</h1>
         </div>
-
         {/* Redirect Button */}
         <div className="mx-auto">
           <Link href={`/user/quiz-set/${new_quiz_set_id}`}>
@@ -99,16 +87,16 @@ const NewQuizSetPage = ({ rest_api_url }) => {
   )
 
   return (
-    <div>{is_loading || !is_timeover ? <Loading /> : <RedirectMessage />}</div>
+    <div>{is_loading || !is_timeover? <Loading /> : <RedirectMessage />}</div>
   )
 }
 
-const getStaticProps = () => {
+const getServerSideProps = () => {
   const rest_api_url = process.env.REST_API_URL
 
   return { props: { rest_api_url } }
 }
 
-export { getStaticProps }
+export { getServerSideProps }
 
 export default NewQuizSetPage

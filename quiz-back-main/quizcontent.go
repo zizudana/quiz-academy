@@ -14,6 +14,7 @@ import (
 type quizContentStruct struct {
 	QuizID  primitive.ObjectID `json:"quiz_id" bson:"quiz_id"`
 	Number  int64              `json:"number" bson:"number"`
+	Chapter int64              `json:"chapter" bson:"chapter"`
 	Content string             `json:"content" bson:"content"`
 }
 
@@ -21,6 +22,7 @@ type quizContentStructWithObjectID struct {
 	ObjectID primitive.ObjectID `json:"_id" bson:"_id"`
 	QuizID   primitive.ObjectID `json:"quiz_id" bson:"quiz_id"`
 	Number   int64              `json:"number" bson:"number"`
+	Chapter  int64              `json:"chapter" bson:"chapter"`
 	Content  string             `json:"content" bson:"content"`
 }
 
@@ -28,6 +30,7 @@ func initQuizContent(e *echo.Echo) {
 	e.POST("/quizcontents", createQuizContent)
 	e.GET("/quizcontents/id/:hex", readQuizContentByID)
 	e.GET("/quizcontents/quizid/:quizid/:number", readQuizContentByQuizID)
+	e.GET("/quizcontents/chapter/:chapter", existQuizContentByChapter)
 	e.PUT("/quizcontents", updateQuizContent)
 	e.DELETE("/quizcontents/:hex", deleteQuizContent)
 }
@@ -98,6 +101,31 @@ func readQuizContentByID(c echo.Context) error {
 	logger.Info("SUCCESS readQuizContent : %s", hex)
 
 	return c.JSON(http.StatusOK, getResult)
+}
+
+func existQuizContentByChapter(c echo.Context) error {
+	chapter := c.Param("chapter")
+	quizChapter, err := strconv.ParseInt(chapter, 10, 64)
+	errCheck(err)
+
+	itemCount, err := collection["quiz_content"].CountDocuments(
+		ctx,
+		bson.M{
+			"Chapter": quizChapter,
+		},
+	)
+	errCheck(err)
+
+	logger.Info("SUCCESS existQuizContent! : %s", chapter)
+	if 0 < itemCount {
+		return c.JSON(http.StatusOK, bson.M{
+			"is_exist": true,
+		})
+	}
+	// 오답노트에 없음
+	return c.JSON(http.StatusOK, bson.M{
+		"is_exist": false,
+	})
 }
 
 func updateQuizContent(c echo.Context) error {

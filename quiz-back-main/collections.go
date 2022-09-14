@@ -16,6 +16,7 @@ func setCollection(client *mongo.Client) {
 	collection["quiz_solving"] = dbQuiz.Collection("quiz_solving")
 	collection["solution_content"] = dbQuiz.Collection("solution_content")
 	collection["quiz_set"] = dbQuiz.Collection("quiz_set")
+	collection["wrong_content"] = dbQuiz.Collection("wrong_content")
 
 	dbAuthentication := client.Database("authentication")
 	collection["user"] = dbAuthentication.Collection("user")

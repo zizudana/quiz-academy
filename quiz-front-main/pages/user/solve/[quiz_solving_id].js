@@ -265,10 +265,7 @@ const SolvePage = ({ rest_api_url }) => {
           <div className="px-8 py-6 bg-white shadow">
             {/* 문제 */}
             {quiz_content && (
-              <Preview
-                rest_api_url={rest_api_url}
-                quiz_content={quiz_content}
-              />
+              <Preview rest_api_url={rest_api_url} quiz_content={quiz_content}/>
             )}
 
             {/* 구분선 */}
@@ -291,16 +288,16 @@ const SolvePage = ({ rest_api_url }) => {
             )}
           </div>
 {/* /////////////////////////////////////////////////////////////////////////////////////////////////// */ }
-			<div className="flex items-center justify-between mt-8 mb-4">
+			{/* <div className="flex items-center justify-between mt-8 mb-4"> */}
 				{/* {quiz_set &&(
 					<p> 아이디 : {quiz_set.quiz_content_id_arr[checking_number]}</p>
 					
 				)} */}
 		  		{/* <Link href="/user/wrong"> */}
 				 {/* <Link onclick="location.href='/user/wrong'"> */}
-            	<ButtonNormal className="px-4 py-2" onclick="location.href='/user/wrong'">오답노트로 가기</ButtonNormal> 
+            	{/* <ButtonNormal className="px-4 py-2" onclick="location.href='/user/wrong'">오답노트로 가기</ButtonNormal>  */}
         		{/* </Link> */}
-      	</div>
+      	{/* </div> */}
 {/* ////////////////////////////////////quiz_solving_id는 quiz_set_id /////////////////////////////////////////////////////////// */ }
 
           {/* 답지 */}

@@ -1,6 +1,6 @@
 const Preview = ({ rest_api_url, quiz_content }) => {
   // special token 목록 생성 [ 0 ~ 9, +, - ]
-  let special_token_list = ["+", "-"]
+  let special_token_list = ["+", "-","s"]
   for (const x of Array(10).keys()) {
     special_token_list.push(String.fromCharCode("0".charCodeAt(0) + x))
   }
@@ -26,6 +26,7 @@ const Preview = ({ rest_api_url, quiz_content }) => {
           <legend class="mx-auto px-2">< 보 기 ></legend>`
     )
     preview_html = preview_html.replaceAll(`$박스끝`, "</fieldset>")
+	
     special_token_list.forEach((special_token) => {
       preview_html = preview_html.replaceAll(
         `$${special_token}`,

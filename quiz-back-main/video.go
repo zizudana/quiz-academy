@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -22,13 +23,16 @@ type videoStructWithObjectID struct {
 	ObjectID primitive.ObjectID `json:"_id" bson:"_id"`
 	VideoID  primitive.ObjectID `json:"video_id" bson:"video_id"`
 	Number   int64              `json:"number" bson:"number"`
+	Name     string             `json:"name" bson:"name"`
 	Chapter  int64              `json:"chapter" bson:"chapter"`
 	Finish   bool               `json:"finish" bson:"finish"`
+	Source   string             `json:"source" bson:"source"`
 }
 
 func initVideoContent(e *echo.Echo) {
 	e.POST("/video", createVideo)
 	e.GET("/video/id/:hex", readVideoByID)
+	e.GET("/video/all", readAllVideo)
 	e.GET("/video/chapter/:chapter", readVideoByChapter)
 	e.PUT("/video", updateVideo)
 	e.DELETE("/video/:hex", deleteVideo)
@@ -53,26 +57,59 @@ func createVideo(c echo.Context) error {
 
 func readVideoByID(c echo.Context) error {
 	hex := c.Param("hex")
-	objectID, err := primitive.ObjectIDFromHex(hex)
+	videoID, err := primitive.ObjectIDFromHex(hex)
 	errCheck(err)
 
 	var getResult videoStructWithObjectID
 	err = collection["video"].FindOne(
 		ctx,
 		bson.M{
-			"_id": objectID,
+			"_id": videoID,
 		},
 	).Decode(&getResult)
 	errCheck(err)
 
-	logger.Info("SUCCESS readVideoContent!!!!!!!!!!!!!!!!!!!!! : %s", hex)
+	logger.Info("SUCCESS readVideoContent : %s", videoID)
 
 	return c.JSON(http.StatusOK, getResult)
+}
+
+func readAllVideo(c echo.Context) error {
+	cur, err := collection["video"].Find(
+		ctx,
+		bson.M{},
+	)
+	errCheck(err)
+	defer cur.Close(ctx)
+
+	videoArr := []*videoStructWithObjectID{}
+
+	for cur.Next(ctx) {
+		videoResult := new(videoStructWithObjectID)
+		err := cur.Decode(&videoResult)
+		errCheck(err)
+
+		videoArr = append(videoArr, videoResult)
+	}
+	if err := cur.Err(); err != nil {
+		return c.JSON(http.StatusInternalServerError, bson.M{
+			"message": "FAIL readWrongContentAll",
+		})
+	}
+
+	logger.Info("SUCCESS readWrongContentAll")
+
+	response := bson.M{
+		"video_arr": videoArr,
+	}
+	fmt.Println(response)
+	return c.JSON(http.StatusOK, response)
 }
 
 func readVideoByChapter(c echo.Context) error {
 	chapter := c.Param("chapter")
 	videoChapter, err := strconv.ParseInt(chapter, 10, 64)
+
 	errCheck(err)
 	cur, err := collection["video"].Find(
 		ctx,
@@ -80,6 +117,7 @@ func readVideoByChapter(c echo.Context) error {
 			"chapter": videoChapter,
 		},
 	)
+
 	errCheck(err)
 	defer cur.Close(ctx)
 

@@ -1,9 +1,9 @@
 import Link from "next/link"
 import { signOut } from "next-auth/client"
 
-
 const Nav = ({ session }) => {
   return (
+	
     <>
       <div
         className="flex px-8 items-center justify-center bg-white select-none"
@@ -21,6 +21,28 @@ const Nav = ({ session }) => {
               </a>
             </Link>
           </div>
+			
+
+			
+			 <div>
+            <Link href="/user">
+             <h2 className="cursor-pointer text-color-black-1">동영상 강의</h2>
+            </Link>
+          </div>
+
+			 <div>
+            <Link href="/user">
+             <h2 className="cursor-pointer text-color-black-1">문제 풀이</h2>
+            </Link>
+          </div>
+
+			 <div>
+            <Link href="/user/wrong_main">
+             <h2 className="cursor-pointer text-color-black-1">오답노트</h2>
+            </Link>
+          </div>
+			
+
           {/*비디오 추가*/}
           <div className="flex items-center">
             <img
@@ -34,7 +56,7 @@ const Nav = ({ session }) => {
               {session && session.user.name}
             </h2>
 				</Link>
-            {/* 회원 정보 미구현 */}
+           
             {/* <h3 className="cursor-pointer text-color-main-1">회원정보</h3>  */}
             <div
               className="border-r mx-4 border-color-black-2"

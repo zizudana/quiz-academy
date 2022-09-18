@@ -15,7 +15,7 @@ const NewQuizSetPage = ({ rest_api_url }) => {
   const [is_loading, set_is_loading] = useState(true)
   const [is_timeover, set_is_timeover] = useState(false)
   const [new_quiz_set_id, set_new_quiz_set_id] = useState("")
-  const num_quiz = 20
+  const num_quiz = 5
 
   const post_quiz_set = () => {
     const new_quiz_set = {

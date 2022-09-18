@@ -31,6 +31,7 @@ func initWrongContent(e *echo.Echo) {
 	e.GET("/wrongcontents/quizid/:quizid/:number", readWrongContentByQuizID)
 	e.GET("/wrongcontents/all/:student-id", readWrongContentAll)
 	e.GET("/wrongcontents/chapter/:chapter", readWrongContentByChapter)
+	e.GET("/wrongcontents/count/:chapter", countContentByChapter)
 	e.GET("/wrongcontents/is-exist/:quizid", existQuiz)
 	e.PUT("/wrongcontents", updateWrongContent)
 	e.DELETE("/wrongcontents/:hex", deleteWrongContent)
@@ -169,6 +170,7 @@ func readWrongContentAll(c echo.Context) error {
 func readWrongContentByChapter(c echo.Context) error {
 	chapter := c.Param("chapter")
 	wrongChapter, err := strconv.ParseInt(chapter, 10, 64)
+	fmt.Println("eeee", wrongChapter)
 	errCheck(err)
 	cur, err := collection["wrong_content"].Find(
 		ctx,
@@ -198,6 +200,26 @@ func readWrongContentByChapter(c echo.Context) error {
 
 	response := bson.M{
 		"wrong_set_arr": wrongSetArr,
+	}
+	return c.JSON(http.StatusOK, response)
+}
+
+func countContentByChapter(c echo.Context) error {
+	chapter := c.Param("chapter")
+	wrongChapter, err := strconv.ParseInt(chapter, 10, 64)
+	errCheck(err)
+	count, err := collection["wrong_content"].CountDocuments(
+		ctx,
+		bson.M{
+			"chapter": wrongChapter,
+		},
+	)
+	errCheck(err)
+
+	logger.Info("SUCCESS countWrongSet")
+
+	response := bson.M{
+		"count": count,
 	}
 	return c.JSON(http.StatusOK, response)
 }

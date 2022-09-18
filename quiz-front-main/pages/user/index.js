@@ -22,7 +22,8 @@ const QuizSetIndexPage = ({ rest_api_url }) => {
   const [quiz_set_arr, set_quiz_set_arr] = useState([])
   const [session, loading] = useSession()
   const [exist, set_exist] = useState(false)
-
+  const chap = ["1장. 화학의 첫걸음","2장. 원자의 세계","3장. 화학 결합과 원자의 세계","4장. 역동적인 화학 반응"]
+  //const chap = [1,2,3,4]
   const check_chapter = (chapter) => {
 	axios
 	  .get(`${rest_api_url}/quizcontents/chapter/${chapter}`)
@@ -69,7 +70,7 @@ const QuizSetIndexPage = ({ rest_api_url }) => {
 
   return (
     <Layout>
-      {/*강의듣기 추가*/}
+      {/* 강의듣기 추가 */}
 		<div style={{ width: "50%", float: "left" }}>
       	<div className="flex items-center justify-between mt-8 mb-4">
         		<h1 className="flex">
@@ -102,14 +103,16 @@ const QuizSetIndexPage = ({ rest_api_url }) => {
             </th>
           </tr>
         </thead>
+
         <tbody className="divide-y divide-gray-400 text-center">
-          {
-          <Link href="/user/video">
+          {chap
+			 .map((chapter,index)=>
+          <Link href={`/user/video_chapter/${index+1}}`}>
             <tr className="cursor-pointer hover:bg-white">
-              <td className="py-4">1</td>
+              <td className="py-4">{index+1}</td>
               <td className="py-4">
                 <div className="text-base text-indigo-500">
-                  1장
+                  {chapter}
                 </div>
               </td>
               <td className="py-4">
@@ -117,7 +120,7 @@ const QuizSetIndexPage = ({ rest_api_url }) => {
               </td>
             </tr>
           </Link>
-          }
+          )}
         </tbody>
       </table>
     </div>
@@ -218,7 +221,7 @@ const QuizSetIndexPage = ({ rest_api_url }) => {
 			<Link 
 				href= {`/user/new_quiz_set/${quiz_set_arr.length+1}`}>
 				<ButtonNormal className="px-4 py-2">
-					{quiz_set_arr.length + 1}장 문제 추가
+					{quiz_set_arr.length + 1}장 문제집 추가
 				</ButtonNormal>
 			</Link>
 			) : (
@@ -226,56 +229,7 @@ const QuizSetIndexPage = ({ rest_api_url }) => {
 			)}
 				</div>
 
-		{/*오답노트*/}
-		<div style={{ width: "50%", float: "left" }}>
-			<div className="flex items-center justify-between mt-8 mb-4">
-				<h1 className="flex">
-					<img src="/img/ic_subject_big.svg" className="mr-2" alt="book" />
-					오답노트
-				</h1>
-			</div>
-      
-      {/*오답노트 목록*/}
-      <table className="w-full divide-y divide-gray-400 border border-color-black-4">
-        <thead className="bg-gray-50">
-          <tr>
-            <th
-              scope="col"
-              className="py-3 text-md font-bold uppercase tracking-widest"
-            >
-              Index
-            </th>
-            <th
-              scope="col"
-              className="py-3 text-md font-bold uppercase tracking-widest"
-            >
-              Chapter
-            </th>
-            <th
-              scope="col"
-              className="py-3 text-md font-bold uppercase tracking-widest"
-            >
-              Ended
-            </th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-400 text-center">
-          {
-          <Link href="/user/wrong">
-            <tr className="cursor-pointer hover:bg-white">
-              <td className="py-4">1</td>
-              <td className="py-4">
-                <div className="text-base text-indigo-500">
-                  1장. 화학식량과 몰
-                </div>
-              </td>
-              
-            </tr>
-          </Link>
-          }
-        </tbody>
-      </table>					
-	</div>
+		
 
 
     </Layout>

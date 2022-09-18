@@ -20,4 +20,7 @@ func setCollection(client *mongo.Client) {
 
 	dbAuthentication := client.Database("authentication")
 	collection["user"] = dbAuthentication.Collection("user")
+
+	dbVideo := client.Database("vimeo")
+	collection["video"] = dbVideo.Collection("video")
 }

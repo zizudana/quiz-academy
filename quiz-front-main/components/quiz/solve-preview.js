@@ -2,7 +2,7 @@ const Preview = ({ rest_api_url, quiz_content }) => {
   // TODO quiz_content로 사진 불러오기
 
   // special token 목록 생성 [ 0 ~ 9, +, - ]
-  let special_token_list = ["+", "-"]
+  let special_token_list = ["+", "-","s"]
   for (const x of Array(10).keys()) {
     special_token_list.push(String.fromCharCode("0".charCodeAt(0) + x))
   }
@@ -11,6 +11,12 @@ const Preview = ({ rest_api_url, quiz_content }) => {
     // 미리보기를 위해 special token들을 html로 변경
 
     let preview_html = original_html.replaceAll("<p></p>", "<p>&nbsp;</p>")
+	 preview_html = preview_html.replaceAll(
+		`\n`, `</br>`
+	)
+	 preview_html = preview_html.replaceAll(
+		` `, `&nbsp`
+	)
     preview_html = preview_html.replaceAll(
       `$박스시작`,
       `<fieldset class="border-2 border-black my-3 px-6 py-4">`

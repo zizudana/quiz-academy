@@ -12,6 +12,8 @@ import { ButtonNormal, DisabledButton } from "../../../components/common/button"
 const WrongContentPage = ({ rest_api_url }) => {
 	const router = useRouter()
 	const { quiz_content_id } = router.query
+	const [visible,set_visible] = useState(false)
+
 	const [solution_content, set_solution_content] = useState(
 		{
 			content: "not yet",
@@ -96,8 +98,16 @@ const WrongContentPage = ({ rest_api_url }) => {
 					<Preview rest_api_url={rest_api_url} quiz_content={quiz_content_data} />
 				</div>
 				</div>
-
+				<div>
+					<button onClick={()=>{
+						set_visible(!visible)
+					}}>
+						{visible ? 
+						<ButtonNormal className="px-4 py-2">풀이 닫기</ButtonNormal> : <ButtonNormal className="px-4 py-2">풀이 보기</ButtonNormal>}
+					</button>
+				</div>
 				{/* 답지 */}
+				{visible ?
 				<div>
 				<h1>풀이</h1> <br/>
 				<div className="px-8 py-6 bg-white shadow">
@@ -109,9 +119,10 @@ const WrongContentPage = ({ rest_api_url }) => {
 					<br /><br />
 					답: {solution_content.answer}
 				</div>
-				</div>
+				</div>: <div></div>}
 				<div className="w-24" />
 			</div>
+			
 
 		</Layout>
 	)

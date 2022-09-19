@@ -8,12 +8,15 @@ import TailSpinSVG from "../../../components/svg/tail-spin"
 import CircleLeftSVG from "../../../components/svg/circle-left"
 import CircleRightSVG from "../../../components/svg/circle-right"
 import { ButtonNormal, DisabledButton } from "../../../components/common/button"
-
+import Vimeo from "@u-wave/react-vimeo";
+import React from "react"
+import ReactPlayer from "react-player"
 
 const VideoPlay = ({ rest_api_url }) => {
 	const router = useRouter()
   	const { video_id } = router.query
   	const [session, _] = useSession()
+	let updated_video = {}
   	const [video_data, set_video_data] = useState([])
 	console.log("video id",video_id)
 	useEffect(() => {
@@ -22,17 +25,29 @@ const VideoPlay = ({ rest_api_url }) => {
 			.then(function (response) {
 				const video_info = response.data
 				set_video_data(video_info)
-				console.log(video_info)
-		//set_quiz_set_arr(wrong_quiz_data.quiz_set_arr)
 		})
 		.catch(function (error) {
 		console.error(error)
 		})
 	}, [])
 
-  
+ 
   const myCallback = () => {
 	alert('강의가 끝났습니다.')
+	updated_video = {
+		...video_data,
+		finish: true,
+	}
+	 axios
+        .put(`${rest_api_url}/video`, updated_video)
+        .then((response) => {
+          console.log(response)
+
+        })
+        .catch((error) => {
+          console.error(error)
+         
+        })
   }
 
   return (
@@ -41,17 +56,22 @@ const VideoPlay = ({ rest_api_url }) => {
         <div>
 			<h1>{video_data.name}</h1>
 		  </div>
-		  
-		  <Vimeo
-          video= {video_data.source }
-          autoplay
+
+		  {/* <Vimeo
+          video= {video_data.source}
+         //  autoplay
           width="854"
           height="480"
           onEnd={() => myCallback()}
-        />
+        /> */}
 
-        {/*<iframe id="v_play" src="https://player.vimeo.com/video/713143205?h=db7937585c" width="854" height="480" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen ></iframe>
-		    <iframe src="https://player.vimeo.com/video/713143205?h=db7937585c" width="640" height="564" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>*/}
+
+		<ReactPlayer
+        url={video_data.source}
+		  onEnded={() => myCallback()}
+      />
+        {/* <iframe id="v_play" src={video_data.source} width="854" height="480" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen/> */}
+		    
       </div>
     </Layout>
   )

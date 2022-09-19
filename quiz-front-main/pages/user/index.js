@@ -107,7 +107,7 @@ const QuizSetIndexPage = ({ rest_api_url }) => {
         <tbody className="divide-y divide-gray-400 text-center">
           {chap
 			 .map((chapter,index)=>
-          <Link href={`/user/video_chapter/${index+1}}`}>
+          <Link href={`/user/video_chapter/${index+1}`}>
             <tr className="cursor-pointer hover:bg-white">
               <td className="py-4">{index+1}</td>
               <td className="py-4">

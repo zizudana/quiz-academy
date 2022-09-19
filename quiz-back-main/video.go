@@ -147,6 +147,7 @@ func readVideoByChapter(c echo.Context) error {
 func updateVideo(c echo.Context) error {
 	inputVideo := new(videoStructWithObjectID)
 	err := c.Bind(inputVideo)
+	fmt.Println("eeeeeeeeee", inputVideo)
 	errCheck(err)
 
 	updateResult, err := collection["video"].UpdateOne(

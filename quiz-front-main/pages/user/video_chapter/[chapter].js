@@ -76,9 +76,21 @@ const VideoChapterPage = ({ rest_api_url }) => {
                 href={`/user/vimeo/${video_info._id}`}
               >
                 <tr className="cursor-pointer hover:bg-white">
-                  <td className="py-4">{index + 1}</td>            
+                  <td className="py-4">{index + 1}</td>         
+						<td>
+							{video_info.name}	
+						</td>   
+						<td>
+							{video_info.finish ? (
+								<div className="text-base text-indigo-500">100%</div>
+                    ) : (
+                      <div className="text-base text-red-500">NOT YET</div>
+                    )}
+						</td>
                 </tr>
+					 
               </Link>
+				  
             ))}
         </tbody>
 			</table>

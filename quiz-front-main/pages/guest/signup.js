@@ -19,6 +19,51 @@ const SignUp = ({ rest_api_url }) => {
   const [parent_name_input, set_parent_name_input] = useState("")
   const [parent_phone_input, set_parent_phone_input] = useState("")
   const [is_post_loading, set_is_post_loading] = useState(false)
+  const [number, set_number] = useState('')
+  const [input_number, set_input_number] = useState('')
+  const [valid_email, set_valid_email] = useState(false)
+
+  const is_valid_email =() => {
+    const generateRandom = (min, max) => {
+      const ranNum = Math.floor(Math.random()*(max-min+1)) + min;
+      return ranNum;
+    }
+    const number = generateRandom(111111, 999999)
+    set_number(number)
+
+    let data = {
+        email_input,
+        number
+    }
+
+    fetch('/api/contact', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    }).then((res) => {
+        console.log('Response received')
+        if (res.status === 200) {
+            console.log('Response succeeded!')
+        }
+    })
+
+  }
+
+  const handleNumSubmit = (e) => {
+    e.preventDefault()
+    console.log("inputnum = " + input_number)
+    console.log("number = "+ number)
+    if (input_number==number) {
+        alert("이메일 인증 성공")
+        set_valid_email(true)
+    } else {
+        alert("이메일 인증 실패")
+        set_valid_email(false)
+    }
+  }
 
   const set_id_input_custom = (user_input) => {
     // 아이디 새로 입력하면 중복 체크 초기화
@@ -204,6 +249,7 @@ const SignUp = ({ rest_api_url }) => {
 
     // 이메일 형식
     if (!is_email(email_input)) return false
+    if (!valid_email) return false
 
     // 학생 정보
     if (student_name_input.length == 0) return false
@@ -391,8 +437,9 @@ const SignUp = ({ rest_api_url }) => {
 
           {/* 이메일 */}
           <div className="mb-4">
-            <div className="flex mb-1">
+            <div className="flex mb-1 justify-between">
               <span>이메일</span>
+              <h5 className="text-color-main-1 font-bold cursor-pointer" onClick={is_valid_email}>이메일 인증</h5>
             </div>
 
             <InputNormal
@@ -401,13 +448,38 @@ const SignUp = ({ rest_api_url }) => {
               placeholder="@를 포함한 이메일 입력"
               user_input={email_input}
               set_user_input={set_email_input}
+              onChange={(e)=>{set_email_input(e.target.value)}}
             />
 
             <div className="flex gap-4 text-color-black-3">
               <h5 className={is_email(email_input) ? "text-color-main-1" : ""}>
                 &#10004; 이메일 형식
               </h5>
+              <h5 className={valid_email ? "text-color-main-1" : ""}>
+                &#10004; 이메일 인증
+              </h5>
             </div>
+
+          </div>
+
+          {/* 이메일인증*/}
+          <div className="mb-4">
+
+            < form  >
+            <input
+              type="input_number"
+              class="mb-1"
+              placeholder="인증번호를 입력하세요"
+              user_input={email_input}
+              set_user_input={set_email_input}
+              onChange={(e)=>{set_input_number(e.target.value)}}
+              name='input_number'
+            />
+        {/*< label htmlFor='input_number'>인증번호</label>
+        < input type='input_number' onChange={(e)=>{set_input_number(e.target.value)}} name='input_number'  />
+              */}
+            < input type='submit' onClick={(e)=>{handleNumSubmit(e)}}/>
+          </form >
           </div>
 
           {/* 학생 정보 */}

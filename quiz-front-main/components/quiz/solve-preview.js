@@ -51,6 +51,11 @@ const Preview = ({ rest_api_url, quiz_content }) => {
           </span>`
     )
 
+    preview_html = preview_html.replace(
+      `$이미지`,
+      `<img src="${quiz_content.image}">`
+    )
+
     preview_html = preview_html.replaceAll(
       `[[`,
       `<img class="p-4 max-h-56 mx-auto" src="${rest_api_url}/files/quizset/${quiz_content.quiz_id}/`

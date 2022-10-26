@@ -16,6 +16,7 @@ type quizContentStruct struct {
 	Number  int64              `json:"number" bson:"number"`
 	Chapter int64              `json:"chapter" bson:"chapter"`
 	Content string             `json:"content" bson:"content"`
+	Image   string             `json:"image" bson:"image"`
 }
 
 type quizContentStructWithObjectID struct {
@@ -24,6 +25,7 @@ type quizContentStructWithObjectID struct {
 	Number   int64              `json:"number" bson:"number"`
 	Chapter  int64              `json:"chapter" bson:"chapter"`
 	Content  string             `json:"content" bson:"content"`
+	Image    string             `json:"image" bson:"image"`
 }
 
 func initQuizContent(e *echo.Echo) {

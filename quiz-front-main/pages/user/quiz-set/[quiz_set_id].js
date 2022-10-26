@@ -258,7 +258,7 @@ const QuizSetPage = ({ rest_api_url }) => {
 
             <div className="col-span-1 flex justify-end items-center">
               {/* button : 다음 문제 */}
-				  {solving_number < 19?
+				  {solving_number < 21?
               <ButtonNormal
                 className="flex px-4 h-12 items-center"
                 onClick={move_to_next_number}

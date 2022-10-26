@@ -42,7 +42,7 @@ func main() {
 
 	logger.Debug("SUCCESS connect mongo")
 
-	// collection := client.Database("quiz").Collection("quiz_content")
+	// collection := client.Database("quiz").Collection("quiz_set")
 
 	// user := quizContentStruct{}
 
@@ -52,6 +52,14 @@ func main() {
 	// }
 
 	// fmt.Println("Inserted a single document: ", insertResult.InsertedID)
+	// deleteResult, err := collection.DeleteMany(
+	// 	ctx,
+	// 	bson.M{
+	// 		"num_quiz": 20,
+	// 	},
+	// )
+
+	// logger.Info("aaaaaaaaaaaaa : %s", deleteResult)
 
 	setCollection(client)
 

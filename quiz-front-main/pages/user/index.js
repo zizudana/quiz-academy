@@ -78,7 +78,7 @@ const QuizSetIndexPage = ({ rest_api_url }) => {
           		동영상 강의
         		</h1>
       	</div>
-      
+
       {/*강의 목록 테이블*/}
       <table className="w-full divide-y divide-gray-400 border border-color-black-4">
         <thead className="bg-gray-50">

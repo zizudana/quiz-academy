@@ -7,7 +7,7 @@ import Preview from "../../../components/quiz/preview"
 import TailSpinSVG from "../../../components/svg/tail-spin"
 import CircleLeftSVG from "../../../components/svg/circle-left"
 import CircleRightSVG from "../../../components/svg/circle-right"
-import { ButtonNormal, DisabledButton } from "../../../components/common/button"
+import { ButtonNormal, DisabledButton,ButtonRed } from "../../../components/common/button"
 
 const WrongContentPage = ({ rest_api_url }) => {
 	const router = useRouter()
@@ -40,7 +40,17 @@ const WrongContentPage = ({ rest_api_url }) => {
 		}
 	}, [quiz_content_data])
 
-
+	const delete_wrong = (quiz_content_id) => {
+		axios
+			.delete(`${rest_api_url}/wrongcontents/${quiz_content_id}`)
+			.then(function (response) {
+				console.log(response.data)
+			})
+			.catch(function (error) {
+				console.error(error)
+			})
+		document.location.href('/')
+	}
 	const get_quiz_content = (quiz_content_id) => {
 		axios
 			.get(`${rest_api_url}/quizcontents/id/${quiz_content_id}`)
@@ -121,6 +131,9 @@ const WrongContentPage = ({ rest_api_url }) => {
 				</div>
 				</div>: <div></div>}
 				<div className="w-24" />
+				{/* <div>
+					<ButtonRed>문제 제거</ButtonRed>
+				</div> */}
 			</div>
 			
 

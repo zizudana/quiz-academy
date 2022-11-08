@@ -15,26 +15,29 @@ const Preview = ({ rest_api_url, quiz_content }) => {
 	 preview_html = preview_html.replaceAll(
 		` `, `&nbsp`
 	)
-	 preview_html = preview_html.replaceAll(
-      `$표시작`,
-      `<div style="display: table">`
-		
-    )
-	//  <tr>
-	// 	<th>물질</th>
-	// 	<th>이용 사례</th>
-	// 	</tr>
-	// 	<tr>
-	// 	<td>아세트산</td>
-	// 	<td>식초의 성분이다</td>
-	 preview_html = preview_html.replaceAll(
-      `$표제목`,
-      `<table className="w-full divide-y divide-gray-400 border border-color-black-4">`
-    ) 
-	 preview_html = preview_html.replaceAll(`$표끝`,"</div>") 
-
-	 preview_html = preview_html.replaceAll(`$굵은`,"<b>") 
-	 preview_html = preview_html.replaceAll(`$글씨`,"</b>") 
+  preview_html = preview_html.replaceAll(
+    `$표시작`,
+    `<div style="display: table">`
+  )
+ preview_html = preview_html.replaceAll(
+    `$표제목`,
+    `<table className="w-full divide-y divide-gray-400 border border-color-black-4">`
+  ) 
+ preview_html = preview_html.replaceAll(`$표끝`,"</div>") 
+ preview_html = preview_html.replaceAll(
+  `$열시작`,
+  `<span class="table-row">`
+ )
+ preview_html = preview_html.replaceAll(
+  `$끝`,
+  `</span>`
+ )
+ preview_html = preview_html.replaceAll(
+  `$열요소`,
+  `<span class="table-cell border-2 border-black ...">`
+ )
+ preview_html = preview_html.replaceAll(`$굵은`,"<b>") 
+ preview_html = preview_html.replaceAll(`$글씨`,"</b>") 
     preview_html = preview_html.replaceAll(
       `$박스시작`,
       `<fieldset class="border-2 border-black my-3 px-6 py-4">`
@@ -72,6 +75,12 @@ const Preview = ({ rest_api_url, quiz_content }) => {
             <span class="block">$2</span>
           </span>`
     )
+
+    preview_html = preview_html.replace(
+      `$이미지`,
+      `<img src="${quiz_content.image}">`
+    )
+
 	 preview_html = preview_html.replace(
 		`$이미지`,
 		`<img src="${quiz_content.image}">`

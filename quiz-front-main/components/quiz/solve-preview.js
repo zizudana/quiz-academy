@@ -17,11 +17,14 @@ const Preview = ({ rest_api_url, quiz_content }) => {
 	 preview_html = preview_html.replaceAll(
 		` `, `&nbsp`
 	)
-
-	preview_html = preview_html.replaceAll(
+  preview_html = preview_html.replaceAll(
 		`$표시작`,
 		`<span class="table w-full ...">`
 	 )
+   preview_html = preview_html.replaceAll(
+    `$표제목`,
+    `<table className="w-full divide-y divide-gray-400 border border-color-black-4">`
+  ) 
 	 preview_html = preview_html.replaceAll(
 		`$표끝`,
 		`</span>`

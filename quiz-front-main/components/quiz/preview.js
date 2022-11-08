@@ -68,7 +68,7 @@ const Preview = ({ rest_api_url, quiz_content }) => {
     })
 
     preview_html = preview_html.replace(
-      /\$분수\{([ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|+|-|.|()|×]+),([ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|+|-|.|()|×]+)\}/g,
+      /\$분수\{([\[\]|ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|+-|.|()|×]+),([\[\]|ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|+-|.|()|×]+)\}/g,
 		
       `<span class="inline-block align-middle text-center" style="font-size: 0.75rem; line-height: 1rem;">
             <span class="block border-b border-black">$1</span>

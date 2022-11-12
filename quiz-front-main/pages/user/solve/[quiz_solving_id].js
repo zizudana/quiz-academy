@@ -333,7 +333,7 @@ const SolvePage = ({ rest_api_url }) => {
                             is_correct ? "bg-color-others-3" : "bg-red-400"
                           }`}
                         >
-                          {index + 1}번
+                          {index + 1}
                         </td>
                         <td className="border px-2">{answer_number}</td>
                         <td className="border px-2">{correct_number}</td>
@@ -362,7 +362,7 @@ const SolvePage = ({ rest_api_url }) => {
 
             <div className="col-span-1 flex justify-end items-center">
               {/* button : 다음 문제 */}
-				  {checking_number < 21?
+				  {checking_number < 100?
               <ButtonNormal
                 className="flex px-4 h-12 items-center"
                 onClick={move_to_next_number}

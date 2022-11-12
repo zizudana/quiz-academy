@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
 import { useRouter } from "next/router"
-
+import Link from "next/link"
 import Layout from "../../../components/layout/layout_user"
 import Preview from "../../../components/quiz/preview"
 import TailSpinSVG from "../../../components/svg/tail-spin"
@@ -29,7 +29,7 @@ const WrongContentPage = ({ rest_api_url }) => {
 	)
 	useEffect(() => {
 		get_quiz_content(quiz_content_id)
-
+		
 
 	}, [])
 
@@ -74,6 +74,7 @@ const WrongContentPage = ({ rest_api_url }) => {
 			})
 	}
 
+
 	return (
 		<Layout>
 			<style jsx>
@@ -103,7 +104,7 @@ const WrongContentPage = ({ rest_api_url }) => {
 				
 				{/* 문제 */}
 				<div>
-				<h1>{quiz_content_data.number}번 문제</h1> <br/>
+				<h1>문제</h1> <br/>
 				<div className="px-8 py-6 bg-white shadow">
 					<Preview rest_api_url={rest_api_url} quiz_content={quiz_content_data} />
 				</div>
@@ -131,9 +132,12 @@ const WrongContentPage = ({ rest_api_url }) => {
 				</div>
 				</div>: <div></div>}
 				<div className="w-24" />
-				{/* <div>
-					<ButtonRed>문제 제거</ButtonRed>
-				</div> */}
+				<div>
+				<Link
+					href={`/user/similar/${quiz_content_data.twins}`}>
+					<ButtonRed>유사 문제</ButtonRed>
+				</Link>
+				</div>
 			</div>
 			
 

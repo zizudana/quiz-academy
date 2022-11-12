@@ -15,8 +15,10 @@ type quizContentStruct struct {
 	QuizID  primitive.ObjectID `json:"quiz_id" bson:"quiz_id"`
 	Number  int64              `json:"number" bson:"number"`
 	Chapter int64              `json:"chapter" bson:"chapter"`
+	Order   int64              `json:"order" bson:"order"`
 	Content string             `json:"content" bson:"content"`
 	Image   string             `json:"image" bson:"image"`
+
 	// Twins   primitive.ObjectID `json:"twins" bson:"twins"`
 }
 
@@ -25,6 +27,7 @@ type quizContentStructWithObjectID struct {
 	QuizID   primitive.ObjectID `json:"quiz_id" bson:"quiz_id"`
 	Number   int64              `json:"number" bson:"number"`
 	Chapter  int64              `json:"chapter" bson:"chapter"`
+	Order    int64              `json:"order" bson:"order"`
 	Content  string             `json:"content" bson:"content"`
 	Image    string             `json:"image" bson:"image"`
 	// Twins    primitive.ObjectID `json:"twins" bson:"twins"`
@@ -115,7 +118,7 @@ func existQuizContentByChapter(c echo.Context) error {
 	itemCount, err := collection["quiz_content"].CountDocuments(
 		ctx,
 		bson.M{
-			"Chapter": quizChapter,
+			"order": quizChapter,
 		},
 	)
 	errCheck(err)

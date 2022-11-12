@@ -149,7 +149,7 @@ const QuizSetIndexPage = ({ rest_api_url }) => {
               scope="col"
               className="py-3 text-md font-bold uppercase tracking-widest"
             >
-              Chapter
+              Index
             </th>
             <th
               scope="col"
@@ -172,7 +172,7 @@ const QuizSetIndexPage = ({ rest_api_url }) => {
             .map((quiz_set_info, index) => (
 
                 <tr>
-                  <td className="py-4">{index + 1}장</td>
+                  <td className="py-4">{index + 1}</td>
 
                   <td className="py-4">
                     {quiz_set_info.is_solved ? (
@@ -198,13 +198,14 @@ const QuizSetIndexPage = ({ rest_api_url }) => {
 								key={`quiz-set-${index}`}
 								href={`/user/solve/${quiz_set_info._id}`}
 							 >
-								<ButtonGreen className="px-4 py-2">{index + 1}장 문제</ButtonGreen> 
+								{/* <ButtonGreen className="px-4 py-2">{index + 1}장 문제</ButtonGreen>  */}
+								<ButtonGreen className="px-4 py-2">문제 보기</ButtonGreen> 
 								</Link>
 								) : (
 									<Link
 										key={`quiz-set-${index}`}
 										href={`/user/quiz-set/${quiz_set_info._id}`}>
-								<ButtonNormal className="px-4 py-2">{index + 1}장 문제 풀기</ButtonNormal>
+								<ButtonNormal className="px-4 py-2">문제 풀기</ButtonNormal>
 								</Link>
 								)
 							}
@@ -221,7 +222,8 @@ const QuizSetIndexPage = ({ rest_api_url }) => {
 			<Link 
 				href= {`/user/new_quiz_set/${quiz_set_arr.length+1}`}>
 				<ButtonNormal className="px-4 py-2">
-					{quiz_set_arr.length + 1}장 문제집 추가
+					{/* {quiz_set_arr.length + 1}장 문제집 추가 */}
+					문제집 추가
 				</ButtonNormal>
 			</Link>
 			) : (

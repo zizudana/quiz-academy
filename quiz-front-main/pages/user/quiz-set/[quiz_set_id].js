@@ -195,6 +195,7 @@ const QuizSetPage = ({ rest_api_url }) => {
             <table className="mb-4 border w-full bg-white shadow">
               <tbody>
                 {selected_answer_list.map((answer_number, index) => (
+						// index < 25 ?
                   <tr
                     key={index}
                     onClick={() => {
@@ -213,10 +214,16 @@ const QuizSetPage = ({ rest_api_url }) => {
                         {answer_number}
                       </td>
                     )}
-                  </tr>
+                  </tr> 
+						// : null
                 ))}
               </tbody>
             </table>
+
+
+								
+
+
 
             {/* 제출 버튼 */}
             {is_solved() ? (
@@ -258,7 +265,7 @@ const QuizSetPage = ({ rest_api_url }) => {
 
             <div className="col-span-1 flex justify-end items-center">
               {/* button : 다음 문제 */}
-				  {solving_number < 21?
+				  {solving_number < 99?
               <ButtonNormal
                 className="flex px-4 h-12 items-center"
                 onClick={move_to_next_number}

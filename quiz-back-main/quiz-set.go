@@ -43,7 +43,7 @@ func getQuizContentIDArr(chapter int64) (quizIDArr []primitive.ObjectID) {
 	cur, err := collection["quiz_content"].Find(
 		ctx,
 		bson.M{
-			"Chapter": chapter,
+			"order": chapter,
 		},
 	)
 	errCheck(err)
@@ -106,14 +106,14 @@ func createQuizSet(c echo.Context) error {
 
 	//quizIDArr := getRandomQuizContentIDArr(newQuizSet.NumQuiz, newQuizSet.Chapter)
 
-	//quizIDArr := getRandomQuizContentIDArr(newQuizSet.NumQuiz, newQuizSet.Chapter)
 	quizIDArr := getQuizContentIDArr(newQuizSet.Chapter)
-	
+	quizNum := getQuizNum(newQuizSet.Chapter)
 	insertOneResult, err := collection["quiz_set"].InsertOne(
 		ctx,
 		bson.M{
-			"title":               "No Title",
-			"num_quiz":            newQuizSet.NumQuiz,
+			"title": "No Title",
+			// "num_quiz":            newQuizSet.NumQuiz,
+			"num_quiz":            quizNum,
 			"chapter":             newQuizSet.Chapter,
 			"num_correct":         0,
 			"student_id":          newQuizSet.StudentID,
@@ -127,6 +127,20 @@ func createQuizSet(c echo.Context) error {
 	logger.Info("SUCCESS createQuizSet")
 
 	return c.JSON(http.StatusCreated, insertOneResult)
+}
+
+//////////////////////////////////////////////////
+func getQuizNum(chapter int64) int64 {
+
+	count, err := collection["quiz_content"].CountDocuments(
+		ctx,
+		bson.M{
+			"order": chapter,
+		},
+	)
+	errCheck(err)
+
+	return count
 }
 
 func getIsQuizSetSolved(quizSetID primitive.ObjectID) bool {

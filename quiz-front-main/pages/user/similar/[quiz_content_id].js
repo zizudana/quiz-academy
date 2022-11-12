@@ -93,7 +93,7 @@ const WrongContentPage = ({ rest_api_url }) => {
 				
 				{/* 문제 */}
 				<div>
-				<h1>{quiz_content_data.number}번 문제</h1> <br/>
+				{/* <h1>{quiz_content_data.number}번 문제</h1> <br/> */}
 				<div className="px-8 py-6 bg-white shadow">
 					<Preview rest_api_url={rest_api_url} quiz_content={quiz_content_data} />
 				</div>

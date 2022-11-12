@@ -7,7 +7,7 @@ import Preview from "../../../components/quiz/preview"
 import TailSpinSVG from "../../../components/svg/tail-spin"
 import CircleLeftSVG from "../../../components/svg/circle-left"
 import CircleRightSVG from "../../../components/svg/circle-right"
-import { ButtonNormal, DisabledButton } from "../../../components/common/button"
+import { ButtonNormal, DisabledButton, ButtonNext} from "../../../components/common/button"
 
 const QuizSetPage = ({ rest_api_url }) => {
   const router = useRouter()
@@ -241,38 +241,38 @@ const QuizSetPage = ({ rest_api_url }) => {
             <div className="col-span-1 flex justify-start items-center">
               {/* button : 이전 문제 */}
 				  {solving_number != 0?
-              <ButtonNormal
+              <ButtonNext
                 className="flex px-4 h-12 items-center"
                 onClick={move_to_previous_number}
               >
                 <span className="hidden sm:block keep-all">이전 문제</span>
                 <CircleLeftSVG className="fill-current w-6 h-6 ml-1" />
-              </ButtonNormal>:null
+              </ButtonNext>:null
   				}
             </div>
 
             <div className="col-span-2 flex justify-center items-center gap-4">
               {answer_button_array.map((button_index, index) => (
-                <ButtonNormal
+                <ButtonNext
                   key={index}
                   className="px-4"
                   onClick={() => select_answer(button_index)}
                 >
                   {button_index}
-                </ButtonNormal>
+                </ButtonNext>
               ))}
             </div>
 
             <div className="col-span-1 flex justify-end items-center">
               {/* button : 다음 문제 */}
 				  {solving_number < 99?
-              <ButtonNormal
+              <ButtonNext
                 className="flex px-4 h-12 items-center"
                 onClick={move_to_next_number}
               >
                 <CircleRightSVG className="fill-current w-6 h-6 mr-1" />
                 <span className="hidden sm:block keep-all">다음 문제</span>
-              </ButtonNormal> : null
+              </ButtonNext> : null
   				  }
   
             </div>

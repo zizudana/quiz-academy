@@ -42,7 +42,7 @@ func main() {
 
 	logger.Debug("SUCCESS connect mongo")
 	///////////////////////////////////////////////////
-	collection := client.Database("quiz").Collection("quiz_content")
+	// collection := client.Database("quiz").Collection("quiz_content")
 
 	// user := quizContentStruct{}
 

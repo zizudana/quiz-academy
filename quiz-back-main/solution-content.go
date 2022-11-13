@@ -14,6 +14,8 @@ type solutionContentStruct struct {
 	Number        int64              `json:"number" bson:"number"`
 	Answer        int64              `json:"answer" bson:"answer"`
 	Content       string             `json:"content" bson:"content"`
+	Image   string             `json:"image" bson:"image"`
+	Image2  string 			   `json:"image2" bson:"image2"`
 }
 
 type solutionContentStructWithObjectID struct {
@@ -23,6 +25,8 @@ type solutionContentStructWithObjectID struct {
 	Number        int64              `json:"number" bson:"number"`
 	Answer        int64              `json:"answer" bson:"answer"`
 	Content       string             `json:"content" bson:"content"`
+	Image   string             `json:"image" bson:"image"`
+	Image2  string 			   `json:"image2" bson:"image2"`
 }
 
 func initSolutionContent(e *echo.Echo) {

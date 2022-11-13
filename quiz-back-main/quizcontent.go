@@ -18,8 +18,8 @@ type quizContentStruct struct {
 	Order   int64              `json:"order" bson:"order"`
 	Content string             `json:"content" bson:"content"`
 	Image   string             `json:"image" bson:"image"`
-
-	// Twins   primitive.ObjectID `json:"twins" bson:"twins"`
+	Image2  string 			   `json:"image2" bson:"image2"`
+	Twins   primitive.ObjectID `json:"twins" bson:"twins"`
 }
 
 type quizContentStructWithObjectID struct {
@@ -30,7 +30,8 @@ type quizContentStructWithObjectID struct {
 	Order    int64              `json:"order" bson:"order"`
 	Content  string             `json:"content" bson:"content"`
 	Image    string             `json:"image" bson:"image"`
-	// Twins    primitive.ObjectID `json:"twins" bson:"twins"`
+	Image2   string 			   `json:"image2" bson:"image2"`
+	Twins    primitive.ObjectID `json:"twins" bson:"twins"`
 }
 
 func initQuizContent(e *echo.Echo) {

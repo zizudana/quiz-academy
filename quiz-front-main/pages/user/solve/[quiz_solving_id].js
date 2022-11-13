@@ -7,7 +7,7 @@ import Preview from "../../../components/quiz/solve-preview"
 import TailSpinSVG from "../../../components/svg/tail-spin"
 import CircleLeftSVG from "../../../components/svg/circle-left"
 import CircleRightSVG from "../../../components/svg/circle-right"
-import { ButtonNormal } from "../../../components/common/button"
+import { ButtonNormal, ButtonNext } from "../../../components/common/button"
 import { session } from "next-auth/client"
 import { useSession } from "next-auth/client"
 
@@ -333,7 +333,7 @@ const SolvePage = ({ rest_api_url }) => {
                             is_correct ? "bg-color-others-3" : "bg-red-400"
                           }`}
                         >
-                          {index + 1}번
+                          {index + 1}
                         </td>
                         <td className="border px-2">{answer_number}</td>
                         <td className="border px-2">{correct_number}</td>
@@ -350,26 +350,26 @@ const SolvePage = ({ rest_api_url }) => {
             <div className="col-span-1 flex justify-start items-center">
               {/* button : 이전 문제 */}
 				  {checking_number != 0?
-              <ButtonNormal
+              <ButtonNext
                 className="flex px-4 h-12 items-center"
                 onClick={move_to_previous_number}
               >
                 <span className="hidden sm:block keep-all">이전 문제</span>
                 <CircleLeftSVG className="fill-current w-6 h-6 ml-1" />
-              </ButtonNormal> : null
+              </ButtonNext> : null
   					}	
             </div>
 
             <div className="col-span-1 flex justify-end items-center">
               {/* button : 다음 문제 */}
-				  {checking_number < 21?
-              <ButtonNormal
+				  {checking_number < 100?
+              <ButtonNext
                 className="flex px-4 h-12 items-center"
                 onClick={move_to_next_number}
               >
                 <CircleRightSVG className="fill-current w-6 h-6 mr-1" />
                 <span className="hidden sm:block keep-all">다음 문제</span>
-              </ButtonNormal> : null
+              </ButtonNext> : null
   					}
             </div>
           </div>

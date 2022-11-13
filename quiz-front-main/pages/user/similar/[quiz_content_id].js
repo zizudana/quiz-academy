@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
 import { useRouter } from "next/router"
-import Link from "next/link"
+
 import Layout from "../../../components/layout/layout_user"
 import Preview from "../../../components/quiz/preview"
 import TailSpinSVG from "../../../components/svg/tail-spin"
@@ -29,7 +29,7 @@ const WrongContentPage = ({ rest_api_url }) => {
 	)
 	useEffect(() => {
 		get_quiz_content(quiz_content_id)
-		
+
 
 	}, [])
 
@@ -40,17 +40,7 @@ const WrongContentPage = ({ rest_api_url }) => {
 		}
 	}, [quiz_content_data])
 
-	const delete_wrong = (quiz_content_id) => {
-		axios
-			.delete(`${rest_api_url}/wrongcontents/${quiz_content_id}`)
-			.then(function (response) {
-				console.log(response.data)
-			})
-			.catch(function (error) {
-				console.error(error)
-			})
-		document.location.href('/')
-	}
+
 	const get_quiz_content = (quiz_content_id) => {
 		axios
 			.get(`${rest_api_url}/quizcontents/id/${quiz_content_id}`)
@@ -74,7 +64,6 @@ const WrongContentPage = ({ rest_api_url }) => {
 			})
 	}
 
-
 	return (
 		<Layout>
 			<style jsx>
@@ -91,7 +80,7 @@ const WrongContentPage = ({ rest_api_url }) => {
 			<div className="flex items-center justify-between mt-8 mb-4">
 				<h1 className="flex">
 					<img src="/img/ic_subject_big.svg" className="mr-2" alt="book" />
-					오답노트
+					유사 문제
 				</h1>
 			</div>
 
@@ -104,7 +93,7 @@ const WrongContentPage = ({ rest_api_url }) => {
 				
 				{/* 문제 */}
 				<div>
-				<h1>문제</h1> <br/>
+				{/* <h1>{quiz_content_data.number}번 문제</h1> <br/> */}
 				<div className="px-8 py-6 bg-white shadow">
 					<Preview rest_api_url={rest_api_url} quiz_content={quiz_content_data} />
 				</div>
@@ -132,12 +121,9 @@ const WrongContentPage = ({ rest_api_url }) => {
 				</div>
 				</div>: <div></div>}
 				<div className="w-24" />
-				<div>
-				<Link
-					href={`/user/similar/${quiz_content_data.twins}`}>
-					<ButtonRed>유사 문제</ButtonRed>
-				</Link>
-				</div>
+				{/* <div>
+					<ButtonRed>문제 제거</ButtonRed>
+				</div> */}
 			</div>
 			
 

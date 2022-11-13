@@ -41,7 +41,7 @@ func main() {
 	errCheck(err)
 
 	logger.Debug("SUCCESS connect mongo")
-
+	///////////////////////////////////////////////////
 	// collection := client.Database("quiz").Collection("quiz_content")
 
 	// user := quizContentStruct{}
@@ -53,6 +53,22 @@ func main() {
 
 	// fmt.Println("Inserted a single document: ", insertResult.InsertedID)
 
+	// deleteResult, err := collection.UpdateMany(
+	// 	ctx,
+	// 	bson.M{
+	// 		"Chapter": 4,
+	// 		"Number":  bson.M{"$gt": 60},
+	// 	},
+	// 	bson.M{
+	// 		"$set": bson.M{
+	// 			"order": 10,
+	// 		},
+	// 	},
+	// )
+
+	// logger.Info("aaaaaaaaaaaaa : %s", deleteResult)
+
+	////////////////////////////////////////////////
 	setCollection(client)
 
 	// Static files

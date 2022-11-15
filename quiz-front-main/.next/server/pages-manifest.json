@@ -1,0 +1,11 @@
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js",
+  "/user/wrong_chapter/[chapter]": "pages/user/wrong_chapter/[chapter].js",
+  "/guest/signin": "pages/guest/signin.js",
+  "/user": "pages/user.js",
+  "/user/wrong_main": "pages/user/wrong_main.js",
+  "/user/wrong_content/[quiz_content_id]": "pages/user/wrong_content/[quiz_content_id].js"
+}

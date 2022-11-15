@@ -19,7 +19,7 @@ const WrongChapterPage = ({ rest_api_url }) => {
 	if (session) {
 		const student_id = session.user.image
 		axios
-			.get(`${rest_api_url}/wrongcontents/chapter/${chapter}`)
+			.get(`${rest_api_url}/wrongcontents/chapter/${chapter}/${student_id}`)
 			.then(function (response) {
 				const wrong_quiz_all = response.data
 				set_wrong_quiz_data(wrong_quiz_all.wrong_set_arr)

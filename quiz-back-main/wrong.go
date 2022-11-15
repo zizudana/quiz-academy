@@ -30,7 +30,7 @@ func initWrongContent(e *echo.Echo) {
 	e.GET("/wrongcontents/id/:hex", readWrongContentByID)
 	e.GET("/wrongcontents/quizid/:quizid/:number", readWrongContentByQuizID)
 	e.GET("/wrongcontents/all/:student-id", readWrongContentAll)
-	e.GET("/wrongcontents/chapter/:chapter", readWrongContentByChapter)
+	e.GET("/wrongcontents/chapter/:chapter/:student-id", readWrongContentByChapter)
 	e.GET("/wrongcontents/count/:chapter", countContentByChapter)
 	e.GET("/wrongcontents/is-exist/:quizid", existQuiz)
 	e.PUT("/wrongcontents", updateWrongContent)
@@ -168,6 +168,8 @@ func readWrongContentAll(c echo.Context) error {
 }
 
 func readWrongContentByChapter(c echo.Context) error {
+	hex := c.Param("student-id")
+	studentID, err := primitive.ObjectIDFromHex(hex)
 	chapter := c.Param("chapter")
 	wrongChapter, err := strconv.ParseInt(chapter, 10, 64)
 	fmt.Println("eeee", wrongChapter)
@@ -175,7 +177,8 @@ func readWrongContentByChapter(c echo.Context) error {
 	cur, err := collection["wrong_content"].Find(
 		ctx,
 		bson.M{
-			"chapter": wrongChapter,
+			"chapter":    wrongChapter,
+			"student_id": studentID,
 		},
 	)
 	errCheck(err)

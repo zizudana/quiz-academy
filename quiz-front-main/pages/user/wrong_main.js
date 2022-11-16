@@ -51,7 +51,7 @@ const WrongMainPage = ({ rest_api_url }) => {
               <td className="py-4">1</td>
               <td className="py-4">
                 <div className="text-base text-indigo-500">
-                  1장. 화학의 첫걸음 
+                  1
                 </div>
               </td> 
 				 
@@ -67,7 +67,7 @@ const WrongMainPage = ({ rest_api_url }) => {
               <td className="py-4">2</td>
               <td className="py-4">
                 <div className="text-base text-indigo-500">
-                  2장. 원자의 세계
+                  2
                 </div>
               </td>
             </tr>
@@ -82,7 +82,7 @@ const WrongMainPage = ({ rest_api_url }) => {
               <td className="py-4">3</td>
               <td className="py-4">
                 <div className="text-base text-indigo-500">
-                  3장. 화학 결합과 원자의 세계
+                  3
                 </div>
               </td>
             </tr>
@@ -97,7 +97,7 @@ const WrongMainPage = ({ rest_api_url }) => {
               <td className="py-4">4</td>
               <td className="py-4">
                 <div className="text-base text-indigo-500">
-                  4장. 역동적인 화학 반응 
+                  4
                 </div>
               </td> 
             </tr>

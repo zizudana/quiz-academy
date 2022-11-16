@@ -70,7 +70,7 @@ const Preview = ({ rest_api_url, quiz_content }) => {
     })
 
     preview_html = preview_html.replace(
-      /\$분수\{([ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|+|-|.|()|×]+),([ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|+|-|.|()|×]+)\}/g,
+      /\$분수\{([\[\]|ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|+-|.|()|{}|×|㉠|%|Ⅰ|Ⅲ]+),([\[\]|ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|+-|.|()|{}|×|%|Ⅰ|Ⅲ]+)\}/g,
       `<span class="inline-block align-middle text-center" style="font-size: 0.75rem; line-height: 1rem;">
             <span class="block border-b border-black">$1</span>
             <span class="block">$2</span>
@@ -80,6 +80,10 @@ const Preview = ({ rest_api_url, quiz_content }) => {
     preview_html = preview_html.replace(
       `$이미지`,
       `<img src="${quiz_content.image}">`
+    )
+    preview_html = preview_html.replace(
+      `$이미지2`,
+      `<img src="${quiz_content.image2}">`
     )
 
     preview_html = preview_html.replaceAll(
